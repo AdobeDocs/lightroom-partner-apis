@@ -1,0 +1,65 @@
+{
+  "name": "Adobe Lightroom Partner APIs",
+  "version": "1.0.0",
+  "description": "Adobe Lightroom Partner APIs",
+  "author": "Smita Das",
+  "view_type": "mdbook",
+  "meta_keywords": "Adobe Lightroom",
+  "meta_description": "Adobe lightroom Partner API documentation",
+  "publish_date": "09/10/2019",
+  "show_edit_github_banner": true,
+  "base_path": "https://raw.githubusercontent.com",
+  "pages": [
+    {
+      "importedFileName": "index",
+      "pages": [
+        {
+          "importedFileName": "02-service-integration",
+          "pages": [],
+          "path": "lightroom-partner-api/docs/getting-started/02-service-integration.md",
+          "title": "Integration with Lightroom Partner APIs"
+        },
+        {
+          "importedFileName": "03-oauth",
+          "pages": [],
+          "path": "lightroom-partner-api/docs/getting-started/03-oauth.md",
+          "title": "OAuth flow for Lightroom Partner APIs"
+        },
+        {
+          "importedFileName": "04-upload-workflow",
+          "pages": [],
+          "path": "lightroom-partner-api/docs/getting-started/04-upload-workflow.md",
+          "title": "Ligthroom Partner APIs for upload workflow"
+        }
+      ],
+      "path":"adobe/lightroom-partner-apimaster/docs/01-getting-started.md",
+      "title":"Getting started"
+    },
+    {
+      "importedFileName": "05-api-summary",
+      "pages": [
+        {
+          "importedFileName": "05-api-summary",
+          "pages": [],
+          "path": "lightroom-partner-api/docs/05-api-summary.md",
+          "title": "Adobe Lightroom Partner API Reference"
+        }
+      ],
+      "path":"adobe/lightroom-partner-apis/master/docs/05-api-summary.md",
+      "title":"API reference"
+    },
+    {
+      "importedFileName": "15-faq",
+      "pages": [
+        {
+          "importedFileName": "15-faq",
+          "pages": [],
+          "path": "lightroom-partner-api/docs/15-faq.md",
+          "title": "FAQ"
+        }
+      ],
+      "path": "lightroom-partner-api/docs/15-faq.md",
+      "title": "FAQ"
+    }
+  ]
+}
