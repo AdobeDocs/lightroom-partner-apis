@@ -1,0 +1,21 @@
+{
+  "name": "Lightroom Partner APIs Frequently Asked Questions",
+  "version": "1.0.0",
+  "description": "Lightroom Partner APIs Frequently Asked Questions",
+  "author": "Smita Das",
+  "view_type": "mdbook",
+  "meta_keywords": "adobe i/o, lightroom, lightroom partners, lightroom api faq",
+  "meta_description": "Lightroom Partner APIs Frequently Asked Questions",
+  "publish_date": "09/10/2019",
+  "show_edit_github_banner": false,
+  "base_path": "https://raw.githubusercontent.com",
+  "pages":
+    [ 
+      {
+          "importedFileName": "lightroom-partner-apis-faq",
+          "pages": [],
+          "path": "adobe/lightroom-partner-apis/master/supplemental/lightroom-partners-business-faq.md",
+          "title": "Lightroom Partners API Frequently Asked Questions"
+      }
+    ]
+}

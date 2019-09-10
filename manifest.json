@@ -1,0 +1,71 @@
+{
+"name": "Adobe Lightroom Partner APIs",
+"version": "1.0.0",
+"description": "Adobe Lightroom",
+"author": "Smita Das",
+"view_type": "mdbook",
+"meta_keywords": "adobe lightroom",
+"meta_description": "Adobe Lightroom documentation",
+"publish_date": "08/23/2018",
+"show_edit_github_banner": false,
+"base_path": "https://raw.githubusercontent.com",
+"pages": [
+{
+"importedFileName": "index",
+"pages": [
+		{
+		  "importedFileName": "01-gettingstarted",
+		  "pages": [],
+		  "path": "lightroom-partner-api/docs/01-getting-started.md",
+		  "title": "Getting started with the Adobe Lightroom Partner API"
+		},
+		{
+		  "importedFileName": "02-service-integration",
+		  "pages": [],
+		  "path": "lightroom-partner-api/docs/getting-started/02-service-integration.md",
+		  "title": "Integration with Lightroom Partner APIs"
+		},
+		{
+		  "importedFileName": "03-oauth",
+		  "pages": [],
+		  "path": "lightroom-partner-api/docs/getting-started/03-oauth.md",
+		  "title": "OAuth flow for Lightroom Partner APIs"
+		},
+	   {
+		  "importedFileName": "04-upload-workflow",
+		  "pages": [],
+		  "path": "lightroom-partner-api/docs/getting-started/04-upload-workflow.md",
+		  "title": "Ligthroom Partner APIs for upload workflow"
+		}
+	],
+	 "path": "lightroom-partner-api/docs/01-getting-started.md",
+     "title": "Getting started with the Adobe Lightroom Partner API"
+	 },
+	 {
+	"importedFileName": "09-api-summary",
+	"pages": [    
+    {
+      "importedFileName": "09-api-summary",
+      "pages": [],
+      "path": "lightroom-partner-api/docs/05-api-summary.md",
+      "title": "Adobe Lightroom Partner API Reference"
+    }
+	],
+	"path": "lightroom-partner-api/docs/01-getting-started.md",
+	"title": "Getting started with the Adobe Lightroom Partner API"
+	},
+	{
+	"importedFileName": "15-faq",
+	"pages": [
+		{
+		  "importedFileName": "15-faq",
+		  "pages": [],
+		  "path": "lightroom-partner-api/docs/15-faq.md",
+		  "title": "FAQ"
+		}
+	],
+	"path": "lightroom-partner-api/docs/15-faq.md",
+	"title": "FAQ"
+	}
+]
+}
