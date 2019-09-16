@@ -1,0 +1,903 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Documentation for the Lightroom APIs, made available through [adobe.io](https://www.adobe.io).",
+    "version": "1.0.0",
+    "title": "Lightroom API",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "lr.adobe.io",
+  "basePath": "/v2",
+  "schemes": [
+    "https"
+  ],
+  "tags": [
+    {
+      "name": "version",
+      "description": "Unique hexadecimal number identifying the Lightroom server.",
+      "externalDocs": {
+        "description": "More info",
+        "url": "https://www.adobe.io"
+      }
+    },
+    {
+      "name": "accounts",
+      "description": "Account information for the authenticated user."
+    },
+    {
+      "name": "catalogs",
+      "description": "Catalog information for the authenticated user."
+    },
+    {
+      "name": "assets",
+      "description": "Information for an individual asset, typically an image or video."
+    }
+  ],
+  "paths": {
+    "/version": {
+      "get": {
+        "tags": [
+          "version"
+        ],
+        "summary": "Retrieve the server version",
+        "description": "Lightroom server version ID, which is a hexadecimal value but not guaranteed to be sequential.",
+        "operationId": "getVersion",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Client ID (API Key) which is subscribed to the Lightroom APIs through console.adobe.io",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer [token] - User access token of an authenticated Lightroom customer",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "version": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The request has not been applied because it lacks valid authentication credentials for the target resource."
+          },
+          "403": {
+            "description": "The requester is not authorized to access the resource."
+          },
+          "405": {
+            "description": "Client sent a request using a HTTP method that the server does not support."
+          },
+          "406": {
+            "description": "Unacceptable content type. Client sent an Accept header for a content type which does not exist on the server."
+          },
+          "500": {
+            "description": "This is an indicator of a server-side error."
+          },
+          "502": {
+            "description": "This is an indicator that the back-end service did not send a valid response."
+          },
+          "503": {
+            "description": "This is an indicator of a potential server overload."
+          },
+          "504": {
+            "description": "This is an indicator that the back-end service did not complete a response within an allowed time period."
+          }
+        }
+      }
+    },
+    "/accounts/00000000000000000000000000000000": {
+      "get": {
+        "tags": [
+          "accounts"
+        ],
+        "summary": "Retrieve the user account metadata",
+        "description": "An account is associated with each Adobe customer and contains the personal information and subscription status. This information can be obtained through the authentication APIs and is provided by Lightroom as a convenience.",
+        "operationId": "getAccount",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "base": {
+                  "type": "string"
+                },
+                "id": {
+                  "$ref": "#/definitions/uuid"
+                },
+                "created": {
+                  "$ref": "#/definitions/iso8601DateTime"
+                },
+                "updated": {
+                  "$ref": "#/definitions/iso8601DateTime"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "full_name": {
+                  "type": "string"
+                },
+                "first_name": {
+                  "type": "string"
+                },
+                "last_name": {
+                  "type": "string"
+                },
+                "wcd_guid": {
+                  "type": "string"
+                },
+                "country": {
+                  "type": "string"
+                },
+                "config": {
+                  "type": "object"
+                },
+                "entitlement": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "created",
+                        "trial",
+                        "trial_expired",
+                        "subscriber",
+                        "subscriber_expired"
+                      ],
+                      "description": "The status can take on one of five values from created, trial, trial_expired, subscriber, and subscriber_expired. The created status indicates the user has not yet stepped into any Creative Cloud offering, whether trial or subscription. It is a minimally-entitled Adobe ID."
+                    },
+                    "trial": {
+                      "type": "object"
+                    },
+                    "current_subs": {
+                      "type": "object"
+                    },
+                    "storage": {
+                      "type": "object",
+                      "properties": {
+                        "used": {
+                          "type": "integer",
+                          "description": "The size in bytes of content this account that count against the storage limit."
+                        },
+                        "warn": {
+                          "type": "integer",
+                          "description": "Value of used at which the client applications should start warning the user. Absence indicates no warning should be given."
+                        },
+                        "limit": {
+                          "type": "integer",
+                          "description": "Specifies the storage limit in bytes that should be enforced for this account. It will always be greater than or equal to the display_limit."
+                        },
+                        "display_limit": {
+                          "type": "integer",
+                          "description": "Specifies the storage limit in bytes that is displayed to the user for this account."
+                        }
+                      }
+                    },
+                    "deletion_date": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "payload": {
+                  "type": "object"
+                },
+                "links": {
+                  "type": "object"
+                }
+              },
+              "example": {
+                "base": "https://lr.adobe.io/",
+                "id": "96e656e3812b4c2fb670fa74b6a7ad74",
+                "type": "account",
+                "created": "2017-09-12T17:22:41.751746Z",
+                "updated": "2019-02-02T17:17:39.663862Z",
+                "email": "customer@domain.com",
+                "full_name": "Adobe Customer",
+                "first_name": "Adobe",
+                "last_name": "Customer",
+                "wcd_guid": "6CEE5CFE464CC743992017B8",
+                "country": "US",
+                "config": {
+                  "nimbus_show_different_ui": true,
+                  "search_index": true,
+                  "purge_assets_after": 5184000
+                },
+                "entitlement": {
+                  "status": "subscriber",
+                  "trial": {
+                    "start": "2017-09-12T17:22:41.751746Z",
+                    "end": "2018-02-16T10:35:24.593005Z"
+                  },
+                  "current_subs": {
+                    "product_id": "lightroom",
+                    "store": "adobe",
+                    "purchase_date": "2019-02-04T07:25:59.121277Z",
+                    "sao": {
+                      "inpkg_CCLE": "0",
+                      "inpkg_CCSN": "0",
+                      "inpkg_LRMP": "1",
+                      "inpkg_PHLT": "0"
+                    }
+                  },
+                  "storage": {
+                    "used": 11998409416,
+                    "warn": 85899345920,
+                    "limit": 112742891520,
+                    "display_limit": 107374182400
+                  },
+                  "deletion_date": "2020-05-06T15:17:51.216255Z"
+                },
+                "payload": {},
+                "links": {
+                  "self": {
+                    "href": "/v2/accounts/96e656e3812b4c2fb670fa74b6a7ad74"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/catalogs/00000000000000000000000000000000": {
+      "get": {
+        "tags": [
+          "catalogs"
+        ],
+        "summary": "Retrieve the user catalog metadata",
+        "description": "A catalog is the topmost container of resources for a user. Each catalog contains zero or more assets, albums, or other resources.",
+        "operationId": "getCatalog",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "base": {
+                  "type": "string"
+                },
+                "id": {
+                  "$ref": "#/definitions/uuid"
+                },
+                "created": {
+                  "$ref": "#/definitions/iso8601DateTime"
+                },
+                "updated": {
+                  "$ref": "#/definitions/iso8601DateTime"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "subtype": {
+                  "type": "string"
+                },
+                "payload": {
+                  "$schema": "http://json-schema.org/draft-04/schema#",
+                  "title": "Catalog Payload Schema",
+                  "type": "object",
+                  "definitions": {},
+                  "properties": {
+                    "userCreated": {
+                      "$ref": "#/definitions/utcDateTime"
+                    },
+                    "userUpdated": {
+                      "$ref": "#/definitions/utcDateTime"
+                    },
+                    "name": {
+                      "$ref": "#/definitions/max1024CharacterString"
+                    },
+                    "assetSortOrder": {
+                      "enum": [
+                        "captureDateAsc",
+                        "captureDateDesc",
+                        "importTimestampAsc",
+                        "importTimestampDesc",
+                        "fileNameAsc",
+                        "fileNameDesc",
+                        "ratingAsc",
+                        "ratingDesc",
+                        "userUpdatedAsc",
+                        "userUpdatedDesc"
+                      ]
+                    },
+                    "presets": {
+                      "type": "object",
+                      "properties": {
+                        "favorites": {
+                          "type": "object",
+                          "patternProperties": {
+                            "^.{1,128}$": {
+                              "type": "boolean"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "minProperties": 1
+                        }
+                      },
+                      "additionalProperties": false,
+                      "minProperties": 1
+                    },
+                    "profiles": {
+                      "type": "object",
+                      "properties": {
+                        "favorites": {
+                          "type": "object",
+                          "patternProperties": {
+                            "^.{1,128}$": {
+                              "type": "boolean"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "minProperties": 1
+                        }
+                      },
+                      "additionalProperties": false,
+                      "minProperties": 1
+                    },
+                    "settings": {
+                      "type": "object",
+                      "properties": {
+                        "universal": {
+                          "type": "object",
+                          "properties": {
+                            "connections": {
+                              "type": "object",
+                              "patternProperties": {
+                                "^.{1,128}$": {
+                                  "type": "object",
+                                  "properties": {
+                                    "created": {
+                                      "$ref": "#/definitions/utcDateTime"
+                                    }
+                                  },
+                                  "additionalProperties": false,
+                                  "required": [
+                                    "created"
+                                  ]
+                                }
+                              },
+                              "additionalProperties": false,
+                              "minProperties": 1
+                            }
+                          },
+                          "additionalProperties": false,
+                          "minProperties": 1
+                        },
+                        "desktop": {
+                          "type": "object",
+                          "additionalProperties": true,
+                          "minProperties": 1
+                        },
+                        "web": {
+                          "type": "object",
+                          "additionalProperties": true,
+                          "minProperties": 1
+                        },
+                        "mobile": {
+                          "type": "object",
+                          "additionalProperties": true,
+                          "minProperties": 1
+                        },
+                        "photosdk": {
+                          "type": "object",
+                          "additionalProperties": true,
+                          "minProperties": 1
+                        }
+                      },
+                      "additionalProperties": false,
+                      "minProperties": 1
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": [
+                    "name"
+                  ]
+                },
+                "revision_ids": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/uuid"
+                  }
+                },
+                "links": {
+                  "type": "object"
+                }
+              },
+              "example": {
+                "created": "2019-07-02T15:16:13.556610Z",
+                "updated": "2019-07-02T15:26:42.838366Z",
+                "base": "https://lr.adobe.io/v2/",
+                "id": "bf7337d9355c41b7875c9392f918362a",
+                "type": "catalog",
+                "subtype": "lightroom",
+                "payload": {
+                  "userCreated": "2019-07-02T15:38:14Z",
+                  "userUpdated": "2019-08-16T16:05:13Z",
+                  "name": "Lightroom Classic Catalog Name",
+                  "presets": {
+                    "favorites": {
+                      "09E4A533BEFC4AC582FCF1EF953EB150": true,
+                      "30E266DB24AE09B97DC3DD687AC298B1": false,
+                      "5C9AF6F007B96EF1E0DED43E77BE87C3": true
+                    }
+                  },
+                  "profiles": {
+                    "favorites": {
+                      "53A4A533BAFB4AB582FBF1AF353AB155": true,
+                      "35A266DB24AA53B37DB3DD687AB238B1": true,
+                      "5B3AF6F557B36AF1A5DAD43A77BA87B3": false
+                    }
+                  },
+                  "settings": {
+                    "universal": {
+                      "connections": {
+                        "connection_api_key": {
+                          "created": "2019-07-02T15:26:42.838366Z"
+                        }
+                      }
+                    },
+                    "desktop": {
+                      "desktop_key": "desktop_setting"
+                    },
+                    "web": {
+                      "web_key": "web_setting"
+                    },
+                    "mobile": {
+                      "mobile_key": "mobile_setting"
+                    },
+                    "photosdk": {
+                      "sdk_key": "sdk_setting"
+                    }
+                  }
+                },
+                "revision_ids": [
+                  "9a91927e",
+                  "d61b7077"
+                ],
+                "links": {
+                  "self": {
+                    "href": "catalogs/bf7337d9355c41b7875c9392f918362a"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/catalogs/{catalog_id}/assets/{asset_id}/revisions/{revision_id}": {
+      "put": {
+        "tags": [
+          "assets"
+        ],
+        "summary": "Create asset revision",
+        "description": "Create a new asset with an initial revision.",
+        "operationId": "createAssetRevision",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "catalog_id",
+            "in": "path",
+            "description": "Identifier of the catalog in which the asset and revision will be created.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "asset_id",
+            "in": "path",
+            "description": "Client-generated Lightroom unique identifier for the new asset.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "revision_id",
+            "in": "path",
+            "description": "Client-generated Lightroom unique identifier for the new revision.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Initial asset metadata and import information.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "subtype": {
+                  "type": "string",
+                  "enum": [ "image", "video" ]
+                },
+                "payload": {
+                  "type": "object",
+                  "properties": {
+                    "userCreated": {
+                      "$ref": "#/definitions/iso8601DateTime"
+                    },
+                    "userUpdated": {
+                      "$ref": "#/definitions/iso8601DateTime"
+                    },
+                    "captureDate": {
+                      "$ref": "#/definitions/iso8601DateTime"
+                    },
+                    "importSource": {
+                      "type": "object",
+                      "properties": {
+                        "fileName": {
+                          "type": "string",
+                          "required": true
+                        },
+                        "contentType": {
+                          "type": "string",
+                          "required": true
+                        },
+                        "fileSize": {
+                          "type": "integer",
+                          "required": true,
+                          "description": "File size in bytes."
+                        },
+                        "originalWidth": {
+                          "type": "integer",
+                          "required": true
+                        },
+                        "originalHeight": {
+                          "type": "integer",
+                          "required": true
+                        },
+                        "sha256": {
+                          "type": "string",
+                          "required": true,
+                          "description": "A SHA-256 signature calculated over the entire file, represented as a 64-character hexadecimal string."
+                        },
+                        "importedOnDevice": {
+                          "type": "string",
+                          "required": true,
+                          "description": "Name of the device that imported the image."
+                        },
+                        "importedBy": {
+                          "type": "string",
+                          "required": true,
+                          "description": "Account ID of the user who imported the asset."
+                        },
+                        "importTimestamp": {
+                          "$ref": "#/definitions/iso8601DateTime",
+                          "required": true
+                        }
+                      }
+                    },
+                    "develop": {
+                      "type": "object",
+                      "properties": {
+                        "croppedWidth": {
+                          "type": "integer",
+                          "required": true,
+                          "description": "Cropped width of the asset; same as the original width if there is no crop applied."
+                        },
+                        "croppedHeight": {
+                          "type": "integer",
+                          "required": true,
+                          "description": "Cropped height of the asset; same as the original height if there is no crop applied."
+                        }
+                      }
+                    }
+                  }
+                },
+                "created": {
+                  "$ref": "#/definitions/iso8601DateTime"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      }
+    },
+    "/catalogs/{catalog_id}/assets/{asset_id}/revisions/{revision_id}/xmp/develop": {
+      "put": {
+        "tags": [
+          "assets"
+        ],
+        "summary": "Create external XMP develop settings",
+        "description": "Create and upload an external XMP develop settings file for the asset.",
+        "operationId": "createAssetExternalXMP",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "catalog_id",
+            "in": "path",
+            "description": "Identifier of the catalog in which the asset and revision will be created.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "asset_id",
+            "in": "path",
+            "description": "Identifier of the asset to which the XMP settings are associated.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "revision_id",
+            "in": "path",
+            "description": "Identifier of the revision to which the XMP settings are associated.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Content-Length",
+            "in": "header",
+            "description": "Length in bytes of the content, with a supported maximum size of 200MB.",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "Content type. Must be application/rdf+xml.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Generate-Renditions",
+            "in": "header",
+            "description": "Comma-delimted list of asset rendition types to generate asynchronously.",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "40": {
+            "description": "Bad request"
+          }
+        }
+      }
+    },
+    "/catalogs/{catalog_id}/assets/{asset_id}/revisions/{revision_id}/master": {
+      "put": {
+        "tags": [
+          "assets"
+        ],
+        "summary": "Create an asset master file",
+        "description": "Create and upload a master file for the asset. Up to 200 MB may be uploaded per invocation, and larger files may be uploaded by calling this API multiple times with Content-Range headers for each part. When all parts are received the upload will be consolidated asynchronously. All partial uploads should include optional rendition type parameters to ensure the last part received has the necessary options for request post-processing.",
+        "operationId": "createAssetMaster",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "catalog_id",
+            "in": "path",
+            "description": "Identifier of the catalog in which the asset and revision will be created.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "asset_id",
+            "in": "path",
+            "description": "Identifier of the asset to which the XMP settings are associated.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "revision_id",
+            "in": "path",
+            "description": "Identifier of the revision to which the XMP settings are associated.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Content-Length",
+            "in": "header",
+            "description": "Length in bytes of the content.",
+            "type": "integer"
+          },
+          {
+            "name": "Content-Range",
+            "in": "header",
+            "description": "Byte range for the request, including first and last bytes and entity length as defined in RFC 2616.",
+            "type": "string"
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "Content type. For jpeg assets, the only allowed type is 'image/jpeg'. For camera raw assets the type is 'application/octet-stream'.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Generate-Renditions",
+            "in": "header",
+            "description": "Comma-delimited list of asset rendition types to generate asynchronously. For assets with subtype 'image' valid types are: 'all' (always generates '2048', '1280', '640' and 'thumbnail2x', also 'panorama' for images with a longest edge longer than 2048px and an aspect ratio larger than 2:1), 'none' (no renditions), 'fullsize' (rendition same size as cropped and rotated master), 'panorama' (8192px long edge, 1536px short edge, 2049px minimum long edge), '2048' (preview), '1280', '640', and 'thumbnail2x' (standard thumbnail 320px).",
+            "type": "string"
+          },
+          {
+            "name": "X-Read-Meta",
+            "in": "header",
+            "description": "Comma-delimited list of metadata properties. Valid properties include 'all', 'none', 'caption', 'location', 'geometry' and 'xmp'. For assets with subtype 'image' the default value is 'xmp,caption,location'. To suppress extraction of any property, prefix it with '-'. For example '-location,-caption' will cause 'xmp' to be extracted, but not 'location' or 'caption'.",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "40": {
+            "description": "Bad request"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "iso8601DateTime": {
+      "description": "datetime in ISO-8601 format (e.g. 2016-01-15T16:18:00-05:00) with both date and time required, including seconds, but timezone optional. Also flexible on allowing some nonstandard timezone formats like 2016-01-15T12:10:32+0000 or 2016-01-15T12:10:32-05.",
+      "type": "string",
+      "pattern": "^([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]|[0-9][1-9][0-9]{2}|[1-9][0-9]{3})-((02-([1-2][0-9]|0[1-9]))|((01|03|05|07|08|10|12)-(3[0-1]|[1-2][0-9]|0[1-9]))|((04|06|09|11)-(30|[1-2][0-9]|0[1-9])))T(2[0-3]|[0-1][0-9]):[0-5][0-9]:[0-5][0-9](\\.[0-9]+)?(((\\+|-)(2[0-3]|[0-1][0-9])(:?[0-5][0-9])?)|Z)?$"
+    },
+    "rfc3339DateTime": {
+      "description": "datetime in RFC-3339 format (subset of ISO-8601). The datetime must have date and time, including seconds, and a timezone designation in standard format. Some valid examples are 2016-01-15T09:23:34-05:00 and 2016-01-15T09:23:34.162Z.",
+      "type": "string",
+      "pattern": "^([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]|[0-9][1-9][0-9]{2}|[1-9][0-9]{3})-((02-([1-2][0-9]|0[1-9]))|((01|03|05|07|08|10|12)-(3[0-1]|[1-2][0-9]|0[1-9]))|((04|06|09|11)-(30|[1-2][0-9]|0[1-9])))T(2[0-3]|[0-1][0-9]):[0-5][0-9]:[0-5][0-9](\\.[0-9]+)?(((\\+|-)(2[0-3]|[0-1][0-9]):[0-5][0-9])|Z)$"
+    },
+    "utcDateTime": {
+      "description": "datetime in RFC-3339 format (subset of ISO-8601) requiring a UTC time ending with Z (so -00:00 or +00-00 suffix NOT allowed). The datetime must have date and time, including seconds, e.g. 2016-01-15T09:23:34Z.",
+      "type": "string",
+      "pattern": "^([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]|[0-9][1-9][0-9]{2}|[1-9][0-9]{3})-((02-([1-2][0-9]|0[1-9]))|((01|03|05|07|08|10|12)-(3[0-1]|[1-2][0-9]|0[1-9]))|((04|06|09|11)-(30|[1-2][0-9]|0[1-9])))T(2[0-3]|[0-1][0-9]):[0-5][0-9]:[0-5][0-9](\\.[0-9]+)?Z$"
+    },
+    "xmpDateTime": {
+      "description": "date time in ISO-8601 format with timezone, seconds, time, day and month optional and also allowing some nonstandard timezone formats. Some examples: 2016-01-15T12:10Z, 2016-01-15T12:10:32, 2016-01-15, 2016-04, 2017, 2016-01-15T12:10:32+0000, 2016-01-15T12:10:32-05",
+      "type": "string",
+      "pattern": "^([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]|[0-9][1-9][0-9]{2}|[1-9][0-9]{3})(-(((02-([1-2][0-9]|0[1-9]))|((01|03|05|07|08|10|12)-(3[0-1]|[1-2][0-9]|0[1-9]))|((04|06|09|11)-(30|[1-2][0-9]|0[1-9])))(T(2[0-3]|[0-1][0-9]):[0-5][0-9](:[0-5][0-9](\\.[0-9]+)?)?(((\\+|-)(2[0-3]|[0-1][0-9])(:?[0-5][0-9])?)|Z)?)?|(0[1-9]|1[0-2])))?$"
+    },
+    "fileDimension": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 65000
+    },
+    "max1024CharacterString": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024
+    },
+    "lex64SortOrderString": {
+      "type": "string",
+      "pattern": "^[-_0-9a-zA-Z]*[_0-9a-zA-Z]$",
+      "minLength": 1,
+      "maxLength": 1024
+    },
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "uuid": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{32}$"
+    },
+    "neg100To100Integer": {
+      "type": "integer",
+      "minimum": -100,
+      "maximum": 100
+    },
+    "zeroTo100Integer": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "oneTo100Integer": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100
+    },
+    "majorMinorOptionalPatchVersionString": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+(\\.[0-9]+)?$"
+    },
+    "positiveIntegerString": {
+      "type": "string",
+      "pattern": "^[0-9]+$"
+    },
+    "nonNegativeRatio": {
+      "description": "First array element represents positive or 0 numerator, max 2^53. Optional second array element is positive, non-zero denominator, max 2^53. Denominator assumed to be 1 when omitted",
+      "type": "array",
+      "items": [
+        {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740992
+        }
+      ],
+      "additionalItems": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 9007199254740992
+      },
+      "minItems": 1,
+      "maxItems": 2
+    },
+    "percentage": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "rational": {
+      "description": "Representation of floating point number from xmp as a fraction of two integers, with the first the numerator and the second the denominator.",
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "type": "integer"
+      }
+    },
+    "stringBag": {
+      "description": "Representation of an unordered list of strings from xmp as a table with the strings as keys and boolean true as the values.",
+      "type": "object",
+      "patternProperties": {
+        ".+": {
+          "enum": [
+            true
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "stringList": {
+      "description": "Representation of an ordered list of strings from xmp as an array.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about Lightroom",
+    "url": "https://www.adobe.com/products/photoshop-lightroom.html"
+  }
+}
