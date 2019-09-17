@@ -4,7 +4,7 @@ Adobe Photoshop Lightroom stores user **assets**, with their associated metadata
 
 ## Accessing Lightroom Content
 
-Lightroom content for a Creative Cloud customer is managed through a set of RESTful APIs. These APIs are available only entitled clients that have authenticated the customer, and the customer has given their express permission for the client to act on their behalf.
+Lightroom content for a Creative Cloud customer is managed through a set of RESTful APIs. These APIs are available only to entitled clients that have authenticated the customer, and the customer has given their express permission for the client to act on their behalf.
 
 ## Registering as an Adobe Developer
 
