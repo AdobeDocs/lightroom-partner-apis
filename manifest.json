@@ -16,29 +16,29 @@
 		{
 		  "importedFileName": "01-gettingstarted",
 		  "pages": [],
-		  "path": "lightroom-partner-api/docs/01-getting-started.md",
+		  "path": "AdobeDocs/lightroom-partner-apis/master/docs/01-getting-started.md",
 		  "title": "Getting started with the Adobe Lightroom Partner API"
 		},
 		{
 		  "importedFileName": "02-api-integration",
 		  "pages": [],
-		  "path": "lightroom-partner-api/docs/getting-started/02-api-integration.md",
+		  "path": "AdobeDocs/lightroom-partner-apis/master/docs/getting-started/02-api-integration.md",
 		  "title": "Integration with Lightroom Partner APIs"
 		},
 		{
 		  "importedFileName": "03-oauth",
 		  "pages": [],
-		  "path": "lightroom-partner-api/docs/getting-started/03-oauth.md",
+		  "path": "AdobeDocs/lightroom-partner-apis/master/docs/getting-started/03-oauth.md",
 		  "title": "OAuth flow for Lightroom Partner APIs"
 		},
 	   {
 		  "importedFileName": "04-upload-workflow",
 		  "pages": [],
-		  "path": "lightroom-partner-api/docs/getting-started/04-upload-workflow.md",
+		  "path": "AdobeDocs/lightroom-partner-apis/master/docs/getting-started/04-upload-workflow.md",
 		  "title": "Ligthroom Partner APIs for upload workflow"
 		}
 	],
-	 "path": "lightroom-partner-api/docs/01-getting-started.md",
+	 "path": "AdobeDocs/lightroom-partner-apis/master/docs/01-getting-started.md",
      "title": "Getting started with the Adobe Lightroom Partner API"
 	 },
 	 {
@@ -47,11 +47,11 @@
     {
       "importedFileName": "09-api-summary",
       "pages": [],
-      "path": "lightroom-partner-api/docs/05-api-summary.md",
+      "path": "AdobeDocs/lightroom-partner-apis/master/docs/05-api-summary.md",
       "title": "Adobe Lightroom Partner API Reference"
     }
 	],
-	"path": "lightroom-partner-api/docs/01-getting-started.md",
+	"path": "AdobeDocs/lightroom-partner-apis/master/docs/01-getting-started.md",
 	"title": "Getting started with the Adobe Lightroom Partner API"
 	},
 	{
@@ -60,11 +60,11 @@
 		{
 		  "importedFileName": "15-faq",
 		  "pages": [],
-		  "path": "lightroom-partner-api/docs/15-faq.md",
+		  "path": "AdobeDocs/lightroom-partner-apis/master/docs/15-faq.md",
 		  "title": "FAQ"
 		}
 	],
-	"path": "lightroom-partner-api/docs/15-faq.md",
+	"path": "AdobeDocs/lightroom-partner-apis/master/docs/15-faq.md",
 	"title": "FAQ"
 	}
 ]
