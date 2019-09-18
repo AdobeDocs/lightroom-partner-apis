@@ -8,37 +8,31 @@
 "meta_description": "Adobe Lightroom documentation",
 "publish_date": "08/23/2018",
 "show_edit_github_banner": false,
-"base_path": "https://raw.githubusercontent.com",
+"base_path": "https://raw.githubusercontent.com/AdobeDocs/lightroom-partner-apis/master",
 "pages": [
 {
 "importedFileName": "index",
 "pages": [
 		{
-		  "importedFileName": "01-gettingstarted",
-		  "pages": [],
-		  "path": "AdobeDocs/lightroom-partner-apis/master/docs/01-getting-started.md",
-		  "title": "Getting started with the Adobe Lightroom Partner API"
-		},
-		{
 		  "importedFileName": "02-api-integration",
 		  "pages": [],
-		  "path": "AdobeDocs/lightroom-partner-apis/master/docs/getting-started/02-api-integration.md",
+		  "path": "docs/getting-started/02-api-integration.md",
 		  "title": "Integration with Lightroom Partner APIs"
 		},
 		{
 		  "importedFileName": "03-oauth",
 		  "pages": [],
-		  "path": "AdobeDocs/lightroom-partner-apis/master/docs/getting-started/03-oauth.md",
+		  "path": "docs/getting-started/03-oauth.md",
 		  "title": "OAuth flow for Lightroom Partner APIs"
 		},
 	   {
 		  "importedFileName": "04-upload-workflow",
 		  "pages": [],
-		  "path": "AdobeDocs/lightroom-partner-apis/master/docs/getting-started/04-upload-workflow.md",
+		  "path": "docs/getting-started/04-upload-workflow.md",
 		  "title": "Ligthroom Partner APIs for upload workflow"
 		}
 	],
-	 "path": "AdobeDocs/lightroom-partner-apis/master/docs/01-getting-started.md",
+	 "path": "docs/01-getting-started.md",
      "title": "Getting started with the Adobe Lightroom Partner API"
 	 },
 	{
@@ -47,11 +41,11 @@
 		{
 		  "importedFileName": "15-faq",
 		  "pages": [],
-		  "path": "AdobeDocs/lightroom-partner-apis/master/docs/15-faq.md",
+		  "path": "docs/15-faq.md",
 		  "title": "FAQ"
 		}
 	],
-	"path": "AdobeDocs/lightroom-partner-apis/master/docs/15-faq.md",
+	"path": "docs/15-faq.md",
 	"title": "FAQ"
 	}
 ]
