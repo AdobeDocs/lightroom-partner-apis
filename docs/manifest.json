@@ -30,23 +30,16 @@
           "pages": [],
           "path": "AdobeDocs/lightroom-partner-apis/master/getting-started/04-upload-workflow.md",
           "title": "Ligthroom Partner APIs for upload workflow"
+        },
+        {
+          "importedFileName": "06-api-calls.md",
+          "pages": [],
+          "path": "AdobeDocs/lightroom-partner-apis/master/api/06-api-calls.md",
+          "title": "Ligthroom Partner APIs calls"
         }
       ],
       "path":"AdobeDocs/lightroom-partner-apis/master/docs/01-getting-started.md",
       "title":"Getting started"
-    },
-    {
-      "importedFileName": "05-api-summary",
-      "pages": [
-        {
-          "importedFileName": "05-api-summary",
-          "pages": [],
-          "path": "AdobeDocs/lightroom-partner-apis/master/05-api-summary.md",
-          "title": "Adobe Lightroom Partner API Reference"
-        }
-      ],
-      "path":"AdobeDocs/lightroom-partner-apis/master/docs/05-api-summary.md",
-      "title":"API reference"
     },
     {
       "importedFileName": "15-faq",
