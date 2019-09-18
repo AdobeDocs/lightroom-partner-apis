@@ -8,13 +8,13 @@
   "meta_description": "Lightroom Partner APIs Frequently Asked Questions",
   "publish_date": "09/10/2019",
   "show_edit_github_banner": false,
-  "base_path": "https://raw.githubusercontent.com",
+  "base_path": "https://raw.githubusercontent.com/AdobeDocs/lightroom-partner-apis/stage",
   "pages":
     [ 
       {
           "importedFileName": "lightroom-partner-apis-faq",
           "pages": [],
-          "path": "AdobeDocs/lightroom-partner-apis/stage/supplemental/lightroom-partners-business-faq.md",
+          "path": "supplemental/lightroom-partners-faq.md",
           "title": "Lightroom Partners API Frequently Asked Questions"
       }
     ]
