@@ -42,19 +42,6 @@
 			"title": "Getting started with the Adobe Lightroom Partner API"
 		},
 		{
-			"importedFileName": "09-api-summary",
-			"pages": [
-				{
-					"importedFileName": "09-api-summary",
-					"pages": [],
-					"path": "AdobeDocs/lightroom-partner-apis/stage/docs/05-api-summary.md",
-					"title": "Adobe Lightroom Partner API Reference"
-				}
-			],
-			"path": "AdobeDocs/lightroom-partner-apis/stage/docs/01-getting-started.md",
-			"title": "Getting started with the Adobe Lightroom Partner API"
-		},
-		{
 			"importedFileName": "15-faq",
 			"pages": [
 				{

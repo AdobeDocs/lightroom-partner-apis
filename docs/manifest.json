@@ -36,19 +36,6 @@
       "title":"Getting started"
     },
     {
-      "importedFileName": "05-api-summary",
-      "pages": [
-        {
-          "importedFileName": "05-api-summary",
-          "pages": [],
-          "path": "lightroom-partner-api/docs/05-api-summary.md",
-          "title": "Adobe Lightroom Partner API Reference"
-        }
-      ],
-      "path":"AdobeDocs/lightroom-partner-apis/stage/docs/05-api-summary.md",
-      "title":"API reference"
-    },
-    {
       "importedFileName": "15-faq",
       "pages": [
         {
