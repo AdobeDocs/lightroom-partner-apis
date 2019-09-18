@@ -13,8 +13,3 @@ _Either on GitHub or www.adobe.io_
 ## Brief description of issue
 _Example: When I click the link above, I get a 404 error_
 _Example: The Content/License API tells me I am missing a required parameter, but I'm following the example listed at (url)_
-
-## Proposed fix (if applicable)
-
-
-If you have a proposed solution, please submit a pull request! See the [contributing guidelines](CONTRIBUTING.md), and thanks for your contribution :)
