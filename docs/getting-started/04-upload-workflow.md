@@ -27,32 +27,47 @@ GET /{api_version}/catalogs/{catalog_id}/albums?embed={string}&name_after={name_
 PUT /{api_version}/catalogs/{catalog_id}/albums/{album_id}/assets?album_asset_id={album_asset_id}&order={order}&cover={cover}
 
 
-#### Uplopad workflow error scenarios
-
-<span style="color:red">TODO write about possible errors and expected partner side client behavior.</span>
+#### Uplopad workflow error scenarios TODO Work in progress 
 
 
 1. User has doesn't have Lightroom account. This can happen if the user has login for an adobe product different from lightroom. 
 
+####Symptom : 
 When a call is made to GET /{api_version}/accounts/00000000000000000000000000000000
-
 Expect a 404 response. 
 
-
-2. User has lightroom account but no lightroom catalog.
-
-When the endpoint GET /{api_version}/accounts/00000000000000000000000000000000 is invoked, the entitlement section of the response json will be empty. 
-
-Recommended
+####Expected Partner Application Behavior :
+Do not attempt any other Lightroom apis. 
 
 
-3. API request received with bad API Key/Client id. 
+2. User has lightroom account but with no valid subscription. 
+
+####Symptom : 
+When a call is made to GET /{api_version}/accounts/00000000000000000000000000000000
+Expect a 200 response but response body element entitlement.status is not "subscriber". 
+
+####Expected Partner Application Behavior :
+Do not attempt any other Lightroom apis. 
+
+3. User has lightroom account but no lightroom catalog.
+
+####Symptom : 
+When a call is made to GET /{api_version}/accounts/00000000000000000000000000000000
+Expect a 200 response but response body element entitlement.status is "subscriber".
+Next when a call is made to lookup the user's catalog GET /{api_version}/catalogs/00000000000000000000000000000000
+Expect a 404 response.
+
+####Expected Partner Application Behavior :
+Do not attempt any other Lightroom apis. 
 
 
-4. API request received with expired token.
+4. User logged in but account has expired quota.
 
 
-5. User logged in but account has expired quota.
+5. API request received with bad API Key/Client id. 
 
 
-6. ??
+6. API request received with expired token.
+
+
+7. ??
