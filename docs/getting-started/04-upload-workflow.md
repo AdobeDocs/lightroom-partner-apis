@@ -32,10 +32,18 @@ PUT /{api_version}/catalogs/{catalog_id}/albums/{album_id}/assets?album_asset_id
 <span style="color:red">TODO write about possible errors and expected partner side client behavior.</span>
 
 
-1. User doesn't have Lightroom account
+1. User has doesn't have Lightroom account. This can happen if the user has login for an adobe product different from lightroom. 
+
+When a call is made to GET /{api_version}/accounts/00000000000000000000000000000000
+
+Expect a 404 response. 
 
 
 2. User has lightroom account but no lightroom catalog.
+
+When the endpoint GET /{api_version}/accounts/00000000000000000000000000000000 is invoked, the entitlement section of the response json will be empty. 
+
+Recommended
 
 
 3. API request received with bad API Key/Client id. 
