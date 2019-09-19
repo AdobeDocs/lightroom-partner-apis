@@ -37,7 +37,7 @@ When a call is made to GET /{api_version}/accounts/00000000000000000000000000000
 Expect a 404 response. 
 
 ####Expected Partner Application Behavior :
-Do not attempt any other Lightroom apis. 
+Do not attempt any other Lightroom Partner APIs. 
 
 
 2. User has lightroom account but with no valid subscription. 
@@ -47,7 +47,7 @@ When a call is made to GET /{api_version}/accounts/00000000000000000000000000000
 Expect a 200 response but response body element entitlement.status is not "subscriber". 
 
 ####Expected Partner Application Behavior :
-Do not attempt any other Lightroom apis. 
+Do not attempt any other Lightroom Partner APIs. 
 
 3. User has lightroom account but no lightroom catalog.
 
@@ -58,10 +58,10 @@ Next when a call is made to lookup the user's catalog GET /{api_version}/catalog
 Expect a 404 response.
 
 ####Expected Partner Application Behavior :
-Do not attempt any other Lightroom apis. 
+Do not attempt any other Lightroom Partner APIs. 
 
 
-4. User logged in but account has expired quota.
+4. User logged in but account has exceeded quota.
 
 
 5. API request received with bad API Key/Client id. 
