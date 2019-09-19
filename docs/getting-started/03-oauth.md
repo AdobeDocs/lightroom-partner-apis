@@ -6,6 +6,8 @@
 
 [OAuth (auth code) integration](https://www.adobe.io/authentication/auth-methods.html#!AdobeDocs/adobeio-auth/master/AuthenticationOverview/OAuthIntegration.md)
 
+[IMS token usage](https://wiki.corp.adobe.com/display/~smcevoy/Getting+Started%3A+IMS+Authorization+Code+Grant+Type)
+
 ### API  documentation for Lightroom Identity Management System APIS
 
 [Authentication APIs](https://www.adobe.io/authentication/auth-methods.html#!AdobeDocs/adobeio-auth/master/Resources/IMS.md)
