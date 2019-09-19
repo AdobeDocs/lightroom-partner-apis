@@ -8,6 +8,8 @@
 
 [IMS token usage](https://wiki.corp.adobe.com/display/~smcevoy/Getting+Started%3A+IMS+Authorization+Code+Grant+Type)
 
+[IMS javascript library](https://wiki.corp.adobe.com/display/~smcevoy/Getting+Started%3A+JavaScript+Clients+Using+imslib.js+and+React)
+
 ### API  documentation for Lightroom Identity Management System APIS
 
 [Authentication APIs](https://www.adobe.io/authentication/auth-methods.html#!AdobeDocs/adobeio-auth/master/Resources/IMS.md)
