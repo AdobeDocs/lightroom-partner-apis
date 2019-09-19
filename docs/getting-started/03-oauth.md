@@ -1,6 +1,8 @@
 # OAuth integration
 
-![OAUTH flow diagram](../images/OAuthFlowDiagram.png)
+The OAuth integration is supported in a consistent way for adobe products. It is provided by the Adobe Identity Management System (IMS). 
+
+![OAUTH flow diagram for Lightroom Partner Integration](../images/OAuthFlowDiagram.png)
 
 ### Basic documentation for OAuth
 
@@ -13,7 +15,7 @@
 [IMS javascript library](https://wiki.corp.adobe.com/display/~smcevoy/Getting+Started%3A+JavaScript+Clients+Using+imslib.js+and+React)
 
 
-### API  documentation for Lightroom Identity Management System APIS
+### API  documentation for Adobe Identity Management System APIS
 
 [Authentication api to get authorization code](https://wiki.corp.adobe.com/display/ims/IMS+authorize+entry+point)
 
@@ -25,12 +27,16 @@ Use grant_type=authorization_code or grant_type=refresh_token only depending on 
 
 [Exchange refresh token for a new access token](https://wiki.corp.adobe.com/display/ims/IMS+API+-+token)
 
-[Get new refresh token]()????TODO 
+The refresh token expires in 14 days. Before expiration of refresh token, a new access token and refresh token can be obtained using the existing refresh token. This can be used to make sure that the user does not need to login often.  
+
+[Get new refresh token](https://wiki.corp.adobe.com/display/ims/IMS+API+-+token) 
 
 #### Further documentation is available below
 
+[Authorization APIs](https://www.adobe.io/authentication/auth-methods.html#!AdobeDocs/adobeio-auth/master/OAuth/OAuth.md)
+
 [Authentication APIs](https://www.adobe.io/authentication/auth-methods.html#!AdobeDocs/adobeio-auth/master/Resources/IMS.md)
 
-[Authorization APIs](https://www.adobe.io/authentication/auth-methods.html#!AdobeDocs/adobeio-auth/master/OAuth/OAuth.md)
+
 
 
