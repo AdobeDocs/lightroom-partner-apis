@@ -6,7 +6,7 @@
 
 3. Generating access token and refresh token [Authorization APIs](https://www.adobe.io/authentication/auth-methods.html#!AdobeDocs/adobeio-auth/master/OAuth/OAuth.md)
 
-4. Call Lightroom Partner APIs using access token. Refer to [API docs](../api/LightroomPartnerAPIsSpec.json) for api usage details.
+4. Call Lightroom Partner APIs using access token. Refer to [API docs](https://www.stage.adobe.io/apis/creativecloud/lightroom/apidocs.html) for api usage details.
 
 
 
