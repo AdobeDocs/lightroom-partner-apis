@@ -8,11 +8,11 @@
   "meta_description": "Adobe Lightroom Partner API documentation",
   "publish_date": "08/23/2018",
   "show_edit_github_banner": false,
-  "base_path": "https://raw.githubusercontent.com/AdobeDocs/lightroom-partner-apis/master/docs",
+  "base_path": "https://raw.githubusercontent.com/AdobeDocs/lightroom-partner-apis/master",
   "pages": [
     {
       "pages": [],
-      "path": "api/LightroomPartnerAPIsSpec.json",
+      "path": "docs/api/LightroomPartnerAPIsSpec.json",
       "title": "Lightroom Partner APIs"
     }
   ]
