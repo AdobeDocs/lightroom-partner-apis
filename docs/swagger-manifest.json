@@ -12,7 +12,7 @@
   "pages": [
     {
       "pages": [],
-      "path": "api/LightroomPartnerAPIsSpec.json",
+      "path": "docs/api/LightroomPartnerAPIsSpec.json",
       "title": "Lightroom Partner APIs"
     }
   ]
