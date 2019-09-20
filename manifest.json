@@ -11,6 +11,11 @@
 	"base_path": "https://raw.githubusercontent.com/AdobeDocs/lightroom-partner-apis/stage",
 	"pages": [
 		{
+			"pages": [],
+			"path": "README.md",
+			"title": "Overview"
+		},
+		{
 			"importedFileName": "index",
 			"pages": [
 				{
@@ -36,17 +41,29 @@
 			"title": "Getting started with the Adobe Lightroom Partner API"
 		},
 		{
-			"importedFileName": "15-faq",
 			"pages": [
 				{
-					"importedFileName": "15-faq",
 					"pages": [],
-					"path": "docs/15-faq.md",
-					"title": "FAQ"
+					"path": "usage/calling.md",
+					"title": "Calling an API"
+				},
+				{
+					"pages": [],
+					"path": "usage/primitive.md",
+					"title": "Primitive Data Types"
+				},
+				{
+					"pages": [],
+					"path": "usage/generic.md",
+					"title": "Common Data Model"
+				},
+				{
+					"pages": [],
+					"path": "usage/links.md",
+					"title": "Links and Pagination"
 				}
 			],
-			"path": "docs/15-faq.md",
-			"title": "FAQ"
+			"title": "Using the Lightroom APIs"
 		}
 	]
 }
