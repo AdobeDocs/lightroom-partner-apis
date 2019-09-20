@@ -1,9 +1,8 @@
 # Common JSON Data Model
 
 The data models for all JSON content share many common elements. Long strings, unique identifiers, and URLs have been truncated here for legibility.
-</p>
 
-<pre>
+```
 {
     "base": "https://lr.adobe.io/v2/catalogs/9479135e/",
     "id": "a3c679e3",
@@ -24,7 +23,7 @@ The data models for all JSON content share many common elements. Long strings, u
         // additional links custom for each type
     }
 }
-</pre>
+```
 
 Unless otherwise noted, all entries at the top level are constructed and provided by the server and can not be modified by clients.
 
