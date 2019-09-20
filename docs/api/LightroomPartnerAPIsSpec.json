@@ -33,7 +33,11 @@
     },
     {
       "name": "assets",
-      "description": "Information for an individual asset, typically an image or video."
+      "description": "Information for assets, typically images or videos."
+    },
+    {
+      "name": "albums",
+      "description": "Information for albums, which contain references to zero or more assets."
     }
   ],
   "paths": {
@@ -76,29 +80,11 @@
               }
             }
           },
-          "401": {
-            "description": "The request has not been applied because it lacks valid authentication credentials for the target resource."
-          },
           "403": {
-            "description": "The requester is not authorized to access the resource."
-          },
-          "405": {
-            "description": "Client sent a request using a HTTP method that the server does not support."
-          },
-          "406": {
-            "description": "Unacceptable content type. Client sent an Accept header for a content type which does not exist on the server."
-          },
-          "500": {
-            "description": "This is an indicator of a server-side error."
-          },
-          "502": {
-            "description": "This is an indicator that the back-end service did not send a valid response."
+            "$ref": "#/components/responses/ForbiddenKey"
           },
           "503": {
-            "description": "This is an indicator of a potential server overload."
-          },
-          "504": {
-            "description": "This is an indicator that the back-end service did not complete a response within an allowed time period."
+            "$ref": "#/components/responses/ServiceUnavailable"
           }
         }
       }
@@ -122,7 +108,8 @@
               "type": "object",
               "properties": {
                 "base": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "Base URL that can be prepended to the 'href' values in the 'links' to produce fully qualified URLs for future queries."
                 },
                 "id": {
                   "$ref": "#/definitions/uuid"
@@ -260,6 +247,21 @@
                 }
               }
             }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestGUID"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenKey"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
           }
         }
       }
@@ -283,7 +285,8 @@
               "type": "object",
               "properties": {
                 "base": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "Base URL that can be prepended to the 'href' values in the 'links' to produce fully qualified URLs for future queries."
                 },
                 "id": {
                   "$ref": "#/definitions/uuid"
@@ -490,6 +493,27 @@
                 }
               }
             }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestGUID"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403 K": {
+            "$ref": "#/components/responses/ForbiddenKey"
+          },
+          "403 A": {
+            "$ref": "#/components/responses/ForbiddenAccount"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
           }
         }
       }
@@ -625,7 +649,37 @@
             "description": "Created"
           },
           "400": {
-            "description": "Bad request"
+            "$ref": "#/components/responses/BadRequestGUID"
+          },
+          "400 J": {
+            "$ref": "#/components/responses/BadRequestJSON"
+          },
+          "400 S": {
+            "$ref": "#/components/responses/BadRequestSubtype"
+          },
+          "400 P": {
+            "$ref": "#/components/responses/BadRequestPayload"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403 K": {
+            "$ref": "#/components/responses/ForbiddenKey"
+          },
+          "403 E": {
+            "$ref": "#/components/responses/ForbiddenExists"
+          },
+          "403 Q": {
+            "$ref": "#/components/responses/ForbiddenQuota"
+          },
+          "412": {
+            "$ref": "#/components/responses/PreconditionFailed"
+          },
+          "415": {
+            "$ref": "#/components/responses/UnsupportedMediaType"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
           }
         }
       }
@@ -688,8 +742,23 @@
           "201": {
             "description": "Created"
           },
-          "40": {
-            "description": "Bad request"
+          "400": {
+            "$ref": "#/components/responses/BadRequestGUID"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403 K": {
+            "$ref": "#/components/responses/ForbiddenKey"
+          },
+          "413": {
+            "$ref": "#/components/responses/TooLarge"
+          },
+          "415": {
+            "$ref": "#/components/responses/UnsupportedMediaType"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
           }
         }
       }
@@ -763,8 +832,670 @@
           "201": {
             "description": "Created"
           },
-          "40": {
-            "description": "Bad request"
+          "400": {
+            "$ref": "#/components/responses/BadRequestGUID"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403 K": {
+            "$ref": "#/components/responses/ForbiddenKey"
+          },
+          "413": {
+            "$ref": "#/components/responses/TooLarge"
+          },
+          "415": {
+            "$ref": "#/components/responses/UnsupportedMediaType"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        }
+      }
+    },
+    "/catalogs/{catalog_id}/albums/{album_id}": {
+      "put": {
+        "tags": [
+          "albums"
+        ],
+        "summary": "Create album",
+        "description": "Create a new album.",
+        "operationId": "createAlbum",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "catalog_id",
+            "in": "path",
+            "description": "Identifier of the catalog containing the album.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "album_id",
+            "in": "path",
+            "description": "Client-generated Lightroom unique identifier for the new album.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Initial album metadata and information.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "subtype": {
+                  "type": "string",
+                  "enum": [ "project", "project_set" ]
+                },
+                "payload": {
+                  "$ref": "#/definitions/albumPayload"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400 J": {
+            "$ref": "#/components/responses/BadRequestJSON"
+          },
+          "400 P": {
+            "$ref": "#/components/responses/BadRequestPayload"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403 K": {
+            "$ref": "#/components/responses/ForbiddenKey"
+          },
+          "403 E": {
+            "$ref": "#/components/responses/ForbiddenExists"
+          },
+          "415": {
+            "$ref": "#/components/responses/UnsupportedMediaType"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        }
+      }
+    },
+    "/catalogs/{catalog_id}/albums": {
+      "get": {
+        "tags": [
+          "albums"
+        ],
+        "summary": "Retrieve albums",
+        "description": "Retrieve a list of existing albums.",
+        "operationId": "getAlbums",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "catalog_id",
+            "in": "path",
+            "description": "Identifier of the catalog containing the album.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "subtype",
+            "in": "query",
+            "description": "Comma-separated list of subtypes to enumerate. Subtype can be one of 'project' or 'project_set'.",
+            "type": "string"
+          },
+          {
+            "name": "name_after",
+            "in": "query",
+            "description": "UTF-8 string representing the name of the album that should precede the current page of results. In other words, the response will contain result with names greater than the 'name_after' value using standard string ordering relations.",
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of albums to return. Default value is 100. Please note that the response may contain more than 'limit' number of albums returned if multiple albums at the 'limit' boundary have the same name_after.",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "base": {
+                  "type": "string",
+                  "description": "Base URL that can be prepended to the 'href' values in the 'links' to produce fully qualified URLs for future queries."
+                },
+                "resources": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "$ref": "#/definitions/uuid"
+                      },
+                      "created": {
+                        "$ref": "#/definitions/iso8601DateTime"
+                      },
+                      "updated": {
+                        "$ref": "#/definitions/iso8601DateTime"
+                      },
+                      "type": {
+                        "type": "string",
+                        "enum": [ "album" ]
+                      },
+                      "subtype": {
+                        "type": "string",
+                        "enum": [ "project", "project_set" ]
+                      },
+                      "payload": {
+                        "$ref": "#/definitions/albumPayload"
+                      },
+                      "links": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestGUID"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "403 K": {
+            "$ref": "#/components/responses/ForbiddenKey"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "415": {
+            "$ref": "#/components/responses/UnsupportedMediaType"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        }
+      }
+    },
+    "/catalogs/{catalog_id}/albums/{album_id}/assets": {
+      "put": {
+        "tags": [
+          "albums"
+        ],
+        "summary": "Add assets to album",
+        "description": "Add many assets to the album. Note that there is no default defined order/position for the asset in the album. A payload may be provided with cover, order, and any other data allowed in the data model. If the asset already exists in the album and the cover field is supplied, then no error is thrown but only the cover update is applied and other entries in the payload are completely ignored. In all other cases trying to add an asset to an album that is already in the album will return an error. Limited to 50 assets per API call. Returns http status 201 if at least one asset was added to the album. If all assets could not be added, http status 403 is returned. Individual error codes are returned for each asset in the response body.",
+        "operationId": "addAssetsToAlbum",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "catalog_id",
+            "in": "path",
+            "description": "Identifier of the catalog containing the album.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "album_id",
+            "in": "path",
+            "description": "Identifier of the album.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Album asset metadata and information.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "resources": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "cover": {
+                        "type": "boolean",
+                        "description": "Whether this asset should be used as the album cover."
+                      },
+                      "order": {
+                        "$ref": "#/definitions/lex64SortOrderString"
+                      },
+                      "publishInfo": {
+                        "type": "object",
+                        "properties": {
+                          "servicePayload": {
+                            "type": "string",
+                            "description": "Album asset metadata, unique to the service, encapsulated as a single string with a maximum length of 1024 characters."
+                          },
+                          "remoteId": {
+                            "type": "string",
+                            "description": "Identifier for the album asset that is unique to the publishing service."
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "base": {
+                  "type": "string",
+                  "description": "Base URL that can be prepended to the 'href' values in the 'links' to produce fully qualified URLs for future queries."
+                },
+                "resources": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "$ref": "#/definitions/uuid"
+                      },
+                      "href": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "$ref": "#/definitions/uuid"
+                      },
+                      "http_status": {
+                        "type": "integer"
+                      },
+                      "code": {
+                        "type": "integer"
+                      },
+                      "description": {
+                        "type": "string"
+                      },
+                      "subtype": {
+                        "type": "string"
+                      },
+                      "errors": {
+                          "type": "object",
+                          "properties": {
+                            "asset": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestGUID"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "403 K": {
+            "$ref": "#/components/responses/ForbiddenKey"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "BadRequestGUID": {
+        "description": "The request failed due to an invalid resource identifier.",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "errors": {
+              "type": "object",
+              "properties": {
+                "<param_name>": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": [ "Must be a valid GUID"]
+                  }
+                }
+              }
+            },
+            "code": {
+              "type": "integer",
+              "enum": [ 1005 ]
+            },
+            "description": {
+              "type": "string",
+              "enum": [ "Input Validation Error" ]
+            }
+          }
+        }
+      },
+      "BadRequestJSON": {
+        "description": "The request failed due to an invalid JSON.",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "errors": {
+              "type": "object",
+              "properties": {
+                "body": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": [ "Must be valid JSON"]
+                  }
+                }
+              }
+            },
+            "code": {
+              "type": "integer",
+              "enum": [ 1005 ]
+            },
+            "description": {
+              "type": "string",
+              "enum": [ "Input Validation Error" ]
+            }
+          }
+        }
+      },
+      "BadRequestSubtype": {
+        "description": "The request failed due to an invalid subtype.",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "errors": {
+              "type": "object",
+              "properties": {
+                "<subtype>": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": [ "is invalid"]
+                  }
+                }
+              }
+            },
+            "code": {
+              "type": "integer",
+              "enum": [ 1005 ]
+            },
+            "description": {
+              "type": "string",
+              "enum": [ "Input Validation Error" ]
+            }
+          }
+        }
+      },
+      "BadRequestPayload": {
+        "description": "The request failed due to an invalid payload. The errors hash returned will specify which payload keys had issues and whether the value was invalid, whether the key is required and missing, or whether the key is not allowed.",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "errors": {
+              "type": "object",
+              "properties": {
+                "payload.<key>.<subkey>": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": [ "invalid", "disallowed", "required" ]
+                  }
+                }
+              }
+            },
+            "code": {
+              "type": "integer",
+              "enum": [ 1030 ]
+            },
+            "description": {
+              "type": "string",
+              "enum": [ "Payload Validation Error" ]
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "The request failed due to missing or invalid authentication token."
+      },
+      "ForbiddenKey": {
+        "description": "The request failed because the API Key is not valid.",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "integer",
+              "enum": [ 403003 ]
+            },
+            "description": {
+              "type": "string",
+              "enum": [ "API Key is invalid" ]
+            }
+          }
+        }
+      },
+      "ForbiddenAccount": {
+        "description": "The request failed due to the account state.",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "integer",
+              "enum": [ 4301 ]
+            },
+            "description": {
+              "type": "string",
+              "enum": [ "Access forbidden due to account state of resource owner" ]
+            }
+          }
+        }
+      },
+      "ForbiddenExists": {
+        "description": "The request failed due to the account state.",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "errors": {
+              "type": "object",
+              "properties": {
+                "<resource_type>": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": [ "already exists"]
+                  }
+                }
+              }
+            },
+            "code": {
+              "type": "integer",
+              "enum": [ 1002 ]
+            },
+            "description": {
+              "type": "string",
+              "enum": [ "Resource already exists" ]
+            }
+          }
+        }
+      },
+      "ForbiddenQuota": {
+        "description": "The request failed due to insufficient storage under the entitlement.",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "errors": {
+              "type": "object",
+              "properties": {
+                "<asset_id>": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": [ "quota exceeded"]
+                  }
+                }
+              }
+            },
+            "code": {
+              "type": "integer",
+              "enum": [ 1034 ]
+            },
+            "description": {
+              "type": "string",
+              "enum": [ "Too many assets" ]
+            }
+          }
+        }
+      },
+      "Forbidden": {
+        "description": "The request failed due to insufficient permissions.",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "integer",
+              "enum": [ 4300 ]
+            },
+            "description": {
+              "type": "string",
+              "enum": [ "Access is forbidden" ]
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "The request failed because the resource being requested does not exist.",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "errors": {
+              "type": "object",
+              "properties": {
+                "<resource_type>": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": [ "does not exist"]
+                  }
+                }
+              }
+            },
+            "code": {
+              "type": "integer",
+              "enum": [ 1000 ]
+            },
+            "description": {
+              "type": "string",
+              "enum": [ "Resource not found" ]
+            }
+          }
+        }
+      },
+      "PreconditionFailed": {
+        "description": "The request failed because the master file matching the provided SHA-256 hash already exists. The response body lists the matching master files.",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "base": "string"
+          }
+        }
+      },
+      "TooLarge": {
+        "description": "The request failed because it is too large.",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "integer",
+              "enum": [ 1007 ]
+            },
+            "description": {
+              "type": "string",
+              "enum": [ "The resource is too big" ]
+            }
+          }
+        }
+      },
+      "UnsupportedMediaType": {
+        "description": "The request failed because the Content-Type did not match the request.",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "errors": {
+              "type": "object",
+              "properties": {
+                "content_type": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": [ "should be json", "should match the subtype of the asset" ]
+                  }
+                }
+              }
+            },
+            "code": {
+              "type": "integer",
+              "enum": [ 1003 ]
+            },
+            "description": {
+              "type": "string",
+              "enum": [ "Invalid content type" ]
+            }
+          }
+        }
+      },
+      "ServiceUnavailable": {
+        "description": "The request failed because the service is temporarily unavailable. Try again later.",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "integer",
+              "enum": [ 9999 ]
+            },
+            "description": {
+              "type": "string",
+              "enum": [ "Service is temporarily unavailable" ]
+            }
           }
         }
       }
@@ -894,6 +1625,95 @@
         "type": "string"
       },
       "minItems": 1
+    },
+    "albumPayload": {
+      "type": "object",
+      "properties": {
+        "userCreated": {
+          "$ref": "#/definitions/iso8601DateTime"
+        },
+        "userUpdated": {
+          "$ref": "#/definitions/iso8601DateTime"
+        },
+        "name": {
+          "type": "string"
+        },
+        "cover": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "$ref": "#/definitions/uuid",
+              "description": "Lightroom guid for the asset serving as the cover for the album."
+            }
+          }
+        },
+        "parent": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "$ref": "#/definitions/uuid",
+              "description": "Lightroom guid for the direct parent of the new album."
+            }
+          }
+        },
+        "publishInfo": {
+          "type": "object",
+          "properties": {
+            "version": {
+              "type": "string",
+              "enum": [ 2 ],
+              "description": "The version of the publish information; must be 2."
+            },
+            "serviceId": {
+              "type": "string",
+              "description": "The API Key (client identifier) of the service affiliated with the album."
+            },
+            "servicePayload": {
+              "type": "string",
+              "description": "Album metadata, unique to the service, encapsulated as a single string with a maximum length of 1024 characters."
+            },
+            "remoteId": {
+              "type": "string",
+              "description": "Identifier for the album that is unique to the publishing service."
+            },
+            "created": {
+              "$ref": "#/definitions/iso8601DateTime",
+              "description": "Date when the externally affiliated content (identified by remoteId) was created."
+            },
+            "updated": {
+              "$ref": "#/definitions/iso8601DateTime",
+              "description": "Date when the externally affiliated content identified by remoteId) was last updated."
+            },
+            "deleted": {
+              "type": "boolean",
+              "description": "True if the externally affiliated content (identified by remoteId) was deleted; acts as a tombstone."
+            },
+            "remoteLinks": {
+              "type": "object",
+              "description": "Links to affiliated URLs on the publishing service.",
+              "properties": {
+                "edit": {
+                  "type": "object",
+                  "properties": {
+                    "href": {
+                      "type": "string",
+                      "description": "Fully-formed URL to a location to edit affiliated content (identified by remoteId) on the external service."
+                    }
+                  }
+                },
+                "view": {
+                  "properties": {
+                    "href": {
+                      "type": "string",
+                      "description": "Fully-formed URL to a location to view affiliated content (identified by remoteId) on the external service."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "externalDocs": {
