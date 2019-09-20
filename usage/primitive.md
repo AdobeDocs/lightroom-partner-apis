@@ -49,15 +49,7 @@ A reasonable file or folder path is a UTF-8 string designed to comply with the t
 
 A **ratio** is an array value consisting of one or two integer values (**numerator** and **denominator**) encoded as JSON integers. If omitted, **denominator** is assumed to be 1. There is no requirement that the fractions be reduced. Both the **numerator** and **denominator** must be integers less than or equal to 2^53 (9007199254740992). **Numerator** may be negative but greater than or equal to -2^53. **Denominator** must be greater than zero. (2^53 is the largest integer value that can be stored in a double-precision floating point "C" data type.)
 
-<pre>
-RATIO
-  : '[' numerator [,  " " denominator ] ']' // denominator > 0
- 
-numerator | denominator
-  : -?<digit>+
-</pre>
-
-Note about pixel aspect ratio: Some videos have non-square pixels. The asset width and height in the top-level asset document will be converted to square pixel dimensions. To find out the actual number of non-square-pixels wide and high the master asset is, consult the storageWidth and storageHeight fields of the video section. For example, an NTSC video stored as 720x480 (SAR 3:2) rendered as 640x480 (DAR 4:3) should have width of 640 and height of 480 in the top-level asset document.
+A note about pixel aspect ratio: Some videos have non-square pixels. The asset width and height in the top-level asset document will be converted to square pixel dimensions. To find out the actual number of non-square-pixels wide and high the master asset is, consult the storageWidth and storageHeight fields of the video section. For example, an NTSC video stored as 720x480 (SAR 3:2) rendered as 640x480 (DAR 4:3) should have width of 640 and height of 480 in the top-level asset document.
 
 
 ## lex64 Sort Order Strings
