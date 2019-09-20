@@ -2,11 +2,11 @@
 
 1. Create api integration. [api integration](../02-api-integration.md)
 
-2. Generating authorization code [authentication to generate authorization code](https://www.adobe.io/authentication/auth-methods.html#!AdobeDocs/adobeio-auth/master/Resources/IMS.md). Use scope "lr_partner".
+2. OAuth integration [OAuth flow and tokens](../03-oauth.md).
 
-3. Generating access token and refresh token [Authorization APIs](https://www.adobe.io/authentication/auth-methods.html#!AdobeDocs/adobeio-auth/master/OAuth/OAuth.md)
+3. Image upload workflow [APIs](../04-upload-workflow.md)
 
-4. Call Lightroom Partner APIs using access token. Refer to [API docs](https://www.stage.adobe.io/apis/creativecloud/lightroom/apidocs.html) for api usage details.
+4. Refer detail for APIs [API docs](https://www.stage.adobe.io/apis/creativecloud/lightroom/apidocs.html)
 
 
 
