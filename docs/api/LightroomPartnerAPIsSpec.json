@@ -10,7 +10,6 @@
     }
   },
   "host": "lr.adobe.io",
-  "basePath": "/v2",
   "schemes": [
     "https"
   ],
@@ -41,7 +40,7 @@
     }
   ],
   "paths": {
-    "/version": {
+    "/v2/version": {
       "get": {
         "tags": [
           "version"
@@ -89,7 +88,7 @@
         }
       }
     },
-    "/accounts/00000000000000000000000000000000": {
+    "/v2/accounts/00000000000000000000000000000000": {
       "get": {
         "tags": [
           "accounts"
@@ -100,7 +99,22 @@
         "produces": [
           "application/json"
         ],
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Client ID (API Key) which is subscribed to the Lightroom APIs through console.adobe.io",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer [token] - User access token of an authenticated Lightroom customer",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -121,7 +135,8 @@
                   "$ref": "#/definitions/iso8601DateTime"
                 },
                 "type": {
-                  "type": "string"
+                  "type": "string",
+                  "enum": [ "account" ]
                 },
                 "email": {
                   "type": "string"
@@ -266,7 +281,7 @@
         }
       }
     },
-    "/catalogs/00000000000000000000000000000000": {
+    "/v2/catalogs/00000000000000000000000000000000": {
       "get": {
         "tags": [
           "catalogs"
@@ -277,7 +292,22 @@
         "produces": [
           "application/json"
         ],
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Client ID (API Key) which is subscribed to the Lightroom APIs through console.adobe.io",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer [token] - User access token of an authenticated Lightroom customer",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -298,10 +328,12 @@
                   "$ref": "#/definitions/iso8601DateTime"
                 },
                 "type": {
-                  "type": "string"
+                  "type": "string",
+                  "enum": [ "catalog" ]
                 },
                 "subtype": {
-                  "type": "string"
+                  "type": "string",
+                  "enum": [ "lightroom" ]
                 },
                 "payload": {
                   "$schema": "http://json-schema.org/draft-04/schema#",
@@ -319,6 +351,7 @@
                       "$ref": "#/definitions/max1024CharacterString"
                     },
                     "assetSortOrder": {
+                      "type": "string",
                       "enum": [
                         "captureDateAsc",
                         "captureDateDesc",
@@ -518,7 +551,7 @@
         }
       }
     },
-    "/catalogs/{catalog_id}/assets/{asset_id}/revisions/{revision_id}": {
+    "/v2/catalogs/{catalog_id}/assets/{asset_id}/revisions/{revision_id}": {
       "put": {
         "tags": [
           "assets"
@@ -530,6 +563,20 @@
           "application/json"
         ],
         "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Client ID (API Key) which is subscribed to the Lightroom APIs through console.adobe.io",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer [token] - User access token of an authenticated Lightroom customer",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "catalog_id",
             "in": "path",
@@ -684,7 +731,7 @@
         }
       }
     },
-    "/catalogs/{catalog_id}/assets/{asset_id}/revisions/{revision_id}/xmp/develop": {
+    "/v2/catalogs/{catalog_id}/assets/{asset_id}/revisions/{revision_id}/xmp/develop": {
       "put": {
         "tags": [
           "assets"
@@ -697,23 +744,16 @@
         ],
         "parameters": [
           {
-            "name": "catalog_id",
-            "in": "path",
-            "description": "Identifier of the catalog in which the asset and revision will be created.",
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Client ID (API Key) which is subscribed to the Lightroom APIs through console.adobe.io",
             "required": true,
             "type": "string"
           },
           {
-            "name": "asset_id",
-            "in": "path",
-            "description": "Identifier of the asset to which the XMP settings are associated.",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "revision_id",
-            "in": "path",
-            "description": "Identifier of the revision to which the XMP settings are associated.",
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer [token] - User access token of an authenticated Lightroom customer",
             "required": true,
             "type": "string"
           },
@@ -735,6 +775,27 @@
             "name": "X-Generate-Renditions",
             "in": "header",
             "description": "Comma-delimted list of asset rendition types to generate asynchronously.",
+            "type": "string"
+          },
+          {
+            "name": "catalog_id",
+            "in": "path",
+            "description": "Identifier of the catalog in which the asset and revision will be created.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "asset_id",
+            "in": "path",
+            "description": "Identifier of the asset to which the XMP settings are associated.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "revision_id",
+            "in": "path",
+            "description": "Identifier of the revision to which the XMP settings are associated.",
+            "required": true,
             "type": "string"
           }
         ],
@@ -763,7 +824,7 @@
         }
       }
     },
-    "/catalogs/{catalog_id}/assets/{asset_id}/revisions/{revision_id}/master": {
+    "/v2/catalogs/{catalog_id}/assets/{asset_id}/revisions/{revision_id}/master": {
       "put": {
         "tags": [
           "assets"
@@ -776,23 +837,16 @@
         ],
         "parameters": [
           {
-            "name": "catalog_id",
-            "in": "path",
-            "description": "Identifier of the catalog in which the asset and revision will be created.",
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Client ID (API Key) which is subscribed to the Lightroom APIs through console.adobe.io",
             "required": true,
             "type": "string"
           },
           {
-            "name": "asset_id",
-            "in": "path",
-            "description": "Identifier of the asset to which the XMP settings are associated.",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "revision_id",
-            "in": "path",
-            "description": "Identifier of the revision to which the XMP settings are associated.",
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer [token] - User access token of an authenticated Lightroom customer",
             "required": true,
             "type": "string"
           },
@@ -826,6 +880,27 @@
             "in": "header",
             "description": "Comma-delimited list of metadata properties. Valid properties include 'all', 'none', 'caption', 'location', 'geometry' and 'xmp'. For assets with subtype 'image' the default value is 'xmp,caption,location'. To suppress extraction of any property, prefix it with '-'. For example '-location,-caption' will cause 'xmp' to be extracted, but not 'location' or 'caption'.",
             "type": "string"
+          },
+          {
+            "name": "catalog_id",
+            "in": "path",
+            "description": "Identifier of the catalog in which the asset and revision will be created.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "asset_id",
+            "in": "path",
+            "description": "Identifier of the asset to which the XMP settings are associated.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "revision_id",
+            "in": "path",
+            "description": "Identifier of the revision to which the XMP settings are associated.",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {
@@ -853,7 +928,7 @@
         }
       }
     },
-    "/catalogs/{catalog_id}/albums/{album_id}": {
+    "/v2/catalogs/{catalog_id}/albums/{album_id}": {
       "put": {
         "tags": [
           "albums"
@@ -865,6 +940,20 @@
           "application/json"
         ],
         "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Client ID (API Key) which is subscribed to the Lightroom APIs through console.adobe.io",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer [token] - User access token of an authenticated Lightroom customer",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "catalog_id",
             "in": "path",
@@ -926,7 +1015,7 @@
         }
       }
     },
-    "/catalogs/{catalog_id}/albums": {
+    "/v2/catalogs/{catalog_id}/albums": {
       "get": {
         "tags": [
           "albums"
@@ -938,6 +1027,20 @@
           "application/json"
         ],
         "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Client ID (API Key) which is subscribed to the Lightroom APIs through console.adobe.io",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer [token] - User access token of an authenticated Lightroom customer",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "catalog_id",
             "in": "path",
@@ -1032,7 +1135,7 @@
         }
       }
     },
-    "/catalogs/{catalog_id}/albums/{album_id}/assets": {
+    "/v2/catalogs/{catalog_id}/albums/{album_id}/assets": {
       "put": {
         "tags": [
           "albums"
@@ -1044,6 +1147,20 @@
           "application/json"
         ],
         "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Client ID (API Key) which is subscribed to the Lightroom APIs through console.adobe.io",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer [token] - User access token of an authenticated Lightroom customer",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "catalog_id",
             "in": "path",
