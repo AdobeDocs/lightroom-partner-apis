@@ -325,3 +325,10 @@ NOTE: Refer API Docs for further information about above listed APIs
 |                             |                                         | Example                                                                                               |                                               | 
 |                             |                                         | If trying to upload a master when the master was already successfully uploaded.                       |                                               | 
 |                             |                                         | The error will list the details of the precondition.                                                  |                                               | 
+
+
+
+###Upload workflow diagrams
+![User logged in from partner application to Lightroom](../images/UserLoggedInFromPartnerAppToLR.png)
+![Auto-upload of images or video from partner app to Lightroom](../images/AutoUploadFromPartnerAppToLR.png)
+![Bulk-upload of selected images or video from partner app to Lightroom](../images/BulkUploadOfSelectedAssetsFromPartnerAppToLR.png)
