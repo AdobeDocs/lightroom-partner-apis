@@ -68,7 +68,7 @@
           }
         ],
         "responses": {
-          "200": {
+          "200 (OK)": {
             "description": "OK",
             "schema": {
               "type": "object",
@@ -79,10 +79,10 @@
               }
             }
           },
-          "403": {
+          "403 (Invalid Key)": {
             "$ref": "#/components/responses/ForbiddenKey"
           },
-          "503": {
+          "503 (Unavailable)": {
             "$ref": "#/components/responses/ServiceUnavailable"
           }
         }
@@ -116,7 +116,7 @@
           }
         ],
         "responses": {
-          "200": {
+          "200 (OK)": {
             "description": "OK",
             "schema": {
               "type": "object",
@@ -263,19 +263,19 @@
               }
             }
           },
-          "400": {
+          "400 (Bad UUID)": {
             "$ref": "#/components/responses/BadRequestGUID"
           },
-          "401": {
+          "401 (Unauthorized)": {
             "$ref": "#/components/responses/Unauthorized"
           },
-          "403": {
+          "403 (Invalid Key)": {
             "$ref": "#/components/responses/ForbiddenKey"
           },
-          "404": {
+          "404 (Not Found)": {
             "$ref": "#/components/responses/NotFound"
           },
-          "503": {
+          "503 (Unavailable)": {
             "$ref": "#/components/responses/ServiceUnavailable"
           }
         }
@@ -309,7 +309,7 @@
           }
         ],
         "responses": {
-          "200": {
+          "200 (OK)": {
             "description": "OK",
             "schema": {
               "type": "object",
@@ -527,25 +527,25 @@
               }
             }
           },
-          "400": {
+          "400 (Bad UUID)": {
             "$ref": "#/components/responses/BadRequestGUID"
           },
-          "401": {
+          "401 (Unauthorized)": {
             "$ref": "#/components/responses/Unauthorized"
           },
-          "403 K": {
+          "403 (Invalid Key)": {
             "$ref": "#/components/responses/ForbiddenKey"
           },
-          "403 A": {
+          "403 (Forbidden Account)": {
             "$ref": "#/components/responses/ForbiddenAccount"
           },
-          "403": {
+          "403 (Forbidden)": {
             "$ref": "#/components/responses/Forbidden"
           },
-          "404": {
+          "404 (Not Found)": {
             "$ref": "#/components/responses/NotFound"
           },
-          "503": {
+          "503 (Unavailable)": {
             "$ref": "#/components/responses/ServiceUnavailable"
           }
         }
@@ -620,7 +620,10 @@
                       "$ref": "#/definitions/iso8601DateTime"
                     },
                     "captureDate": {
-                      "$ref": "#/definitions/iso8601DateTime"
+                      "type": "string",
+                      "enum": [ "0000-00-00T00:00:00", "#/definitions/iso8601DateTime" ],
+                      "required": true,
+                      "description": "Capture date of the asset in ISO-8601 format. Will be populated by the server automatically from the master if set to '0000-00-00T00:00:00'"
                     },
                     "importSource": {
                       "type": "object",
@@ -628,28 +631,6 @@
                         "fileName": {
                           "type": "string",
                           "required": true
-                        },
-                        "contentType": {
-                          "type": "string",
-                          "required": true
-                        },
-                        "fileSize": {
-                          "type": "integer",
-                          "required": true,
-                          "description": "File size in bytes."
-                        },
-                        "originalWidth": {
-                          "type": "integer",
-                          "required": true
-                        },
-                        "originalHeight": {
-                          "type": "integer",
-                          "required": true
-                        },
-                        "sha256": {
-                          "type": "string",
-                          "required": true,
-                          "description": "A SHA-256 signature calculated over the entire file, represented as a 64-character hexadecimal string."
                         },
                         "importedOnDevice": {
                           "type": "string",
@@ -666,66 +647,48 @@
                           "required": true
                         }
                       }
-                    },
-                    "develop": {
-                      "type": "object",
-                      "properties": {
-                        "croppedWidth": {
-                          "type": "integer",
-                          "required": true,
-                          "description": "Cropped width of the asset; same as the original width if there is no crop applied."
-                        },
-                        "croppedHeight": {
-                          "type": "integer",
-                          "required": true,
-                          "description": "Cropped height of the asset; same as the original height if there is no crop applied."
-                        }
-                      }
                     }
                   }
-                },
-                "created": {
-                  "$ref": "#/definitions/iso8601DateTime"
                 }
               }
             }
           }
         ],
         "responses": {
-          "201": {
+          "201 (Created)": {
             "description": "Created"
           },
-          "400": {
+          "400 (Bad UUID)": {
             "$ref": "#/components/responses/BadRequestGUID"
           },
-          "400 J": {
+          "400 (Bad JSON)": {
             "$ref": "#/components/responses/BadRequestJSON"
           },
-          "400 S": {
+          "400 (Bad Subtype)": {
             "$ref": "#/components/responses/BadRequestSubtype"
           },
-          "400 P": {
+          "400 (Bad Payload)": {
             "$ref": "#/components/responses/BadRequestPayload"
           },
-          "401": {
+          "401 (Unauthorized)": {
             "$ref": "#/components/responses/Unauthorized"
           },
-          "403 K": {
+          "403 (Invalid Key)": {
             "$ref": "#/components/responses/ForbiddenKey"
           },
-          "403 E": {
+          "403 (Exists)": {
             "$ref": "#/components/responses/ForbiddenExists"
           },
-          "403 Q": {
+          "403 (Storage)": {
             "$ref": "#/components/responses/ForbiddenQuota"
           },
-          "412": {
+          "412 (Exists)": {
             "$ref": "#/components/responses/PreconditionFailed"
           },
-          "415": {
+          "415 (Unsupported)": {
             "$ref": "#/components/responses/UnsupportedMediaType"
           },
-          "503": {
+          "503 (Unavailable)": {
             "$ref": "#/components/responses/ServiceUnavailable"
           }
         }
@@ -803,22 +766,22 @@
           "201": {
             "description": "Created"
           },
-          "400": {
+          "400 Bad UUID": {
             "$ref": "#/components/responses/BadRequestGUID"
           },
-          "401": {
+          "401 Unauthorized": {
             "$ref": "#/components/responses/Unauthorized"
           },
-          "403 K": {
+          "403 Invalid Key": {
             "$ref": "#/components/responses/ForbiddenKey"
           },
           "413": {
             "$ref": "#/components/responses/TooLarge"
           },
-          "415": {
+          "415 Unsupported": {
             "$ref": "#/components/responses/UnsupportedMediaType"
           },
-          "503": {
+          "503 (Unavailable)": {
             "$ref": "#/components/responses/ServiceUnavailable"
           }
         }
@@ -907,22 +870,22 @@
           "201": {
             "description": "Created"
           },
-          "400": {
+          "400 Bad UUID": {
             "$ref": "#/components/responses/BadRequestGUID"
           },
-          "401": {
+          "401 Unauthorized": {
             "$ref": "#/components/responses/Unauthorized"
           },
-          "403 K": {
+          "403 Invalid Key": {
             "$ref": "#/components/responses/ForbiddenKey"
           },
           "413": {
             "$ref": "#/components/responses/TooLarge"
           },
-          "415": {
+          "415 Unsupported": {
             "$ref": "#/components/responses/UnsupportedMediaType"
           },
-          "503": {
+          "503 (Unavailable)": {
             "$ref": "#/components/responses/ServiceUnavailable"
           }
         }
@@ -991,25 +954,25 @@
           "201": {
             "description": "Created"
           },
-          "400 J": {
+          "400 Bad JSON": {
             "$ref": "#/components/responses/BadRequestJSON"
           },
-          "400 P": {
+          "400 Bad Payload": {
             "$ref": "#/components/responses/BadRequestPayload"
           },
-          "401": {
+          "401 Unauthorized": {
             "$ref": "#/components/responses/Unauthorized"
           },
-          "403 K": {
+          "403 Invalid Key": {
             "$ref": "#/components/responses/ForbiddenKey"
           },
-          "403 E": {
+          "403 Exists": {
             "$ref": "#/components/responses/ForbiddenExists"
           },
-          "415": {
+          "415 Unsupported": {
             "$ref": "#/components/responses/UnsupportedMediaType"
           },
-          "503": {
+          "503 (Unavailable)": {
             "$ref": "#/components/responses/ServiceUnavailable"
           }
         }
@@ -1068,7 +1031,7 @@
           }
         ],
         "responses": {
-          "200": {
+          "200 OK": {
             "description": "OK",
             "schema": {
               "type": "object",
@@ -1111,25 +1074,25 @@
               }
             }
           },
-          "400": {
+          "400 Bad UUID": {
             "$ref": "#/components/responses/BadRequestGUID"
           },
-          "401": {
+          "401 Unauthorized": {
             "$ref": "#/components/responses/Unauthorized"
           },
           "403": {
             "$ref": "#/components/responses/Forbidden"
           },
-          "403 K": {
+          "403 Invalid Key": {
             "$ref": "#/components/responses/ForbiddenKey"
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
           },
-          "415": {
+          "415 Unsupported": {
             "$ref": "#/components/responses/UnsupportedMediaType"
           },
-          "503": {
+          "503 (Unavailable)": {
             "$ref": "#/components/responses/ServiceUnavailable"
           }
         }
@@ -1188,23 +1151,32 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "cover": {
-                        "type": "boolean",
-                        "description": "Whether this asset should be used as the album cover."
+                      "id": {
+                        "$ref": "#/definitions/uuid",
+                        "description": "UUID of the asset to be added to the album."
                       },
-                      "order": {
-                        "$ref": "#/definitions/lex64SortOrderString"
-                      },
-                      "publishInfo": {
+                      "payload": {
                         "type": "object",
                         "properties": {
-                          "servicePayload": {
-                            "type": "string",
-                            "description": "Album asset metadata, unique to the service, encapsulated as a single string with a maximum length of 1024 characters."
+                          "cover": {
+                            "type": "boolean",
+                            "description": "Whether this asset should be used as the album cover."
                           },
-                          "remoteId": {
-                            "type": "string",
-                            "description": "Identifier for the album asset that is unique to the publishing service."
+                          "order": {
+                            "$ref": "#/definitions/lex64SortOrderString"
+                          },
+                          "publishInfo": {
+                            "type": "object",
+                            "properties": {
+                              "servicePayload": {
+                                "type": "string",
+                                "description": "Album asset metadata, unique to the service, encapsulated as a single string with a maximum length of 1024 characters."
+                              },
+                              "remoteId": {
+                                "type": "string",
+                                "description": "Identifier for the album asset that is unique to the publishing service."
+                              }
+                            }
                           }
                         }
                       }
@@ -1276,22 +1248,22 @@
               }
             }
           },
-          "400": {
+          "400 Bad UUID": {
             "$ref": "#/components/responses/BadRequestGUID"
           },
-          "401": {
+          "401 Unauthorized": {
             "$ref": "#/components/responses/Unauthorized"
           },
           "403": {
             "$ref": "#/components/responses/Forbidden"
           },
-          "403 K": {
+          "403 Invalid Key": {
             "$ref": "#/components/responses/ForbiddenKey"
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
           },
-          "503": {
+          "503 (Unavailable)": {
             "$ref": "#/components/responses/ServiceUnavailable"
           }
         }
