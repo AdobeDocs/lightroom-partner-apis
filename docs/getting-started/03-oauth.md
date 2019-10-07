@@ -19,6 +19,7 @@ Use scope=lr_partner_apis
 [Access token and Refresh token](https://www.adobe.io/authentication/auth-methods.html#!AdobeDocs/adobeio-auth/master/Resources/IMS.md) 
 
 Use grant_type=authorization_code or grant_type=refresh_token only depending on the kind of token is needed.
+Store the tokens on backend server only in a secured format with encryption at rest. 
 
 [Exchange refresh token for a new access token](https://www.adobe.io/authentication/auth-methods.html#!AdobeDocs/adobeio-auth/master/Resources/IMS.md)
 
