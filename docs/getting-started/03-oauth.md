@@ -14,7 +14,7 @@ The OAuth integration is supported in a consistent way for adobe products. It is
 
 [Authentication api to get authorization code](https://www.adobe.io/authentication/auth-methods.html#!AdobeDocs/adobeio-auth/master/OAuth/OAuth.md)
 
-Use scope=lr_partner
+Use scope=lr_partner_apis
 
 [Access token and Refresh token](https://www.adobe.io/authentication/auth-methods.html#!AdobeDocs/adobeio-auth/master/Resources/IMS.md) 
 
