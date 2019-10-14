@@ -1,6 +1,6 @@
 ## Calling a Lightroom API
 
-As described [elsewhere](../docs/01-getting-started.md), applications must acquire an _API key_ by registering an _integration_ as an Adobe partner. Using the API key to authenticate a Lightroom customer with the Adobe Identity Management System enables the application to acquire an _access token_.
+As described elsewhere, applications must acquire an _API key_ by registering an _integration_ as an Adobe partner. Using the API key to authenticate a Lightroom customer with the Adobe Identity Management System enables the application to acquire an _access token_.
 
 The API key must be included in the `X-API-Key` header in every API call, while the access token must be included in the `Authorization: Bearer` header.
 

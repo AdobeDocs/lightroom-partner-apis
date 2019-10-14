@@ -25,12 +25,12 @@
 				{
 					"pages": [],
 					"path": "quickstart/oauth.md",
-					"title": "Authenticating Lightroom Customers"
+					"title": "Authenticating Customers"
 				},
 				{
 					"pages": [],
 					"path": "quickstart/upload.md",
-					"title": "Uploading Customer Content"
+					"title": "Uploading Content"
 				}
 			],
 			"title": "Getting Started"
