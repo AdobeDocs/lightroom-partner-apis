@@ -1,8 +1,8 @@
-# Calling a Lightroom API
+## Calling a Lightroom API
 
-As described [elsewhere](../docs/01-getting-started.md), applications must acquire an **API Key** by registering an **integration** as an Adobe partner. Using the API Key to authenticate a Lightroom customer with the Adobe Identity Management System enables the application to acquire an **Access Token**.
+As described [elsewhere](../docs/01-getting-started.md), applications must acquire an _API key_ by registering an _integration_ as an Adobe partner. Using the API key to authenticate a Lightroom customer with the Adobe Identity Management System enables the application to acquire an _access token_.
 
-The API Key must be included in the `X-API-Key` header in every API call, while the access token must be included in the `Authorization: Bearer` header.
+The API key must be included in the `X-API-Key` header in every API call, while the access token must be included in the `Authorization: Bearer` header.
 
 Sample cURL for calling an API might be:
 
@@ -23,8 +23,19 @@ xhr.setRequestHeader('X-API-Key', key)
 xhr.setRequestHeader('Authorization', `Bearer ${token}`)
 ```
 
-## Content Type
+### Content Type
 
-Lightroom content is encapsulated in a variety of objects, including **accounts**, **catalogs**, **assets**, and **albums**. The content type of every API is `JSON`, with the exception of the APIs that handle binary asset data (content type of the data) and those that handle external XMP Develop Settings (content type `application/rdf+xml`).
+Lightroom content is encapsulated in a variety of objects, including _accounts_, _catalogs_, _assets_, and _albums_. The content type of every API is _JSON_, with the exception of the APIs that handle binary data (content type _application/octet-stream_) and those that handle external XMP Develop Settings (content type _application/rdf+xml_).
+
+### Handling JSON
 
 Returned JSON content is always prepended with a `while(1){}` clause to mitigate abuse. This clause must be stripped by client applications before using the incoming result.
+
+Sample JavaScript for eliding the preface and constructing an object might be:
+
+```
+function _processJSONResponse(response) {
+	let while1Regex = /^while\s*\(\s*1\s*\)\s*{\s*}\s*/
+	return response ? JSON.parse(response.replace(while1Regex, '')) : null
+}
+```

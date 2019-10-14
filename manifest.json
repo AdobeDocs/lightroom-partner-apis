@@ -16,28 +16,23 @@
 			"title": "Overview"
 		},
 		{
-			"importedFileName": "index",
 			"pages": [
 				{
-					"importedFileName": "02-api-integration",
 					"pages": [],
-					"path": "docs/getting-started/02-api-integration.md",
-					"title": "Integration with Lightroom Partner APIs"
+					"path": "quickstart/integration.md",
+					"title": "Creating an Integration"
 				},
 				{
-					"importedFileName": "03-oauth",
 					"pages": [],
-					"path": "docs/getting-started/03-oauth.md",
-					"title": "OAuth flow for Lightroom Partner APIs"
+					"path": "quickstart/oauth.md",
+					"title": "Authenticating Lightroom Customers"
 				},
 				{
-					"importedFileName": "04-upload-workflow",
 					"pages": [],
-					"path": "docs/getting-started/04-upload-workflow.md",
-					"title": "Ligthroom Partner APIs for upload workflow"
+					"path": "quickstart/upload.md",
+					"title": "Uploading Customer Content"
 				}
 			],
-			"path": "docs/01-getting-started.md",
 			"title": "Getting Started"
 		},
 		{
