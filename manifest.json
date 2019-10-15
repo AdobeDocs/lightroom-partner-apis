@@ -59,6 +59,16 @@
 				}
 			],
 			"title": "Using the Lightroom APIs"
+		},
+		{
+			"pages": [
+				{
+					"pages": [],
+					"path": "samples/upload.md",
+					"title": "Upload Image"
+				}
+			],
+			"title": "Sample Code"
 		}
 	]
 }
