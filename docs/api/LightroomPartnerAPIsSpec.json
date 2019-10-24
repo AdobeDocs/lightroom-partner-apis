@@ -736,18 +736,6 @@
             "type": "string"
           },
           {
-            "name": "X-Generate-Renditions",
-            "in": "header",
-            "description": "Comma-delimited list of asset rendition types to generate asynchronously. For assets with subtype 'image' valid types are: 'all' (always generates '2048', '1280', '640' and 'thumbnail2x', also 'panorama' for images with a longest edge longer than 2048px and an aspect ratio larger than 2:1), 'none' (no renditions), 'fullsize' (rendition same size as cropped and rotated master), 'panorama' (8192px long edge, 1536px short edge, 2049px minimum long edge), '2048' (preview), '1280', '640', and 'thumbnail2x' (standard thumbnail 320px).",
-            "type": "string"
-          },
-          {
-            "name": "X-Read-Meta",
-            "in": "header",
-            "description": "Comma-delimited list of metadata properties. Valid properties include 'all', 'none', 'caption', 'location', 'geometry' and 'xmp'. For assets with subtype 'image' the default value is 'xmp,caption,location'. To suppress extraction of any property, prefix it with '-'. For example '-location,-caption' will cause 'xmp' to be extracted, but not 'location' or 'caption'.",
-            "type": "string"
-          },
-          {
             "name": "catalog_id",
             "in": "path",
             "description": "Identifier of the catalog in which the asset and revision will be created.",
