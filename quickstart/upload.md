@@ -254,21 +254,62 @@ GET /v2/accounts/00000000000000000000000000000000
 
 ### General Error Conditions
 
-|Use Case|Symptom|Expected Partner Action|
-|-|-|-|
-|Invalid API Key|<pre>403 Error: {"error_code":"403003","message":"Api Key is invalid"}</pre>|Use correct client id for X-API-Key header|
-|Access token expired|<pre>403 Error: {"error_code":"4300","message":"Access is forbidden"}</pre>|Obtain a new access token from Adobe IMS.|
-|No access token|<pre>401 Unauthorized</pre>|Include access token in the Authornization header.|
-|HTTP 5XX Error|<pre>5XX Internal Service Error</pre>|Retry the request with exponential backoff.|
+The Lightroom APIs may return these errors that a shared among all of the entry points:
+
+- _Invalid API Key_: Calling an API results in an `HTTP 403` error of the form:
+  ```
+  {
+      "error_code": "403003",
+      "message": "Api Key is invalid"
+  }
+  ```
+  The partner application should include their API key in the `X-API-Key` header
+
+- _Access token expired_: Calling an API results in an `HTTP 403` error of the form:
+  ```
+  {
+      "error_code": "4300",
+      "message": "Access is forbidden"
+  }
+  ```
+  The partner application should obtain a new access token from Adobe IMS before trying to call any other APIs.
+
+- _No access token_: Calling an API results in an `HTTP 401 Unauthorized` error. The partner application should ensure that an access token is include in the Authorization header.
+
+- _Service error_: Calling an API results in an `HTTP 5XX` error. The partner application should retry the request with an exponential timing backoff to give the service time to be restored.
 
 ### Error conditions applicable for specific APIs
 
-|Use Case|Symptoms|Expected Partner Action|
-|-|-|-|
-|Insufficient storage|`PUT master file` returns:<pre>413 Error: {"error_code":"1007","message":"The resource is too big"}</pre>|Notify user and make no further upload requests|
-|Content type mismatch|`PUT master file` returns:<pre>415 Error: {"error_code":"1003","message":"Invalid content type"}</pre>|Check that content type matches upload data.|
-|JSON Validation failed|When validation fails, a HTTP response code 400 with appropriate validation error will be provided. <pre>400 Error: {"error_code":"1005","message":"Input validation error"}</pre>|Fix JSON content and retry.|
-|Duplicate detected|An error is returned when the provided SHA-256 on a create asset revision call matches an existing asset in the catalog.<pre>412 Error</pre>|Skip the asset.|
+The Lightroom APIs may return these errors that are specific to the upload APIs:
+
+- _Insufficient storage_: Attempting to `PUT` a master file for an asset results in an `HTTP 413` error of the form:
+  ```
+  {
+      "error_code": "1007",
+      "message": "The resource is too big"
+  }
+  ```
+  A partner application should notify the user that their storage is full and make no further upload requests.
+
+- _Content type mismatch_: Attempting to `PUT` a master file for an asset results in an `HTTP 415` error of the form:
+  ```
+  {
+      "error_code": "1007",
+      "message": "Invalid content type"
+  }
+  ```
+  Partner applications should check that the content type matches the upload data type and try again.
+
+- _JSON Validation failed_: Attempting to create a new asset revision results in an `HTTP 400` error of the form:
+  ```
+  {
+      "error_code": "1005",
+      "message": "Input validation error"
+  }
+  ```
+  This means the JSON content provided in the body is not legal JSON, has fields that are not supported, or has illegal properties for supported fields. Partner applications should fix the JSON content and retry.
+
+- _Duplicate detected_: Attempting to create a new asset revision results in an `HTTP 412` precondition failed error. This indicates that the provided SHA-256 matches an existing asset in the catalog. Partner applications should skip the upload of the asset.
 
 ### Upload workflow diagrams
 ![User logged in from partner application to Lightroom](../docs/images/UserLoggedInFromPartnerAppToLR.png)
