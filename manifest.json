@@ -1,5 +1,5 @@
 {
-	"name": "Adobe Lightroom Partner APIs",
+	"name": "Adobe Services",
 	"version": "1.0.0",
 	"description": "Adobe Lightroom",
 	"author": "Smita Das",
@@ -51,11 +51,6 @@
 					"pages": [],
 					"path": "usage/generic.md",
 					"title": "Common Data Model"
-				},
-				{
-					"pages": [],
-					"path": "usage/links.md",
-					"title": "Links and Pagination"
 				}
 			],
 			"title": "Using the Lightroom APIs"

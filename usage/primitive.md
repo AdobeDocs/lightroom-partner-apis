@@ -44,29 +44,3 @@ Validating dates locally before sending to the cloud is preferred. If the cloud 
 ### Reasonable file/folder path name
 
 A reasonable file or folder path is a UTF-8 string designed to comply with the typical file naming rules on MacOS and Windows without unexpected side effects.
-
-### Ratio
-
-A _ratio_ is an array value consisting of one or two integer values (_numerator_ and _denominator_) encoded as JSON integers. If omitted, the denominator is assumed to be 1. There is no requirement that the fractions be reduced. Both the numerator and denominator must be integers less than or equal to 2^53 (9007199254740992, which is the largest integer value that can be stored in a double-precision floating point 'C' data type). The numerator may be negative but greater than or equal to -2^53. The denominator must be greater than zero.
-
-Some videos have non-square pixels. The asset width and height in the top-level asset document will be converted to square pixel dimensions. To find out the actual number of non-square-pixels wide and high the master asset is, consult the storageWidth and storageHeight fields of the video section. For example, an NTSC video stored as 720x480 (SAR 3:2) rendered as 640x480 (DAR 4:3) should have width of 640 and height of 480 in the top-level asset document.
-
-
-### lex64 Sort Order Strings
-
-An _order_ string shall contain a maximum of 1024 characters in the set: `[-0-9A-Z_a-z]`. This is the same character set as `base64url` described in [RFC 4648](http://tools.ietf.org/html/rfc4648#section-5) and was chosen for its URL-safeness. It differs from base64url due to the lexicographical sort order: ('-', '0', '9', 'A', 'Z', '_', 'a', 'z').
-
-#### Workflow Details
-
-* An object document that supports the order field will not have an `order` field until one is specified by the client.
-* The absence of an `order` field will cause that object to be sorted at the end for an ascending sort, or at the beginning for a descending sort.
-* The secondary sort field will be the `captureDate` date of the object (for identical or absent values).
-* The tertiary sort field will be the `created` date of the object (for identical or absent captureDate values).
-* Removing the `order` field from an object document is achieved by writing the JSON `null` value.
-* The empty string is not a valid `order` field value.
-* In order to preserve the ability to insert at the beginning of the list, the order string cannot end with the '-' character.
-
-#### Workflow Suggestions
-
-* The algorithm for picking an `order` value that is between two existing `order` values should attempt to minimize length, to avoid hitting the order field length limit, and being forced to renumber multiple object documents.
-* When the user changes the `order` of N assets in an album, in most cases only N object documents will have to be modified. The notable exception to this is when the user places an object amongst objects without an `order` field; in that case many object documents will have to be modified in order to achieve the desired ordering.

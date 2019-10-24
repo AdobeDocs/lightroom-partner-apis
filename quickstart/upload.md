@@ -6,7 +6,9 @@ The upload workflow should be attempted only for users who already have a Lightr
 
 At any time, the health of the Lightroom service may be queried with:
 
-`GET /v2/health HTTP/1.1`
+```
+GET /v2/health HTTP/1.1
+```
 
 Expected success response:
 
@@ -177,7 +179,7 @@ Content-Length: {xsd:nonNegativeInteger}
 
 ### Upload an Image or Video to the Catalog
 
-At this point, a client application should have a catalog identifier (`catalog_id`), which is necessary for the remainder of the workflow. 
+At this point, a client application should have a catalog identifier (`catalog_id`), which is required for the remainder of the workflow. 
 
 _STEP 1_: Create an asset revision providing newly generated globally unique identifiers (GUIDs) for `asset_id` and `revision_id`. Refer to RFC-4122 for a description of GUIDs. The Lightroom services accept only GUIDs without hyphens. Most languages provide libraries to generate GUID (For examples refer https://docs.oracle.com/javase/7/docs/api/java/util/UUID.html and https://docs.python.org/3/library/uuid.html)
 
@@ -190,21 +192,12 @@ If-None-Match: {xsd:string}
 {
 	"subtype": "{asset_subtype}",
 	"payload": {
-		"captureDate": "{image_capture_date}",
+		"captureDate": "0000-00-00T00:00:00",
 		"importSource": {
 			"fileName": "{file_name}",
-			"contentType": "{content_type}",
-			"fileSize": {image_file_size},
-			"originalWidth": {image_width},
-			"originalHeight": {image_height},
-			"sha256": "{image_sha256}",
 			"importedOnDevice": "{import_device_name}",
 			"importedBy": "{import_account_id}",
 			"importTimestamp": "{import_time}"
-		},
-		"{key}": "{value}",
-		"develop": {
-			"{dev_key}": "{dev_value}"
 		}
 	}
 }
@@ -218,25 +211,7 @@ CreatedContent-Length: 0
 Location: {xsd:anyURI}
 ```
 
-_STEP 2_: This is an optional step for image files and not required for video files. If the image to be uploaded requires a sidecar XMP file for the develop settings, use the below API to upload the XMP file before uploading the actual image file. This XMP file can be referred to in the `payload` section while uploading the actual image.
-
-```
-PUT /v2/catalogs/{catalog_id}/assets/{asset_id}/revisions/{revision_id}/xmp/develop HTTP/1.1
-Authorization: {auth_token}
-Content-Length: {xsd:nonNegativeInteger}
-Content-Type: application/rdf+xml
-X-Generate-Renditions: {xsd:string}
-```
-
-Sample success response:
-
-```
-HTTP/1.1 201 
-CreatedContent-Length: 0
-Location: {xsd:anyURI}
-```
-
-_STEP 3_: Upload the image or video file binary data. This API allows files up to 200MB to be uploaded. Larger files must be uploaded using this API by including `Content-Range` headers for each part. Clients may make multiple requests with `Content-Range` headers in parallel.
+_STEP 2_: Upload the image or video file binary data. This API allows a maximum of 200MB to be uploaded per invocation. Larger files must be uploaded in chunks with this API by including `Content-Range` headers for each part. Clients may make multiple requests with `Content-Range` headers in parallel. For better fault tolerance, it may be preferable for clients to upload chunks smaller than 200MB.
 
 ```
 PUT /v2/catalogs/{catalog_id}/assets/{asset_id}/revisions/{revision_id}/master HTTP/1.1
@@ -244,9 +219,6 @@ Authorization: {auth_token}
 Content-Length: {xsd:nonNegativeInteger}
 Content-Range: {xsd:string}
 Content-Type: {xsd:string}
-X-Generate-Renditions: {xsd:string}
-X-Generate-Proxies: {xsd:string}
-X-Read-Meta: {xsd:string}
 ```
 
 Sample success response:
@@ -257,94 +229,46 @@ CreatedContent-Length: 0
 Location: {xsd:anyURI}
 ```
 
-NOTE: Refer API Docs for further information about above listed APIs 
+NOTE: Refer to the API documentation for further information about above listed APIs.
 
-### Precondition checks before attempting upload of image or video
+### Precondition Checks Before Upload
 
-| S.No. | Use Case                                                                                                                                    | Symptoms                                                                                                      | Expected Partner App Behavior                    | 
-|-------|---------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------|--------------------------------------------------| 
-| 1     | User doesn't have Lightroom login but has an adobe id. This can happen if the user has login for an adobe product different from Lightroom  | When a call is made to GET /v2/accounts/00000000000000000000000000000000                                      | Do not attempt any other Lightroom Partner APIs. | 
-|       | OR                                                                                                                                          | Expect a 200 response but response body element entitlement.status is not "subscriber" or "trial".            |                                                  | 
-|       | User has Lightroom login but with no valid subscription.                                                                                    | OR                                                                                                            |                                                  | 
-|       | OR                                                                                                                                          | entitlement.storage used >=  limit                                                                            |                                                  | 
-|       | User has Lightroom login but usage quota exceeded                                                                                           | OR                                                                                                            |                                                  | 
-|       |                                                                                                                                             | calculated the size of images to be uploaded > (entitlement.storage limit - entitlement.storage used)         |                                                  | 
-| 2     | User has lightroom account but no lightroom catalog.                                                                                        | When a call is made to GET /v2/accounts/00000000000000000000000000000000                                      | Do not attempt any other Lightroom Partner APIs. | 
-|       |                                                                                                                                             | Expect a 200 response but response body element entitlement.status is "subscriber" and quota is not exceeded  |                                                  | 
-|       |                                                                                                                                             | Next when a call is made to look up the user's catalog GET /v2/catalogs/00000000000000000000000000000000      |                                                  | 
-|       |                                                                                                                                             | Expect a 404 response.                                                                                        |                                                  | 
+Partner applications should check that an upload to a Lightroom customer catalog will succeed, and provide appropriate feedback to the user in cases where it will not. If a customer has logged in through Adobe IMS, the call to get the Lightroom account information will return a full response, barring network or service interruptions.
+```
+GET /v2/accounts/00000000000000000000000000000000
+```
 
-### Upload workflow error states
-##### Errors conditions applicable for all APIs
+- _User is entitled to Lightroom_: The account `entitlement.status` must be `subscriber` or `trial`. Other values indicate that a customer may be entitled to a different Adobe product; may have an expired subscription; or may never have subscribed to any product.
 
+- _User has a Lightroom catalog_: Entitled Lightroom customers will have a catalog only if they have created one through one of the Lightroom client applications. Partner applications must check for the existence of a catalog before uploading. 
 
-| S.No. | Use Case                                         | Symptoms                                                                                                | Expected Partner App Behavior                                                                                                                                         | 
-|-------|--------------------------------------------------|---------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------| 
-| 1     | API request received with bad API Key/Client id. | When a call is made to GET /v2/version or any other Lightroom Partner API                               | Use correct client id for X-api-key header before attempting Lightroom Partner APIs.                                                                                  | 
-|       |                                                  | Expect a 403 response with below response body                                                          |                                                                                                                                                                       | 
-|       |                                                  | {"error_code":"403003","message":"Api Key is invalid"}                                                  |                                                                                                                                                                       | 
-| 2     | API request received with expired token.         | When a call is made any available API                                                                   | Generate new access token before attempting calls to Lightroom Partner APIs.                                                                                          | 
-|       |                                                  | Expect response                                                                                         |                                                                                                                                                                       | 
-|       |                                                  | HTTP/1.1 403 Forbidden                                                                                  |                                                                                                                                                                       | 
-|       |                                                  | {                                                                                                       |                                                                                                                                                                       | 
-|       |                                                  |     "code": 4300,                                                                                       |                                                                                                                                                                       | 
-|       |                                                  |     "description": "Access is forbidden"                                                                |                                                                                                                                                                       | 
-|       |                                                  | }                                                                                                       |                                                                                                                                                                       | 
-| 3     | API request received without access token.       | When a call is made any available API                                                                   | Provide access token before attempting calls to Lightroom Partner APIs.                                                                                               | 
-|       |                                                  | Expect response                                                                                         |                                                                                                                                                                       | 
-|       |                                                  | HTTP/1.1 401 Unauthorized                                                                               |                                                                                                                                                                       | 
-| 4     | Http response code 5XX errors for any api call   | When a call is made to any Lightroom Partner APIs resulting in response with error code 5XX.            | Retry the request with exponential backoff. The idea behind exponential backoff is to use progressively longer waits between retries for consecutive error responses. | 
-|       |                                                  | Example                                                                                                 |                                                                                                                                                                       | 
-|       |                                                  | HTTP/1.1 503 Service UnavailableContent-Type: application/jsonContent-Length: {xsd:nonNegativeInteger}{ |                                                                                                                                                                       | 
-|       |                                                  |     "code": 9999,                                                                                       |                                                                                                                                                                       | 
-|       |                                                  |     "description": "Service is temporarily unavailable"                                                 |                                                                                                                                                                       | 
-|       |                                                  | }                                                                                                       |                                                                                                                                                                       | 
+- _User has not exceeded their Lightroom storage_. If the account `entitlement.storage.used` is greater than or equal to the `entitlement.storage.limit` then the customer has exceeded their storage quota.
 
+- _User has sufficient space for the upload_. Client applications should calculate the size of the images to be uploaded and determine they will fit in the available storage (`entitlement.storage.limit` - `entitlement.storage.used`).
 
-##### Error conditions applicable for specific APIs
+- _User has a Lightroom catalog_: Entitled Lightroom customers will have a catalog only if they have created one through one of the Lightroom client applications. Partner applications must check for the existence of a catalog with the call:
+  ```
+  GET /v2/catalogs/00000000000000000000000000000000
+  ```
+  This call will fail with a `404` if the user has no catalog; otherwise it will return the catalog information.
 
-| S.No.                       | Use Case                                | Symptoms                                                                                              | Expected Partner App Behavior                 | 
-|-----------------------------|-----------------------------------------|-------------------------------------------------------------------------------------------------------|-----------------------------------------------| 
-| 1                           | Lightroom Quota exceeded error.         | When a call is made to PUT /v2/catalogs/{catalog_id}/assets/{asset_id}/revisions/{revision_id}/master | Stop all further Lightroom Partner API calls. | 
-|                             |                                         |                                                                                                       |                                               | 
-|                             |                                         | HTTP/1.1 413 Request Entity Too Large                                                                 |                                               | 
-|                             |                                         | Content-Type: application/json                                                                        |                                               | 
-|                             |                                         | Content-Length: {xsd:nonNegativeInteger}                                                              |                                               | 
-|                             |                                         | {                                                                                                     |                                               | 
-|                             |                                         |     "code": 1007,                                                                                     |                                               | 
-|                             |                                         |     "description": "The resource is too big"                                                          |                                               | 
-|                             |                                         | }                                                                                                     |                                               | 
-| 2                           | Content type mismatch error.            | When a call is made to PUT /v2/catalogs/{catalog_id}/assets/{asset_id}/revisions/{revision_id}/master | Skip upload of the specific asset.            | 
-|                             |                                         | HTTP/1.1 415 Unsupported Media Type                                                                   |                                               | 
-|                             |                                         | Content-Type: application/json                                                                        |                                               | 
-|                             |                                         | Content-Length: {xsd:nonNegativeInteger}                                                              |                                               | 
-|                             |                                         | {                                                                                                     |                                               | 
-|                             |                                         |     "errors": {                                                                                       |                                               | 
-|                             |                                         |         "content_type": [                                                                             |                                               | 
-|                             |                                         |             "should match the subtype of the asset"                                                   |                                               | 
-|                             |                                         |         ]                                                                                             |                                               | 
-|                             |                                         |     },                                                                                                |                                               | 
-|                             |                                         |     "code": 1003,                                                                                     |                                               | 
-|                             |                                         |     "description": "Invalid content type"                                                             |                                               | 
-|                             |                                         | }                                                                                                     |                                               | 
-| 3                           | Input validation errors on any api call | When validation fails, a HTTP response code 400 with appropriate validation error will be provided.   | Fix validation error and try again.           | 
-|                             |                                         | Example                                                                                               |                                               | 
-|                             |                                         | HTTP/1.1 400 Bad RequestContent-Type: application/jsonContent-Length: {xsd:nonNegativeInteger}{       |                                               | 
-|                             |                                         |     "errors": {                                                                                       |                                               | 
-| 		                      |                                         |          "<param_name>": [                                                                            |                                               | 
-|                             |                                         |             "must be a valid GUID"                                                                    |                                               | 
-|                             |                                         |         ]                                                                                             |                                               | 
-|                             |                                         |     },                                                                                                |                                               | 
-|                             |                                         |     "code": 1005,                                                                                     |                                               | 
-|                             |                                         |     "description": "Input Validation Error"                                                           |                                               | 
-|                             |                                         | }                                                                                                     |                                               | 
-|                             |                                         |                                                                                                       |                                               | 
-| 4                           | Precondition fail errors                | Some API calls might fail with an HTTP response code 412 when a precondition check fails.             | Take action based on error message.           | 
-|                             |                                         | Example                                                                                               |                                               | 
-|                             |                                         | If trying to upload a master when the master was already successfully uploaded.                       |                                               | 
-|                             |                                         | The error will list the details of the precondition.                                                  |                                               | 
+### General Error Conditions
 
+|Use Case|Symptom|Expected Partner Action|
+|-|-|-|
+|Invalid API Key|<pre>403 Error: {"error_code":"403003","message":"Api Key is invalid"}</pre>|Use correct client id for X-API-Key header|
+|Access token expired|<pre>403 Error: {"error_code":"4300","message":"Access is forbidden"}</pre>|Obtain a new access token from Adobe IMS.|
+|No access token|<pre>401 Unauthorized</pre>|Include access token in the Authornization header.|
+|HTTP 5XX Error|<pre>5XX Internal Service Error</pre>|Retry the request with exponential backoff.|
 
+### Error conditions applicable for specific APIs
+
+|Use Case|Symptoms|Expected Partner Action|
+|-|-|-|
+|Insufficient storage|`PUT master file` returns:<pre>413 Error: {"error_code":"1007","message":"The resource is too big"}</pre>|Notify user and make no further upload requests|
+|Content type mismatch|`PUT master file` returns:<pre>415 Error: {"error_code":"1003","message":"Invalid content type"}</pre>|Check that content type matches upload data.|
+|JSON Validation failed|When validation fails, a HTTP response code 400 with appropriate validation error will be provided. <pre>400 Error: {"error_code":"1005","message":"Input validation error"}</pre>|Fix JSON content and retry.|
+|Duplicate detected|An error is returned when the provided SHA-256 on a create asset revision call matches an existing asset in the catalog.<pre>412 Error</pre>|Skip the asset.|
 
 ### Upload workflow diagrams
 ![User logged in from partner application to Lightroom](../docs/images/UserLoggedInFromPartnerAppToLR.png)
