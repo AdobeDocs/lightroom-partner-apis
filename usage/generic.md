@@ -43,4 +43,3 @@ Unless otherwise noted, all entries at the top level are constructed and provide
     * Each entry is a table containing an `href` entry with the actual link.
     * All types include the `self` link.
     * Each type may have other links supported.
-    * See [Links and Pagination](./links.md) for more info.

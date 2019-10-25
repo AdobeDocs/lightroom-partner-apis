@@ -122,7 +122,7 @@ Content-Length: {xsd:nonNegativeInteger}
 
 If a Lightroom customer is entitled, an application should fetch the user catalog. Not all entitled customers will have a catalog. They may, for example, actively use other applications besides Lightroom. Only when they have engaged with a Lightroom client application will their catalog be created.
 
-If a user has a catalog, the application should obtain the catalog identifier for use in the upload APIs. Otherwise, an application cannot proceed further.
+If a user has a catalog, the application should obtain the catalog identifier for use in the upload APIs. Otherwise, an application can inform users that they must first log into an Adobe Lightroom client before they are able to upload content from the partner application.
 
 ```
 GET /v2/catalogs/00000000000000000000000000000000 HTTP/1.1 

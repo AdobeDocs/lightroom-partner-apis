@@ -8,7 +8,7 @@ The process of acquiring and refreshing access tokens is described in detail in 
 
 The following must be considered for Lightroom Services integrations:
 
-- Partner integrations must include the `openid,lr_partner_apis` scopes to access Lightroom content.
+- Partner integrations must include the `openid,AdobeID,lr_partner_apis` scopes to access Lightroom content.
 
 - Any generated user _access token_ or _refresh token_ **must**  be stored in any backend service in a secured format with encryption at rest.
 
