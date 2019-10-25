@@ -15,8 +15,8 @@
   ],
   "tags": [
     {
-      "name": "version",
-      "description": "Unique hexadecimal number identifying the Lightroom server.",
+      "name": "health",
+      "description": "Lightroom Services status.",
       "externalDocs": {
         "description": "More info",
         "url": "https://www.adobe.io"
@@ -36,14 +36,14 @@
     }
   ],
   "paths": {
-    "/v2/version": {
+    "/v2/health": {
       "get": {
         "tags": [
-          "version"
+          "health"
         ],
-        "summary": "Retrieve the server version",
-        "description": "Lightroom server version ID, which is a hexadecimal value but not guaranteed to be sequential.",
-        "operationId": "getVersion",
+        "summary": "Lightroom Services health check",
+        "description": "Will return the Lightroom server version ID (a hexadecimal value not guaranteed to be sequential) if the services are up.",
+        "operationId": "getHealth",
         "produces": [
           "application/json"
         ],
@@ -52,13 +52,6 @@
             "name": "X-API-Key",
             "in": "header",
             "description": "Client ID (API Key) which is subscribed to the Lightroom APIs through console.adobe.io",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "Bearer [token] - User access token of an authenticated Lightroom customer",
             "required": true,
             "type": "string"
           }
