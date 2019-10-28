@@ -1,5 +1,5 @@
 {
-  "name": "Lightroom Partner APIs",
+  "name": "Lightroom Services",
   "version": "1.0.0",
   "description": "Adobe Lightroom",
   "author": "Smita Das",
@@ -13,7 +13,7 @@
     {
       "pages": [],
       "path": "docs/api/LightroomPartnerAPIsSpec.json",
-      "title": "Lightroom Partner APIs"
+      "title": "Lightroom Services"
     }
   ]
 }
