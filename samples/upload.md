@@ -4,7 +4,7 @@ This example demonstrates how to upload a single image to the catalog of an auth
 
 ### Overlay New Code
 
-An overlay of sample code can be found in this repository in the [samples/adobe-auth-node](../adobe_auth_node) subdirectory. Copy these three files into their respective directories in the working authentication example:
+An overlay of sample code can be found in this repository in the [samples/adobe-auth-node](adobe_auth_node) subdirectory. Copy these three files into their respective directories in the working authentication example:
 
 ```
 adobe-auth-node
