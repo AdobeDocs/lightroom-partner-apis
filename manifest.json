@@ -24,6 +24,11 @@
 				},
 				{
 					"pages": [],
+					"path": "quickstart/health.md",
+					"title": "Service Health Check"
+				},
+				{
+					"pages": [],
 					"path": "quickstart/oauth.md",
 					"title": "Authenticating Customers"
 				},
@@ -57,11 +62,6 @@
 		},
 		{
 			"pages": [
-				{
-					"pages": [],
-					"path": "samples/authenticate.md",
-					"title": "Authentication"
-				},
 				{
 					"pages": [],
 					"path": "samples/upload.md",
