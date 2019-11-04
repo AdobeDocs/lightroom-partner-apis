@@ -240,8 +240,6 @@ GET /v2/accounts/00000000000000000000000000000000
 
 - _User is entitled to Lightroom_: The account `entitlement.status` must be `subscriber` or `trial`. Other values indicate that a customer may be entitled to a different Adobe product; may have an expired subscription; or may never have subscribed to any product.
 
-- _User has a Lightroom catalog_: Entitled Lightroom customers will have a catalog only if they have created one through one of the Lightroom client applications. Partner applications must check for the existence of a catalog before uploading. 
-
 - _User has not exceeded their Lightroom storage_. If the account `entitlement.storage.used` is greater than or equal to the `entitlement.storage.limit` then the customer has exceeded their storage quota.
 
 - _User has sufficient space for the upload_. Client applications should calculate the size of the images to be uploaded and determine they will fit in the available storage (`entitlement.storage.limit` - `entitlement.storage.used`).
