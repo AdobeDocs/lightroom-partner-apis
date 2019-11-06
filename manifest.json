@@ -34,8 +34,18 @@
 				},
 				{
 					"pages": [],
+					"path": "quickstart/user.md",
+					"title": "User Entitlement Check"
+				},
+				{
+					"pages": [],
 					"path": "quickstart/upload.md",
 					"title": "Uploading Content"
+				},
+				{
+					"pages": [],
+					"path": "quickstart/project.md",
+					"title": "Manage Uploaded Content"
 				}
 			],
 			"title": "Getting Started"
