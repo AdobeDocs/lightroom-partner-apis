@@ -1,5 +1,5 @@
 {
-  "name": "Lightroom Partner APIs",
+  "name": "Lightroom Services",
   "version": "1.0.0",
   "description": "Adobe Lightroom",
   "author": "Smita Das",
@@ -8,12 +8,12 @@
   "meta_description": "Adobe Lightroom Partner API documentation",
   "publish_date": "08/23/2018",
   "show_edit_github_banner": false,
-  "base_path": "https://raw.githubusercontent.com/AdobeDocs/lightroom-partner-apis/master",
+  "base_path": "https://raw.githubusercontent.com/AdobeDocs/lightroom-partner-apis/stage",
   "pages": [
     {
       "pages": [],
       "path": "docs/api/LightroomPartnerAPIsSpec.json",
-      "title": "Lightroom Partner APIs"
+      "title": "Lightroom Services"
     }
   ]
 }
