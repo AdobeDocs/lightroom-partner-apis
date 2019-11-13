@@ -11,7 +11,7 @@ If one of both of these checks fails, partner applications should provide approp
 The call to retrieve the Lightroom account information of an authenticated customer will always succeed, barring network or service interruptions. The retrieved account `entitlement.status` must be `subscriber` or `trial`. Other values indicate that a customer may be entitled to a different Adobe product, may have an expired subscription, or may never have subscribed to any product.
 
 ```
-GET /v2/accounts/00000000000000000000000000000000
+GET /v2/accounts/me
 ```
 
 Sample success response:
@@ -44,7 +44,7 @@ Sample success response:
 Entitled Lightroom customers will have a catalog only if they have created one through one of the Lightroom client applications. Partner applications must check for the existence of a catalog with the call:
 
 ```
-GET /v2/catalogs/00000000000000000000000000000000
+GET /v2/catalogs/mine
 ```
 
 This call will fail with a `404` if the user has no catalog; otherwise it will return the catalog information:

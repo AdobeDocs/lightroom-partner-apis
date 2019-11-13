@@ -26,7 +26,7 @@ Content-Length: {xsd:nonNegativeInteger}
 Applications should fetch the customer account information and inspect the `entitlement.status` field to determine the Creative Cloud entitlement of the customer. If this value is not either `subscriber` or `trial`, then any other calls to the Lightroom services will return a `403 Forbidden` error.
 
 ```
-GET /v2/accounts/00000000000000000000000000000000 HTTP/1.1
+GET /v2/accounts/me HTTP/1.1
 Authorization: {auth_token}
 Content-Type: application/json
 Content-Length: {xsd:nonNegativeInteger}
@@ -125,7 +125,7 @@ If a Lightroom customer is entitled, an application should fetch the user catalo
 If a user has a catalog, the application should obtain the catalog identifier for use in the upload APIs. Otherwise, an application can inform users that they must first log into an Adobe Lightroom client before they are able to upload content from the partner application.
 
 ```
-GET /v2/catalogs/00000000000000000000000000000000 HTTP/1.1 
+GET /v2/catalogs/mine HTTP/1.1 
 Authorization: {auth_token}
 Content-Type: application/json
 Content-Length: {xsd:nonNegativeInteger}
@@ -235,7 +235,7 @@ NOTE: Refer to the API documentation for further information about above listed 
 
 Partner applications should check that an upload to a Lightroom customer catalog will succeed, and provide appropriate feedback to the user in cases where it will not. If a customer has logged in through Adobe IMS, the call to get the Lightroom account information will return a full response, barring network or service interruptions.
 ```
-GET /v2/accounts/00000000000000000000000000000000
+GET /v2/accounts/me
 ```
 
 - _User is entitled to Lightroom_: The account `entitlement.status` must be `subscriber` or `trial`. Other values indicate that a customer may be entitled to a different Adobe product; may have an expired subscription; or may never have subscribed to any product.
@@ -246,7 +246,7 @@ GET /v2/accounts/00000000000000000000000000000000
 
 - _User has a Lightroom catalog_: Entitled Lightroom customers will have a catalog only if they have created one through one of the Lightroom client applications. Partner applications must check for the existence of a catalog with the call:
   ```
-  GET /v2/catalogs/00000000000000000000000000000000
+  GET /v2/catalogs/mine
   ```
   This call will fail with a `404` if the user has no catalog; otherwise it will return the catalog information.
 
