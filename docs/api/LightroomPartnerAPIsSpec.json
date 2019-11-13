@@ -77,7 +77,7 @@
         }
       }
     },
-    "/v2/accounts/00000000000000000000000000000000": {
+    "/v2/accounts/me": {
       "get": {
         "tags": [
           "accounts"
@@ -270,7 +270,7 @@
         }
       }
     },
-    "/v2/catalogs/00000000000000000000000000000000": {
+    "/v2/catalogs/mine": {
       "get": {
         "tags": [
           "catalogs"
