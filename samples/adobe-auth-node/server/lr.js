@@ -36,7 +36,7 @@ let Lr = {
 			if (!token) {
 				return Promise.reject('get account failed: no user token')
 			}
-			return Lr.getJSONP(token, '/v2/accounts/00000000000000000000000000000000')
+			return Lr.getJSONP(token, '/v2/accounts/me')
 				.then((account) => {
 					return account
 				})
@@ -50,7 +50,7 @@ let Lr = {
 			if (!token) {
 				return Promise.reject('get catalog failed: no user token')
 			}
-			return Lr.getJSONP(token, '/v2/catalogs/00000000000000000000000000000000')
+			return Lr.getJSONP(token, '/v2/catalogs/mine')
 				.then((catalog) => {
 					return catalog
 				})
