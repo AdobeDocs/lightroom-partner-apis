@@ -1,0 +1,53 @@
+doctype
+html
+  head
+    title Adobe Auth Example
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    script.
+      function putBlobContentP(url, blob) {
+        return new Promise(function(resolve, reject) {
+          let xhr = new XMLHttpRequest()
+          xhr.open('PUT', url)
+          xhr.setRequestHeader('Content-Type', 'application/octet-stream')
+          xhr.onload = function() {
+            if (200 <= xhr.status && xhr.status < 300) {
+              resolve(xhr.response)
+            }
+            else {
+              let msg = `XHR load failed with status ${xhr.status}`
+              reject(msg)
+            }
+          }
+          xhr.onerror = ()=> {
+            let msg = `XHR call failed with status ${xhr.status}`
+            reject(msg)
+          }
+          xhr.send(blob)
+        })
+      }
+
+      // handle the input file dialog on-click
+      async function importFile(file) {
+        let fileName = encodeURIComponent(file.name)
+        let url = `https://localhost:8000/upload/image?file_name=${fileName}`
+        putBlobContentP(url, file).then((response) => {
+          let result = document.getElementById('text')
+          result.value = response
+        }).catch((err) => {
+          let result = document.getElementById('text')
+          result.value = err
+        })
+      }
+  body
+    header
+      h1 Adobe Auth App
+    .button-group
+      button(onclick="location.href='/login'") Log In with Adobe
+      button(onclick="location.href='/profile'") Get Profile
+      button(onclick="location.href='/get/health'") Get Health
+      button(onclick="location.href='/get/account'") Get Account
+      button(onclick="location.href='/get/catalog'") Get Catalog
+      button(onclick="location.href='/user'") Current User Info
+      input(id='input', type='file', onchange='importFile(input.files[0])')
+    .canvas
+      textarea(id='text' cols=80 rows=30) #{response}
