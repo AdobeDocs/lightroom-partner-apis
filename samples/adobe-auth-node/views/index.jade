@@ -38,6 +38,19 @@ html
           result.value = err
         })
       }
+
+      // handle the input file dialog on-click
+      async function importFileToFirstProject(file) {
+        let fileName = encodeURIComponent(file.name)
+        let url = `https://localhost:8000/projects/first/upload/image?file_name=${fileName}`
+        putBlobContentP(url, file).then((response) => {
+          let result = document.getElementById('text')
+          result.value = response
+        }).catch((err) => {
+          let result = document.getElementById('text')
+          result.value = err
+        })
+      }
   body
     header
       h1 Adobe Auth App
@@ -48,6 +61,13 @@ html
       button(onclick="location.href='/get/account'") Get Account
       button(onclick="location.href='/get/catalog'") Get Catalog
       button(onclick="location.href='/user'") Current User Info
+      button(onclick="location.href='/projects'") Get Project Albums
+      button(onclick="location.href='/projects/first'") Get First Project Album
+      button(onclick="location.href='/projects/first/create'") Create First Project Album
+      label(for='input' style='font-size:8pt;') Upload Image
       input(id='input', type='file', onchange='importFile(input.files[0])')
+      br
+      label(for='inputproject' style='font-size:8pt;') Upload Image and Add to First Project
+      input(id='inputproject', type='file', onchange='importFileToFirstProject(inputproject.files[0])')
     .canvas
       textarea(id='text' cols=80 rows=30) #{response}

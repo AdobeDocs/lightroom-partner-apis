@@ -33,6 +33,10 @@
     {
       "name": "assets",
       "description": "Information for assets, typically images or videos."
+    },
+    {
+      "name": "albums",
+      "description": "Information for albums, which contain references to zero or more assets."
     }
   ],
   "paths": {
@@ -77,7 +81,7 @@
         }
       }
     },
-    "/v2/accounts/00000000000000000000000000000000": {
+    "/v2/accounts/me": {
       "get": {
         "tags": [
           "accounts"
@@ -270,7 +274,7 @@
         }
       }
     },
-    "/v2/catalogs/00000000000000000000000000000000": {
+    "/v2/catalogs/mine": {
       "get": {
         "tags": [
           "catalogs"
@@ -774,6 +778,392 @@
           }
         }
       }
+    },
+    "/v2/catalogs/{catalog_id}/albums/{album_id}": {
+      "put": {
+        "tags": [
+          "albums"
+        ],
+        "summary": "Create album",
+        "description": "Create a new album.",
+        "operationId": "createAlbum",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Client ID (API Key) which is subscribed to the Lightroom APIs through console.adobe.io",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer [token] - User access token of an authenticated Lightroom customer",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "catalog_id",
+            "in": "path",
+            "description": "Identifier of the catalog containing the album.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "album_id",
+            "in": "path",
+            "description": "Client-generated Lightroom unique identifier for the new album.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Initial album metadata and information.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "subtype": {
+                  "type": "string",
+                  "enum": [ "project", "project_set" ]
+                },
+                "serviceId": {
+                  "type": "string",
+                  "description": "The API Key (client identifier) of the service creating the album."
+                },
+                "payload": {
+                  "$ref": "#/definitions/albumPayload"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400 Bad JSON": {
+            "$ref": "#/components/responses/BadRequestJSON"
+          },
+          "400 Bad Payload": {
+            "$ref": "#/components/responses/BadRequestPayload"
+          },
+          "401 Unauthorized": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403 Invalid Key": {
+            "$ref": "#/components/responses/ForbiddenKey"
+          },
+          "403 Exists": {
+            "$ref": "#/components/responses/ForbiddenExists"
+          },
+          "415 Unsupported": {
+            "$ref": "#/components/responses/UnsupportedMediaType"
+          },
+          "503 (Unavailable)": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        }
+      }
+    },
+    "/v2/catalogs/{catalog_id}/albums": {
+      "get": {
+        "tags": [
+          "albums"
+        ],
+        "summary": "Retrieve albums",
+        "description": "Retrieve a list of existing albums.",
+        "operationId": "getAlbums",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Client ID (API Key) which is subscribed to the Lightroom APIs through console.adobe.io",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer [token] - User access token of an authenticated Lightroom customer",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "catalog_id",
+            "in": "path",
+            "description": "Identifier of the catalog containing the album.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "subtype",
+            "in": "query",
+            "description": "Comma-separated list of subtypes to enumerate. Subtype can be one of 'project' or 'project_set'.",
+            "type": "string"
+          },
+          {
+            "name": "name_after",
+            "in": "query",
+            "description": "UTF-8 string representing the name of the album that should precede the current page of results. In other words, the response will contain result with names greater than the 'name_after' value using standard string ordering relations.",
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of albums to return. Default value is 100. Please note that the response may contain more than 'limit' number of albums returned if multiple albums at the 'limit' boundary have the same name_after.",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200 OK": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "base": {
+                  "type": "string",
+                  "description": "Base URL that can be prepended to the 'href' values in the 'links' to produce fully qualified URLs for future queries."
+                },
+                "resources": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "$ref": "#/definitions/uuid"
+                      },
+                      "created": {
+                        "$ref": "#/definitions/iso8601DateTime"
+                      },
+                      "updated": {
+                        "$ref": "#/definitions/iso8601DateTime"
+                      },
+                      "type": {
+                        "type": "string",
+                        "enum": [ "album" ]
+                      },
+                      "subtype": {
+                        "type": "string",
+                        "enum": [ "project", "project_set" ]
+                      },
+                      "serviceId": {
+                        "type": "string",
+                        "description": "The API Key (client identifier) of the service affiliated with the album."
+                      },
+                      "payload": {
+                        "$ref": "#/definitions/albumPayload"
+                      },
+                      "links": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400 Bad UUID": {
+            "$ref": "#/components/responses/BadRequestGUID"
+          },
+          "401 Unauthorized": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "403 Invalid Key": {
+            "$ref": "#/components/responses/ForbiddenKey"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "415 Unsupported": {
+            "$ref": "#/components/responses/UnsupportedMediaType"
+          },
+          "503 (Unavailable)": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        }
+      }
+    },
+    "/v2/catalogs/{catalog_id}/albums/{album_id}/assets": {
+      "put": {
+        "tags": [
+          "albums"
+        ],
+        "summary": "Add assets to album",
+        "description": "Add many assets to the album. Note that there is no default defined order/position for the asset in the album. A payload may be provided with cover, order, and any other data allowed in the data model. If the asset already exists in the album and the cover field is supplied, then no error is thrown but only the cover update is applied and other entries in the payload are completely ignored. In all other cases trying to add an asset to an album that is already in the album will return an error. Limited to 50 assets per API call. Returns http status 201 if at least one asset was added to the album. If all assets could not be added, http status 403 is returned. Individual error codes are returned for each asset in the response body.",
+        "operationId": "addAssetsToAlbum",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Client ID (API Key) which is subscribed to the Lightroom APIs through console.adobe.io",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer [token] - User access token of an authenticated Lightroom customer",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "catalog_id",
+            "in": "path",
+            "description": "Identifier of the catalog containing the album.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "album_id",
+            "in": "path",
+            "description": "Identifier of the album.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Album asset metadata and information.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "resources": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "$ref": "#/definitions/uuid",
+                        "description": "UUID of the asset to be added to the album."
+                      },
+                      "payload": {
+                        "type": "object",
+                        "properties": {
+                          "cover": {
+                            "type": "boolean",
+                            "description": "Whether this asset should be used as the album cover."
+                          },
+                          "order": {
+                            "$ref": "#/definitions/lex64SortOrderString"
+                          },
+                          "publishInfo": {
+                            "type": "object",
+                            "properties": {
+                              "servicePayload": {
+                                "type": "string",
+                                "description": "Album asset metadata, unique to the service, encapsulated as a single string with a maximum length of 1024 characters."
+                              },
+                              "remoteId": {
+                                "type": "string",
+                                "description": "Identifier for the album asset that is unique to the publishing service."
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "base": {
+                  "type": "string",
+                  "description": "Base URL that can be prepended to the 'href' values in the 'links' to produce fully qualified URLs for future queries."
+                },
+                "resources": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "$ref": "#/definitions/uuid"
+                      },
+                      "href": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "$ref": "#/definitions/uuid"
+                      },
+                      "http_status": {
+                        "type": "integer"
+                      },
+                      "code": {
+                        "type": "integer"
+                      },
+                      "description": {
+                        "type": "string"
+                      },
+                      "subtype": {
+                        "type": "string"
+                      },
+                      "errors": {
+                          "type": "object",
+                          "properties": {
+                            "asset": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400 Bad UUID": {
+            "$ref": "#/components/responses/BadRequestGUID"
+          },
+          "401 Unauthorized": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "403 Invalid Key": {
+            "$ref": "#/components/responses/ForbiddenKey"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "503 (Unavailable)": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1115,6 +1505,97 @@
     "uuid": {
       "type": "string",
       "pattern": "^[a-f0-9]{32}$"
+    },
+    "lex64SortOrderString": {
+      "type": "string",
+      "pattern": "^[-_0-9a-zA-Z]*[_0-9a-zA-Z]$",
+      "minLength": 1,
+      "maxLength": 1024
+    },
+    "albumPayload": {
+      "type": "object",
+      "properties": {
+        "userCreated": {
+          "$ref": "#/definitions/iso8601DateTime"
+        },
+        "userUpdated": {
+          "$ref": "#/definitions/iso8601DateTime"
+        },
+        "name": {
+          "type": "string"
+        },
+        "cover": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "$ref": "#/definitions/uuid",
+              "description": "Lightroom guid for the asset serving as the cover for the album."
+            }
+          }
+        },
+        "parent": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "$ref": "#/definitions/uuid",
+              "description": "Lightroom guid for the direct parent of the new album."
+            }
+          }
+        },
+        "publishInfo": {
+          "type": "object",
+          "properties": {
+            "version": {
+              "type": "string",
+              "enum": [ 3 ],
+              "description": "The version of the publish information; must be 3."
+            },
+            "servicePayload": {
+              "type": "string",
+              "description": "Album metadata, unique to the service, encapsulated as a single string with a maximum length of 1024 characters."
+            },
+            "remoteId": {
+              "type": "string",
+              "description": "Identifier for the album that is unique to the publishing service."
+            },
+            "created": {
+              "$ref": "#/definitions/iso8601DateTime",
+              "description": "Date when the externally affiliated content (identified by remoteId) was created."
+            },
+            "updated": {
+              "$ref": "#/definitions/iso8601DateTime",
+              "description": "Date when the externally affiliated content identified by remoteId) was last updated."
+            },
+            "deleted": {
+              "type": "boolean",
+              "description": "True if the externally affiliated content (identified by remoteId) was deleted; acts as a tombstone."
+            },
+            "remoteLinks": {
+              "type": "object",
+              "description": "Links to affiliated URLs on the publishing service.",
+              "properties": {
+                "edit": {
+                  "type": "object",
+                  "properties": {
+                    "href": {
+                      "type": "string",
+                      "description": "Fully-formed URL to a location to edit affiliated content (identified by remoteId) on the external service."
+                    }
+                  }
+                },
+                "view": {
+                  "properties": {
+                    "href": {
+                      "type": "string",
+                      "description": "Fully-formed URL to a location to view affiliated content (identified by remoteId) on the external service."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "externalDocs": {

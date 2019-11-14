@@ -3,6 +3,14 @@ const crypto = require('crypto')
 const adobeApiKey = require('../public/config').adobeApiKey
 const _lrEndpoint = 'https://lr.adobe.io'
 
+function _createUuid() {
+	// helper function for generating a Lightroom unique identifier
+	let bytes = crypto.randomBytes(16)
+	bytes[6] = bytes[6] & 0x0f | 0x40
+	bytes[8] = bytes[8] & 0x3f | 0x80
+	return bytes.toString('hex')
+}
+
 let Lr = {
 	util: {
 		// utility to check the health of the Lightroom services
@@ -28,7 +36,7 @@ let Lr = {
 			if (!token) {
 				return Promise.reject('get account failed: no user token')
 			}
-			return Lr.getJSONP(token, '/v2/accounts/00000000000000000000000000000000')
+			return Lr.getJSONP(token, '/v2/accounts/me')
 				.then((account) => {
 					return account
 				})
@@ -42,7 +50,7 @@ let Lr = {
 			if (!token) {
 				return Promise.reject('get catalog failed: no user token')
 			}
-			return Lr.getJSONP(token, '/v2/catalogs/00000000000000000000000000000000')
+			return Lr.getJSONP(token, '/v2/catalogs/mine')
 				.then((catalog) => {
 					return catalog
 				})
@@ -51,16 +59,56 @@ let Lr = {
 				})
 		},
 
-		// utility function to create a new asset revision and upload its master
-		uploadImageP: async function(token, importedBy, catalog_id, fileName, data) {
-			function _createUuid() {
-				// helper function for generating a Lightroom unique identifier
-				let bytes = crypto.randomBytes(16)
-				bytes[6] = bytes[6] & 0x0f | 0x40
-				bytes[8] = bytes[8] & 0x3f | 0x80
-				return bytes.toString('hex')
+		// utility to get the project albums
+		getProjectsP: function(token, catalog_id) {
+			if (!token) {
+				return Promise.reject('get project albums failed: no user token')
+			}
+			return Lr.getJSONP(token, `/v2/catalogs/${catalog_id}/albums?subtype=project`)
+				.then((projects) => {
+					let resources = projects.resources.filter((project) => project.payload.publishInfo && (project.payload.publishInfo.serviceId == adobeApiKey))
+					projects.resources = resources
+					return projects
+				})
+				.catch((error) => {
+					return Promise.reject(`get projects failed with error: ${error.statusCode}`)
+				})
+		},
+
+		// utility to create a project album
+		createProjectP: function(token, catalog_id) {
+			if (!token) {
+				return Promise.reject('create project failed: no user token')
 			}
 
+			// create a new project populating the required JSON data.
+			let album_id = _createUuid()
+			let importTimestamp = (new Date()).toISOString()
+			let content = {
+				subtype: 'project',
+				serviceId: adobeApiKey,
+				payload: {
+					userCreated: importTimestamp,
+					userUpdated: importTimestamp,
+					name: album_id, // just use album id for now
+					publishInfo: {
+						version: 2,
+						serviceId: adobeApiKey
+					}
+				}
+			}
+
+			return Lr.putJSONP(token, `/v2/catalogs/${catalog_id}/albums/${album_id}`, content)
+				.then((response) => {
+					return `created project with id ${album_id}`
+				})
+				.catch((error) => {
+					return Promise.reject(`create project failed with error: ${error.statusCode}`)
+				})
+		},
+
+		// utility function to create a new asset revision and upload its master
+		uploadImageP: async function(token, importedBy, catalog_id, fileName, data) {
 			// new revision url
 			let asset_id = _createUuid()
 			let revision_id = _createUuid()
@@ -105,8 +153,25 @@ let Lr = {
 
 			await _createRevisionP()
 			return _putMasterP().then(() => {
-				return 'upload succeeded'
+				return asset_id
 			})
+		},
+
+		uploadImageAndAddToFirstProjectP: async function(token, importedBy, catalog_id, fileName, data) {
+			let response = await Lr.util.getProjectsP(token, catalog_id)
+			if (response.resources.length == 0) {
+				return 'Error: no first project'
+			}
+			let album_id = response.resources[0].id
+			let asset_id = await Lr.util.uploadImageP(token, importedBy, catalog_id, fileName, data)
+			let content = { resources: [ { id: asset_id } ] }
+			return Lr.putJSONP(token, `/v2/catalogs/${catalog_id}/albums/${album_id}/assets`, content)
+				.then((response) => {
+					return asset_id
+				})
+				.catch((error) => {
+					return Promise.reject(`add asset to album failed: error status ${error.statusCode}`)
+				})
 		}
 	},
 
