@@ -24,6 +24,7 @@ router.get('/get/:data', function(req, res) {
 			return error
 		})
 		.then((result) => {
+			res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
 			res.render('index', { response: result })
 		})
 })
@@ -76,6 +77,73 @@ router.get('/user', function(req, res) {
 			return error
 		})
 		.then((result) => {
+			res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+			res.render('index', { response: result })
+		})
+})
+
+router.get('/projects', function(req, res) {
+	let _getProjectsP = (token, catalog_id) => {
+		return Lr.util.getProjectsP(token, catalog_id)
+			.then((response) => {
+				return JSON.stringify(response, null, 4)
+			})
+	}
+	_currentUserP(req.session)
+		.then((user) => {
+			return _getProjectsP(req.session.token, user.catalog_id)
+		})
+		.catch((error) => {
+			return error
+		})
+		.then((result) => {
+			res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+			res.render('index', { response: result })
+		})
+})
+
+let _getFirstProjectP = (token, catalog_id) => {
+	return Lr.util.getProjectsP(token, catalog_id)
+		.then((response) => {
+			if (response.resources.length == 0) {
+				return Promise.reject('Error: no first project')
+			}
+			return JSON.stringify(response.resources[0], null, 4)
+		})
+}
+
+router.get('/projects/first', function(req, res) {
+	_currentUserP(req.session)
+		.then((user) => {
+			return _getFirstProjectP(req.session.token, user.catalog_id)
+		})
+		.catch((error) => {
+			return error
+		})
+		.then((result) => {
+			res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+			res.render('index', { response: result })
+		})
+})
+
+router.get('/projects/first/create', function(req, res) {
+	let _createFirstProjectP = (token, catalog_id) => {
+		return _getFirstProjectP(token, catalog_id)
+			.then((response) => {
+				return Promise.reject('Error: first project already exists')
+			}, (error) => {
+				return Lr.util.createProjectP(token, catalog_id)
+			})
+	}
+	_currentUserP(req.session)
+		.then((user) => {
+			return _createFirstProjectP(req.session.token, user.catalog_id)
+		})
+		.catch((error) => {
+			return error
+		})
+		.then((result) => {
+			res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
 			res.render('index', { response: result })
 		})
 })
@@ -88,6 +156,29 @@ router.put('/upload/image', function(req, res) {
 			}
 			let fileName = decodeURIComponent(req.query.file_name)
 			return Lr.util.uploadImageP(req.session.token, user.account_id, user.catalog_id, fileName, req.body)
+				.then((asset_id) => {
+					return `upload succeeded: created asset ${asset_id}`
+				})
+		})
+		.catch((error) => {
+			return error
+		})
+		.then((result) => {
+			res.send(result)
+		})
+})
+
+router.put('/projects/first/upload/image', function(req, res) {
+	_currentUserP(req.session)
+		.then((user) => {
+			if (user.storage_used + req.body.length > user.storage_limit) {
+				return Promise.reject('upload failed: insufficient storage')
+			}
+			let fileName = decodeURIComponent(req.query.file_name)
+			return Lr.util.uploadImageAndAddToFirstProjectP(req.session.token, user.account_id, user.catalog_id, fileName, req.body)
+				.then((asset_id) => {
+					return `upload and add to album succeeded: created asset ${asset_id}`
+				})
 		})
 		.catch((error) => {
 			return error
