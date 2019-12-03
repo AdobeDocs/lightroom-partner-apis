@@ -77,7 +77,7 @@
         }
       }
     },
-    "/v2/accounts/me": {
+    "/v2/account": {
       "get": {
         "tags": [
           "accounts"
@@ -270,7 +270,7 @@
         }
       }
     },
-    "/v2/catalogs/mine": {
+    "/v2/catalog": {
       "get": {
         "tags": [
           "catalogs"
