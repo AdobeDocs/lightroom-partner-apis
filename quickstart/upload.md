@@ -120,7 +120,7 @@ Content-Length: {xsd:nonNegativeInteger}
 
 ### Check Customer Catalog
 
-If a Lightroom customer is entitled, an application should fetch the user catalog. Not all entitled customers will have a catalog. They may, for example, actively use other applications besides Lightroom. Only when they have engaged with a Lightroom client application will their catalog be created.
+If a Lightroom customer is entitled, an application should fetch the user catalog. 
 
 If a user has a catalog, the application should obtain the catalog identifier for use in the upload APIs. Otherwise, an application can inform users that they must first log into an Adobe Lightroom client before they are able to upload content from the partner application.
 
@@ -240,17 +240,15 @@ GET /v2/account
 
 - _User is entitled to Lightroom_: The account `entitlement.status` must be `subscriber` or `trial`. Other values indicate that a customer may be entitled to a different Adobe product; may have an expired subscription; or may never have subscribed to any product.
 
-- _User has a Lightroom catalog_: Entitled Lightroom customers will have a catalog only if they have created one through one of the Lightroom client applications. Partner applications must check for the existence of a catalog before uploading. 
-
 - _User has not exceeded their Lightroom storage_. If the account `entitlement.storage.used` is greater than or equal to the `entitlement.storage.limit` then the customer has exceeded their storage quota.
 
 - _User has sufficient space for the upload_. Client applications should calculate the size of the images to be uploaded and determine they will fit in the available storage (`entitlement.storage.limit` - `entitlement.storage.used`).
 
-- _User has a Lightroom catalog_: Entitled Lightroom customers will have a catalog only if they have created one through one of the Lightroom client applications. Partner applications must check for the existence of a catalog with the call:
+- _User has a Lightroom catalog_: Entitled Lightroom customers may either have an existing lightroom catalog generated via Lightroom client applications or a new catalog will be generated when the partner application looks up the user's catalog using the below API:
   ```
   GET /v2/catalog
   ```
-  This call will fail with a `404` if the user has no catalog; otherwise it will return the catalog information.
+  This call will fail with a `403` if the user has no catalog and a new catalog cannot be generated; otherwise it will return the catalog information.
 
 ### General Error Conditions
 
