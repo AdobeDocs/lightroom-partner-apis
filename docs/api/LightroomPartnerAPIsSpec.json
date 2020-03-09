@@ -779,6 +779,101 @@
         }
       }
     },
+    "/v2/catalogs/{catalog_id}/assets{asset_id}/rendtions/{rendition_type}": {
+      "get": {
+        "tags": [
+          "assets"
+        ],
+        "summary": "Get latest asset rendition",
+        "description": "Get latest asset rendition of specified type",
+        "operationId": "getAssetRendition",
+        "produces": [
+          "image/jpeg"
+        ],
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Client ID (API Key) which is subscribed to the Lightroom APIs through console.adobe.io",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer [token] - User access token of an authenticated Lightroom customer",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "catalog_id",
+            "in": "path",
+            "description": "Identifier of the catalog in which asset exists.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "asset_id",
+            "in": "path",
+            "description": "Identifier of the asset for which to fetch rendition.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "rendition_type",
+            "in": "path",
+            "description": "One of the supported rendition types. Supported rendition types are : ['thumnail2x', '640', '1280', '2048'].",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200 (OK)": {
+            "description": "Asset rendition file"
+          },
+          "400 Bad UUID": {
+            "$ref": "#/components/responses/BadRequestGUID"
+          },
+          "400 Input Validation Error": {
+            "description": "Request failed due to unsupported rendition type",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "enum": ["value not supported"]
+                      }
+                    }
+                  }
+                },
+                "code": {
+                  "type": "integer",
+                  "enum": [ 1005 ]
+                },
+                "description": {
+                  "type": "string",
+                  "enum": [ "Input Validation Error" ]
+                }
+              }
+            }
+          },
+          "401 Unauthorized": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404 (Not Found)": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "503 (Unavailable)": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        }
+      }
+    },
     "/v2/catalogs/{catalog_id}/albums/{album_id}": {
       "put": {
         "tags": [
