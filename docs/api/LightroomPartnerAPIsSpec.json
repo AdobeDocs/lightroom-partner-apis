@@ -1259,6 +1259,587 @@
           }
         }
       }
+    },
+    "/v2/catalogs/{catalog_id}/assets" : {
+      "get": {
+        "tags": [
+          "assets"
+        ],
+        "summary": "Retrieve assets",
+        "description": "Retrieve a list of existing assets that caller owns",
+        "operationId": "getAssets",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Client ID (API Key) which is subscribed to the Lightroom APIs through console.adobe.io",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer [token] - User access token of an authenticated Lightroom customer",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "catalog_id",
+            "in": "path",
+            "description": "Identifier of the catalog containing the album.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "updated_since",
+            "in": "query",
+            "description": "Starting timestamp",
+            "type": "dateTime"
+          },
+          {
+            "name": "captured_before",
+            "in": "query",
+            "description": "Used to request assets captured before a given time. captured_before will be found in the \"links.next.href\" link. If no links.next is included in a listing response, this is a hint from the server that there are no assets in the catalog with a date captured_before the last asset in the list (the client has reached the \"bottom\" of the list). captured_before may not be used in conjunction with captured_after.",
+            "type": "dateTime"
+          },
+          {
+            "name": "captured_after",
+            "in": "query",
+            "description": "Used to request assets captured after a given time. captured_after will be found in the \"links.prev.href\" link. If no links.prev is included in a listing response, this is a hint from the server that there are no assets in the catalog with a date captured_after the first asset in the list (the client has reached the \"top\" of the list). Note: assets imported without a captureDate payload property default to the value \"0000-00-00T00:00:00\". To list these assets set captured_after to \"-0001-12-31T23:59:59\". captured_after may not be used in conjunction with captured_before.",
+            "type": "dateTime"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of assets to return. Default value is 100. Maximum is 500. Please note that the response may contain more than 'limit' number of assets returned if the assets at the 'limit' boundary has the same capture_date. For example if there are 5 assets in a catalog and the 3rd, 4th and 5th assets all have the same capture dates the response will contain all 5 assets whether 'limit' is 3, 4 or 5.",
+            "type": "integer"
+          },
+          {
+            "name": "sha256",
+            "in": "query",
+            "description": "SHA256 hash value of master file. Assets with a matching SHA256 hash will be returned. May be used in conjunction with subtype.",
+            "type": "string"
+          },
+          {
+            "name": "hide_stacked_assets",
+            "in": "query",
+            "description": "To show or hide assets inside stacks in the catalog. If hide_stacked_assets is passed as true, assets inside stacks won't be returned. Default value is false.",
+            "type": "boolean"
+          },
+          {
+            "name": "subtype",
+            "in": "query",
+            "description": "Semi-colon separated asset subtype values.",
+            "type": "string"
+          },
+          {
+            "name": "asset_ids",
+            "in": "query",
+            "description": "Set of 1 - 100 comma separated asset_id values. Other parameters can not be used in conjunction with this parameter.",
+            "type": "string"
+          },
+          {
+            "name": "exclude",
+            "in": "query",
+            "description": "Used to request the list for different types of assets excluding incomplete or complete image and video assets. The valid values are \"incomplete\" and \"complete\". An image or video asset is considered to be complete if its proxy or master upload exists. An asset of subtypes profile, preset, camera_profile or lens_profile is considered complete if its master upload exists.",
+            "type": "string"
+          },
+          {
+            "name": "group",
+            "in": "query",
+            "description": "Semi-colon separated group values. Subtype parameter of \"preset\" or \"profile\" is required when using this parameter.",
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Semi-colon separated name values. Subtype parameter of \"preset\" or \"profile\" is required when using this parameter.",
+            "type": "string"
+          },
+          {
+            "name": "favorite",
+            "in": "query",
+            "description": "Favorite status, subtype parameter of \"preset\" is required when using this parameter.",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200 OK": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "base" : {
+                  "type": "string",
+                  "description": "Base URL that can be prepended to the 'href' values in the 'links' to produce fully qualified URLs for future queries."
+                },
+                "resources": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "$ref": "#/definitions/uuid"
+                      },
+                      "type": {
+                        "type": "string",
+                        "enum": ["asset"]
+                      },
+                      "subtype": {
+                        "type": "string"
+                      },
+                      "created": {
+                        "$ref": "#/definitions/iso8601DateTime"
+                      },
+                      "updated": {
+                        "$ref": "#/definitions/iso8601DateTime"
+                      },
+                      "links": {
+                        "type": "object"
+                      },
+                      "payload": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              },
+              "example": {
+                "base": "<base_url>",
+                "resources": [
+                  {
+                    "id": "<asset_id>",
+                    "type": "asset",
+                    "subtype": "image",
+                    "created": "<created_date>",
+                    "updated": "<updated_date>",
+                    "links": {
+                      "self": {
+                        "href": "assets/<asset_id>"
+                      },
+                      "/rels/rendition_type/<rendition_type>": {
+                        "href": "assets/<asset_id>/revisions/<revision_id>/renditions/<rendition_id>"
+                      },
+                      "/rels/rendition_create": {
+                        "href": "assets/<asset_id>/revisions/{revision_id}/renditions/{rendition_id}",
+                        "templated": true
+                      },
+                      "/rels/profiles/<profile_type>": "<profile_info>",
+                      "/rels/proxy_create": {
+                        "href": "assets/<asset_id>/revisions/{revision_id}/proxies/{proxy_id}",
+                        "templated": true
+                      },
+                      "/rels/master": {
+                        "href": "assets/<asset_id>/revisions/<revision_id>/master"
+                      },
+                      "/rels/master_create": {
+                        "href": "assets/<asset_id>/revisions/{revision_id}/master",
+                        "templated": true
+                      },
+                      "/rels/xmp/develop": {
+                        "href": "assets/<asset_id>/revisions/<revision_id>/xmp/develop",
+                        "fileSize": "<external_xmp_develop_setting_file_size>"
+                      },
+                      "/rels/xmp_develop_create": {
+                        "href": "assets/<asset_id>/revisions/{revision_id}/xmp/develop",
+                        "templated": true
+                      },
+                      "/rels/profiles/camera": {
+                        "filename": "<file_name>",
+                        "href": "assets/<asset_id>/revisions/<revision_id>/master"
+                      }
+                    },
+                    "payload": {
+                      "captureDate": "<image_capture_date>",
+                      "importSource": {
+                        "fileName": "<file_name>",
+                        "fileSize": "<image_file_size>",
+                        "originalWidth": "<image_width>",
+                        "originalHeight": "<image_height>",
+                        "sha256": "<image_sha256>",
+                        "importedOnDevice": "<import_device_name>",
+                        "importedBy": "<import_account_id>",
+                        "importTimestamp": "<import_time>"
+                      },
+                      "<key>": "<value>",
+                      "develop": {
+                        "<dev_key>": "<dev_value>"
+                      }
+                    }
+                  },
+                  {
+                    "id": "<asset_id>",
+                    "type": "asset",
+                    "subtype": "video",
+                    "created": "<created_date>",
+                    "updated": "<updated_date>",
+                    "links": {
+                      "self": {
+                        "href": "assets/<asset_id>"
+                      },
+                      "/rels/rendition_type/<rendition_type>": {
+                        "href": "assets/<asset_id>/revisions/<revision_id>/renditions/<rendition_id>"
+                      },
+                      "/rels/rendition_create": {
+                        "href": "assets/<asset_id>/revisions/{revision_id}/renditions/{rendition_id}",
+                        "templated": true
+                      },
+                      "/rels/profiles/<profile_type>": "<profile_info>",
+                      "/rels/proxy_create": {
+                        "href": "assets/<asset_id>/revisions/{revision_id}/proxies/{proxy_id}",
+                        "templated": true
+                      },
+                      "/rels/master": {
+                        "href": "assets/<asset_id>/revisions/<revision_id>/master"
+                      },
+                      "/rels/master_create": {
+                        "href": "assets/<asset_id>/revisions/{revision_id}/master",
+                        "templated": true
+                      },
+                      "/rels/profiles/camera": {
+                        "filename": "<file_name>",
+                        "href": "assets/<asset_id>/revisions/<revision_id>/master"
+                      }
+                    },
+                    "unshareable": "<unshareable>",
+                    "payload": {
+                      "captureDate": "<image_capture_date>",
+                      "importSource": {
+                        "fileName": "<file_name>",
+                        "fileSize": "<image_file_size>",
+                        "originalWidth": "<image_width>",
+                        "originalHeight": "<image_height>",
+                        "sha256": "<image_sha256>",
+                        "importedOnDevice": "<import_device_name>",
+                        "importedBy": "<import_account_id>",
+                        "importTimestamp": "<import_time>"
+                      },
+                      "video": {
+                        "frameRate": [
+                          "<video_frame_rate_numerator>",
+                          "<video_frame_rate_denominator>"
+                        ],
+                        "duration": [
+                          "<video_duration_numerator>",
+                          "<video_duration_denominator>"
+                        ],
+                        "displayAspectRatio": [
+                          "<video_aspect_ratio_numerator>",
+                          "<video_aspect_ratio_denominator>"
+                        ],
+                        "storageWidth": "<video_storage_width>",
+                        "storageHeight": "<video_storage_height>"
+                      },
+                      "<key>": "<value>",
+                      "develop": {
+                        "<dev_key>": "<dev_value>"
+                      }
+                    },
+                    "fingerprint": {
+                      "pass": "<pass>",
+                      "file_href": "assets/<asset_id>/revisions/<revision_id>/renditions/<rendition_id>",
+                      "copyright": {
+                        "title": "<copyrighted_title>",
+                        "owner": "<copyrighted_owner>"
+                      }
+                    },
+                    "importedByUser": {
+                      "id": "<imported_by_user>"
+                    }
+                  }
+                ],
+                "links": {
+                  "prev": {
+                    "href": "albums/<album_id>/assets?captured_after=<first_captured_date>"
+                  },
+                  "next": {
+                    "href": "albums/<album_id>/assets?captured_before=<last_captured_date>"
+                  },
+                  "/rels/asset": {
+                    "href": "assets/{asset_id}",
+                    "templated": true
+                  }
+                }
+              }
+            }
+          },
+          "200 OK (Asset_ids query param present)": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "base" : {
+                  "type": "string",
+                  "description": "Base URL that can be prepended to the 'href' values in the 'links' to produce fully qualified URLs for future queries."
+                },
+                "resources": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "$ref": "#/definitions/uuid"
+                      },
+                      "type": {
+                        "type": "string",
+                        "enum": ["asset"]
+                      },
+                      "subtype": {
+                        "type": "string"
+                      },
+                      "created": {
+                        "$ref": "#/definitions/iso8601DateTime"
+                      },
+                      "updated": {
+                        "$ref": "#/definitions/iso8601DateTime"
+                      },
+                      "revision_ids": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "links": {
+                        "type": "object"
+                      },
+                      "payload": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                },
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "$ref": "#/definitions/uuid"
+                      },
+                      "code": {
+                        "type": "integer"
+                      },
+                      "description": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "links": {
+                  "type": "object"
+                }
+              },
+              "example": {
+                "base": "<base_url>",
+                "resources": [
+                  {
+                    "id": "<asset_id>",
+                    "type": "asset",
+                    "subtype": "image",
+                    "created": "<created_date>",
+                    "updated": "<updated_date>",
+                    "revision_ids": [
+                      "<revision_id1>",
+                      "<revision_id2>",
+                      "<revision_id3>"
+                    ],
+                    "links": {
+                      "self": {
+                        "href": "assets/<asset_id>"
+                      },
+                      "/rels/rendition_type/<rendition_type>": {
+                        "href": "assets/<asset_id>/revisions/<revision_id>/renditions/<rendition_id>"
+                      },
+                      "/rels/rendition_create": {
+                        "href": "assets/<asset_id>/revisions/{revision_id}/renditions/{rendition_id}",
+                        "templated": true
+                      },
+                      "/rels/profiles/<profile_type>": "<profile_info>",
+                      "/rels/proxy_create": {
+                        "href": "assets/<asset_id>/revisions/{revision_id}/proxies/{proxy_id}",
+                        "templated": true
+                      },
+                      "/rels/master": {
+                        "href": "assets/<asset_id>/revisions/<revision_id>/master"
+                      },
+                      "/rels/master_create": {
+                        "href": "assets/<asset_id>/revisions/{revision_id}/master",
+                        "templated": true
+                      },
+                      "/rels/xmp/develop": {
+                        "href": "assets/<asset_id>/revisions/<revision_id>/xmp/develop",
+                        "fileSize": "<external_xmp_develop_setting_file_size>"
+                      },
+                      "/rels/xmp_develop_create": {
+                        "href": "assets/<asset_id>/revisions/{revision_id}/xmp/develop",
+                        "templated": true
+                      },
+                      "/rels/profiles/camera": {
+                        "filename": "<file_name>",
+                        "href": "assets/<asset_id>/revisions/<revision_id>/master"
+                      }
+                    },
+                    "payload": {
+                      "captureDate": "<image_capture_date>",
+                      "importSource": {
+                        "fileName": "<file_name>",
+                        "fileSize": "<image_file_size>",
+                        "originalWidth": "<image_width>",
+                        "originalHeight": "<image_height>",
+                        "sha256": "<image_sha256>",
+                        "importedOnDevice": "<import_device_name>",
+                        "importedBy": "<import_account_id>",
+                        "importTimestamp": "<import_time>"
+                      },
+                      "<key>": "<value>",
+                      "develop": {
+                        "<dev_key>": "<dev_value>"
+                      }
+                    }
+                  },
+                  {
+                    "id": "<asset_id>",
+                    "type": "asset",
+                    "subtype": "video",
+                    "created": "<created_date>",
+                    "updated": "<updated_date>",
+                    "revision_ids": [
+                      "<revision_id1>",
+                      "<revision_id2>",
+                      "<revision_id3>"
+                    ],
+                    "links": {
+                      "self": {
+                        "href": "assets/<asset_id>"
+                      },
+                      "/rels/rendition_type/<rendition_type>": {
+                        "href": "assets/<asset_id>/revisions/<revision_id>/renditions/<rendition_id>"
+                      },
+                      "/rels/rendition_create": {
+                        "href": "assets/<asset_id>/revisions/{revision_id}/renditions/{rendition_id}",
+                        "templated": true
+                      },
+                      "/rels/profiles/<profile_type>": "<profile_info>",
+                      "/rels/proxy_create": {
+                        "href": "assets/<asset_id>/revisions/{revision_id}/proxies/{proxy_id}",
+                        "templated": true
+                      },
+                      "/rels/master": {
+                        "href": "assets/<asset_id>/revisions/<revision_id>/master"
+                      },
+                      "/rels/master_create": {
+                        "href": "assets/<asset_id>/revisions/{revision_id}/master",
+                        "templated": true
+                      },
+                      "/rels/profiles/camera": {
+                        "filename": "<file_name>",
+                        "href": "assets/<asset_id>/revisions/<revision_id>/master"
+                      }
+                    },
+                    "unshareable": "<unshareable>",
+                    "payload": {
+                      "captureDate": "<image_capture_date>",
+                      "importSource": {
+                        "fileName": "<file_name>",
+                        "fileSize": "<image_file_size>",
+                        "originalWidth": "<image_width>",
+                        "originalHeight": "<image_height>",
+                        "sha256": "<image_sha256>",
+                        "importedOnDevice": "<import_device_name>",
+                        "importedBy": "<import_account_id>",
+                        "importTimestamp": "<import_time>"
+                      },
+                      "video": {
+                        "frameRate": [
+                          "<video_frame_rate_numerator>",
+                          "<video_frame_rate_denominator>"
+                        ],
+                        "duration": [
+                          "<video_duration_numerator>",
+                          "<video_duration_denominator>"
+                        ],
+                        "displayAspectRatio": [
+                          "<video_aspect_ratio_numerator>",
+                          "<video_aspect_ratio_denominator>"
+                        ],
+                        "storageWidth": "<video_storage_width>",
+                        "storageHeight": "<video_storage_height>"
+                      },
+                      "<key>": "<value>",
+                      "develop": {
+                        "<dev_key>": "<dev_value>"
+                      }
+                    },
+                    "fingerprint": {
+                      "pass": "<pass>",
+                      "file_href": "assets/<asset_id>/revisions/<revision_id>/renditions/<rendition_id>",
+                      "copyright": {
+                        "title": "<copyrighted_title>",
+                        "owner": "<copyrighted_owner>"
+                      }
+                    },
+                    "importedByUser": {
+                      "id": "<imported_by_user>"
+                    }
+                  }
+                ],
+                "errors": [
+                  {
+                    "id": "<asset_id>",
+                    "code": 1000,
+                    "description": "Resource not found"
+                  }
+                ],
+                "links": {
+                  "/rels/asset": {
+                    "href": "assets/{asset_id}",
+                    "templated": true
+                  }
+                }
+              }
+            }
+          },
+          "400 (Bad UUID)": {
+            "$ref": "#/components/responses/BadRequestGUID"
+          },
+          "400 (Bad asset_ids)": {
+            "$ref": "#/components/responses/BadRequestAssetIds"
+          },
+          "400 (Bad group)": {
+            "$ref": "#/components/responses/BadRequestGroup"
+          },
+          "400 (Bad name)": {
+            "$ref": "#/components/responses/BadRequestName"
+          },
+          "400 (Bad favorite param)": {
+            "$ref": "#/components/responses/BadRequestFavorite"
+          },
+          "400 (Bad subtype with name/group)": {
+            "$ref": "#/components/responses/BadRequestMissingSubtypeWithGroupOrName"
+          },
+          "400 (Bad subtype with favorite)": {
+            "$ref": "#/components/responses/BadRequestMissingSubtypeWithFavorite"
+          },
+          "400 (Bad date/time)": {
+            "$ref": "#/components/responses/BadRequestInvalidDateTime"
+          },
+          "401 (Unauthorized)": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403 (Invalid Key)": {
+            "$ref": "#/components/responses/ForbiddenKey"
+          },
+          "403 (Forbidden)": {
+            "$ref": "#/components/responses/ForbiddenClient"
+          },
+          "503 (Unavailable)": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1375,6 +1956,202 @@
           }
         }
       },
+      "BadRequestAssetIds": {
+        "description": "The request failed as no other parameter is allowed with asset_ids parameter.",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "errors": {
+              "type": "object",
+              "properties": {
+                "<param_name>": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": [ "not allowed with asset_ids parameter"]
+                  }
+                }
+              }
+            },
+            "code": {
+              "type": "integer",
+              "enum": [ 1005 ]
+            },
+            "description": {
+              "type": "string",
+              "enum": [ "Input Validation Error" ]
+            }
+          }
+        }
+      },
+      "BadRequestGroup": {
+        "description": "The request failed due one of the subtype does not supported group. Only preset or profile supports group parameter.",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "errors": {
+              "type": "object",
+              "properties": {
+                "group": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": [ "group not expected for each given subtype"]
+                  }
+                }
+              }
+            },
+            "code": {
+              "type": "integer",
+              "enum": [ 1005 ]
+            },
+            "description": {
+              "type": "string",
+              "enum": [ "Input Validation Error" ]
+            }
+          }
+        }
+      },
+      "BadRequestName": {
+        "description": "The request failed due to one of the subtype does not supported group. Only preset or profile supports name parameter.",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "errors": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": ["name not expected for each given subtype"]
+                  }
+                }
+              }
+            },
+            "code": {
+              "type": "integer",
+              "enum": [ 1005 ]
+            },
+            "description": {
+              "type": "string",
+              "enum": [ "Input Validation Error" ]
+            }
+          }
+        }
+      },
+      "BadRequestFavorite": {
+        "description": "The request failed due to invalid favorite status. Currently only true is supported.",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "errors": {
+              "type": "object",
+              "properties": {
+                "favorite": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": ["favorite query param can only be true. favorite=false not supported"]
+                  }
+                }
+              }
+            },
+            "code": {
+              "type": "integer",
+              "enum": [ 1005 ]
+            },
+            "description": {
+              "type": "string",
+              "enum": [ "Input Validation Error" ]
+            }
+          }
+        }
+      },
+      "BadRequestMissingSubtypeWithGroupOrName": {
+        "description": "The request failed due to missing subtype. This error can occur if group or name parameter is included in the request.",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "errors": {
+              "type": "object",
+              "properties": {
+                "subtype": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": ["subtype value expected with group or name"]
+                  }
+                }
+              }
+            },
+            "code": {
+              "type": "integer",
+              "enum": [ 1005 ]
+            },
+            "description": {
+              "type": "string",
+              "enum": [ "Input Validation Error" ]
+            }
+          }
+        }
+      },
+      "BadRequestMissingSubtypeWithFavorite": {
+        "description": "The request failed due to missing subtype. This error can occur if favorite is included in the request.",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "errors": {
+              "type": "object",
+              "properties": {
+                "subtype": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": ["subtype value expected with favorite"]
+                  }
+                }
+              }
+            },
+            "code": {
+              "type": "integer",
+              "enum": [ 1005 ]
+            },
+            "description": {
+              "type": "string",
+              "enum": [ "Input Validation Error" ]
+            }
+          }
+        }
+      },
+      "BadRequestInvalidDateTime": {
+        "description": "The request failed due to invalid date/time.",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "errors": {
+              "type": "object",
+              "properties": {
+                "<param_name>": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": [ "must be a valid XML Schema dateTime"]
+                  }
+                }
+              }
+            },
+            "code": {
+              "type": "integer",
+              "enum": [ 1005 ]
+            },
+            "description": {
+              "type": "string",
+              "enum": [ "Input Validation Error" ]
+            }
+          }
+        }
+      },
       "Unauthorized": {
         "description": "The request failed due to missing or invalid authentication token."
       },
@@ -1478,6 +2255,36 @@
             "description": {
               "type": "string",
               "enum": [ "Access is forbidden" ]
+            }
+          }
+        }
+      },
+      "ForbiddenClient": {
+        "description": "The request failed because the client application must be upgraded.",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "integer",
+              "enum": [ 4999 ]
+            },
+            "description": {
+              "type": "string",
+              "enum": [ "Upgrade required" ]
+            },
+            "links": {
+              "type": "object",
+              "properties": {
+                "/rels/client_app": {
+                  "type": "object",
+                  "properties": {
+                    "href": {
+                      "type": "string",
+                      "enum": ["<app_url> (Link to the where to find a new version of the client application)"]
+                    }
+                  }
+                }
+              }
             }
           }
         }
