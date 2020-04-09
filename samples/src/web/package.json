@@ -1,0 +1,12 @@
+{
+  "name": "lr-partner-apis-samples-web",
+  "version": "1.0.0",
+  "description": "Web samples using the Lightroom Services APIs",
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "browserslist": "last 2 chrome version, last 2 firefox version, last 2 safari version",
+  "devDependencies": {
+    "parcel-bundler": "^1.12.4"
+  }
+}

@@ -1,0 +1,27 @@
+/*
+Copyright 2020 Adobe
+All Rights Reserved.
+
+NOTICE: Adobe permits you to use, modify, and distribute this file in
+accordance with the terms of the Adobe license agreement accompanying
+it. If you have received this file from a source other than Adobe,
+then your use, modification, or distribution of it requires the prior
+written permission of Adobe. 
+*/
+body {
+	background-color: #eeeeee;
+	margin: 0px;
+	padding: 0px;
+	overflow-x: hidden;
+	color: #777777;
+	font-size: 14px;
+	font-family: arial, sans-serif;
+	font-weight: 100;
+	line-height: 14px;
+}
+
+::-webkit-scrollbar {
+	width: 0px;
+	height: 0px;
+	background: transparent;
+}
