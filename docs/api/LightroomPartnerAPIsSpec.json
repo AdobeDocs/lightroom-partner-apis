@@ -1639,7 +1639,7 @@
                           "href": "assets/<asset_id>"
                         },
                         "/rels/rendition_type/<rendition_type>": {
-                         "href": "assets/<asset_id>/renditions/<rendition_type>"
+                          "href": "assets/<asset_id>/renditions/<rendition_type>"
                         }
                       },
                       "payload": {
@@ -1723,7 +1723,7 @@
                           "href": "assets/<asset_id>"
                         },
                         "/rels/rendition_type/<rendition_type>": {
-                         "href": "assets/<asset_id>/renditions/<rendition_type>"
+                          "href": "assets/<asset_id>/renditions/<rendition_type>"
                         }
                       },
                       "payload": {
@@ -1958,7 +1958,7 @@
                         "href": "assets/<asset_id>"
                       },
                       "/rels/rendition_type/<rendition_type>": {
-                       "href": "assets/<asset_id>/renditions/<rendition_type>"
+                        "href": "assets/<asset_id>/renditions/<rendition_type>"
                       }
                     },
                     "payload": {
@@ -1990,7 +1990,7 @@
                         "href": "assets/<asset_id>"
                       },
                       "/rels/rendition_type/<rendition_type>": {
-                       "href": "assets/<asset_id>/renditions/<rendition_type>"
+                        "href": "assets/<asset_id>/renditions/<rendition_type>"
                       }
                     },
                     "unshareable": "<unshareable>",
@@ -2140,7 +2140,7 @@
                         "href": "assets/<asset_id>"
                       },
                       "/rels/rendition_type/<rendition_type>": {
-                       "href": "assets/<asset_id>/renditions/<rendition_type>"
+                        "href": "assets/<asset_id>/renditions/<rendition_type>"
                       }
                     },
                     "payload": {
@@ -2177,7 +2177,7 @@
                         "href": "assets/<asset_id>"
                       },
                       "/rels/rendition_type/<rendition_type>": {
-                       "href": "assets/<asset_id>/renditions/<rendition_type>"
+                        "href": "assets/<asset_id>/renditions/<rendition_type>"
                       }
                     },
                     "unshareable": "<unshareable>",
@@ -2382,7 +2382,7 @@
                     "href": "assets/<asset_id>"
                   },
                   "/rels/rendition_type/<rendition_type>": {
-                   "href": "assets/<asset_id>/renditions/<rendition_type>"
+                    "href": "assets/<asset_id>/renditions/<rendition_type>"
                   }
                 },
                 "payload": {
