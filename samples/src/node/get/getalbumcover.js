@@ -9,17 +9,7 @@ then your use, modification, or distribution of it requires the prior
 written permission of Adobe. 
 */
 const LrSession = require('../../common/lr/LrSession')
-const fs = require('fs')
-
-let _writeBufferToFileP = (buffer, name) => new Promise((resolve, reject) => {
-	fs.writeFile(name, buffer,  'binary', function(err) {
-		if(err) {
-			reject(err)
-		} else {
-			resolve()
-		}
-	})
-})
+const FileUtils = require('../../common/file/FileUtils')
 
 async function mainP(albumId) {
 	let lr = await LrSession.currentContextP()
@@ -27,7 +17,7 @@ async function mainP(albumId) {
 	let buffer = await lr.getAlbumCoverP(album)
 	if (buffer) {
 		let name = `${albumId}.thumb.jpg`
-		await _writeBufferToFileP(buffer, name)
+		await FileUtils.writeBufferToFileP(buffer, name)
 		console.log('success: ', name)
 	}
 	else {

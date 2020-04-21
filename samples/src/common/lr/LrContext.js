@@ -45,12 +45,12 @@ class LrContext {
 		return LrRequestor.getPagedP(this._session, path)
 	}
 
-	async getAssetThumbnailRenditionP(assetId) {
+	getAssetThumbnailRenditionP(assetId) {
 		let path = `/v2/catalogs/${this._catalogId}/assets/${assetId}/renditions/thumbnail2x`
 		return LrRequestor.getP(this._session, path)
 	}
 
-	async getAsset2048RenditionP(assetId) {
+	getAsset2048RenditionP(assetId) {
 		let path = `/v2/catalogs/${this._catalogId}/assets/${assetId}/renditions/2048`
 		return LrRequestor.getP(this._session, path)
 	}
