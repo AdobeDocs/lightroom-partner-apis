@@ -49,13 +49,7 @@ let _getExistingCatalogP = async (session) => {
 	return catalog
 }
 
-LrSession = {
-	currentP: async () => {
-		let session = await LrAuth.authenticateP()
-		session.account = await LrRequestor.getP(session, '/v2/account')
-		session.catalog = await LrRequestor.getP(session, '/v2/catalog')
-		return session
-	},
+let LrSession = {
 	currentContextP: async () => {
 		if (_lr) {
 			return _lr

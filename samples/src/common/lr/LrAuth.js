@@ -8,7 +8,7 @@ it. If you have received this file from a source other than Adobe,
 then your use, modification, or distribution of it requires the prior
 written permission of Adobe. 
 */
-let preauthenticatedHost
+let preauthenticatedHost = 'lr.adobe.io'
 let preauthenticatedApiKey
 let preauthenticatedToken
 

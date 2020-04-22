@@ -20,6 +20,8 @@ let _toJSON = (body) => {
 	return JSON.parse(string.replace(while1Regex, ''))
 }
 
+let _isJSON = (contentType) => contentType == 'application/json' || contentType == 'application/json;charset=utf-8'
+
 let _onEnd = (res, body, resolve, reject) => {
 	if (res.statusCode < 200 || res.statusCode > 299) {
 		reject({
@@ -28,7 +30,7 @@ let _onEnd = (res, body, resolve, reject) => {
 		})
 	}
 	else {
-		resolve(res.headers['content-type'] == 'application/json' ? _toJSON(body) : body)
+		resolve(_isJSON(res.headers['content-type']) ? _toJSON(body) : body)
 	}
 }
 
@@ -103,13 +105,15 @@ let _putChunkP = function(session, path, type, data, offset, size) {
 
 let LrRequestor = {
 	healthP: (apiKey, host = 'lr.adobe.io') => _unauthGetP({ apiKey, host }, '/v2/health'),
+	headP: (session, path) => _authRequestP(session, 'HEAD', path, {}),
 	getP: (session, path) => _authRequestP(session, 'GET', path, {}),
 	getPagedP: (session, path) => _getPagedP(session, path),
 	putP: (session, path, json) => _sendJSONP(session, 'PUT', path, json),
 	putUniqueP: (session, path, json, sha256) => _sendJSONP(session, 'PUT', path, json, sha256),
 	putChunkP: (session, path, type, data, offset, size) => _putChunkP(session, path, type, data, offset, size),
 	postP: (session, path, json) => _sendJSONP(session, 'POST', path, json),
-	deleteP: (session, path) => _authRequestP(session, 'DELETE', path, {})
+	deleteP: (session, path) => _authRequestP(session, 'DELETE', path, {}),
+	genP: (session, path, type) => _authRequestP(session, 'POST', path, { 'X-Generate-Renditions': type })
 }
 
 module.exports = LrRequestor

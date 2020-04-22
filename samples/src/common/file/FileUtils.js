@@ -10,6 +10,7 @@ written permission of Adobe.
 */
 const File = require('./File')
 const LrUtils = require('../lr/LrUtils')
+const fs = require('fs')
 
 function _uploadMasterP(lr, filePath, size, master_create, mime) {
 	let chunkHandlerP = (data, offset) => lr.putMasterP(master_create, mime, offset, size, data)
@@ -48,7 +49,17 @@ let FileUtils = {
 			assets.push( { id: assetId, remoteId: file.path })
 		}
 		return assets
-	}
+	},
+
+	writeBufferToFileP: (buffer, name) => new Promise((resolve, reject) => {
+		fs.writeFile(name, buffer,  'binary', function(err) {
+			if(err) {
+				reject(err)
+			} else {
+				resolve()
+			}
+		})
+	})
 }
 
 module.exports = FileUtils
