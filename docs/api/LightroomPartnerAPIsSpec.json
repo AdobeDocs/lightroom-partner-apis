@@ -1072,26 +1072,20 @@
                   "/rels/parent_album": {
                     "href": "albums/<parent_album_id>"
                   },
-                  "/rels/web_album": {
-                    "href": "<web_url>/libraries/<catalog_id>/albums/<album_id>"
-                  },
                   "/rels/cover_asset": {
                     "href": "assets/<cover_asset_id>"
                   },
-                  "/rels/child_albums": {
-                    "href": "albums/<album_id>/albums"
-                  },
                   "/rels/rendition_type/320": {
-                    "href": "assets/<cover_asset_id>/revisions/<revision_id>/renditions/<rendition_id>"
+                    "href": "assets/<cover_asset_id>/renditions/320"
                   },
                   "/rels/rendition_type/640": {
-                    "href": "assets/<cover_asset_id>/revisions/<revision_id>/renditions/<rendition_id>"
+                    "href": "assets/<cover_asset_id>/renditions/640"
                   },
                   "/rels/rendition_type/1280": {
-                    "href": "assets/<cover_asset_id>/revisions/<revision_id>/renditions/<rendition_id>"
+                    "href": "assets/<cover_asset_id>/renditions/1280"
                   },
                   "/rels/rendition_type/2048": {
-                    "href": "assets/<cover_asset_id>/revisions/<revision_id>/renditions/<rendition_id>"
+                    "href": "assets/<cover_asset_id>/renditions/2048"
                   }
                 }
               }
