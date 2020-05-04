@@ -1496,7 +1496,7 @@
           {
             "name":"embed",
             "in":"query",
-            "description":"Semicolon-delimited list of additional data to include. When the list includes \"asset\", the asset subdocuments contains all the fields with just the importedByUser and its id. When the list includes \"asset\" and \"user\", the asset subdocuments contains all the fields as shown below, including feedbackuser. Otherwise, only the id and self href link are returned in the asset subdocuments.",
+            "description":"Semicolon-delimited list of additional data to include. When the list includes \"asset\", the asset subdocuments contains all the fields. Otherwise, only the id and self href link are returned in the asset subdocuments.",
             "type":"string"
           },
           {
@@ -1578,9 +1578,6 @@
                           },
                           "payload":{
                             "type":"object"
-                          },
-                          "importedByUser": {
-                            "type":"object"
                           }
                         }
                       }
@@ -1651,32 +1648,6 @@
                         "<key>": "<value>",
                         "develop": {
                           "<dev_key>": "<dev_value>"
-                        }
-                      },
-                      "importedByUser": {
-                        "id": "<account_id>",
-                        "created": "<created_date>",
-                        "updated": "<updated_date>",
-                        "type": "feedbackuser",
-                        "full_name": "<full_name>",
-                        "first_name": "<first_name>",
-                        "last_name": "<last_name>",
-                        "avatar": {
-                          "placeholder": "{boolean}"
-                        },
-                        "links": {
-                          "/rels/avatars/small": {
-                            "href": "/v2/avatars/<account_id>/<timestamp>/small",
-                            "size": 50
-                          },
-                          "/rels/avatars/medium": {
-                            "href": "/v2/avatars/<account_id>/<timestamp>/medium",
-                            "size": 115
-                          },
-                          "/rels/avatars/large": {
-                            "href": "/v2/avatars/<account_id>/<timestamp>/large",
-                            "size": 138
-                          }
                         }
                       }
                     },
@@ -2028,9 +1999,6 @@
                         "title": "<copyrighted_title>",
                         "owner": "<copyrighted_owner>"
                       }
-                    },
-                    "importedByUser": {
-                      "id": "<imported_by_user>"
                     }
                   }
                 ],
@@ -2215,9 +2183,6 @@
                         "title": "<copyrighted_title>",
                         "owner": "<copyrighted_owner>"
                       }
-                    },
-                    "importedByUser": {
-                      "id": "<imported_by_user>"
                     }
                   }
                 ],
@@ -2354,9 +2319,6 @@
                 },
                 "payload": {
                   "type": "object"
-                },
-                "importedByUser": {
-                  "id": "<imported_by_user>"
                 }
               },
               "example": {
@@ -2395,9 +2357,6 @@
                   "develop": {
                     "<dev_key>": "<dev_value>"
                   }
-                },
-                "importedByUser": {
-                  "id": "<imported_by_user>"
                 }
               }
             }
@@ -2438,10 +2397,7 @@
                 },
                 "payload": {
                   "type": "object"
-                },
-                "importedByUser": {
-                  "id": "<imported_by_user>"
-                },
+                }
                 "favorites": {
                   "type": "object",
                   "properties" : {
@@ -2463,7 +2419,7 @@
                     "href": "/v2/catalogs/<catalog_id>/assets/<asset_id>"
                   },
                   "/rels/rendition_type/<rendition_type>": {
-                    "href": "/v2/catalogs/<catalog_id>/assets/<asset_id>/revisions/<revision_id>/renditions/<rendition_id>"
+                    "href": "/v2/catalogs/<catalog_id>/assets/<asset_id>/renditions/<rendition_type>"
                   },
                   "/rels/latest_revision": {
                     "href": "/v2/catalogs/<catalog_id>/assets/<asset_id>/revisions/<revision_id>",
@@ -2517,9 +2473,6 @@
                     "title": "<copyrighted_title>",
                     "owner": "<copyrighted_owner>"
                   }
-                },
-                "importedByUser": {
-                  "id": "<imported_by_user>"
                 }
               }
             }
