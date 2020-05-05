@@ -3185,11 +3185,6 @@
         "publishInfo": {
           "type": "object",
           "properties": {
-            "version": {
-              "type": "string",
-              "enum": [ 3 ],
-              "description": "The version of the publish information; must be 3."
-            },
             "servicePayload": {
               "type": "string",
               "description": "Album metadata, unique to the service, encapsulated as a single string with a maximum length of 1024 characters."
