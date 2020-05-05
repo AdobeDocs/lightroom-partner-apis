@@ -138,7 +138,6 @@ class LrContext {
 		}
 		if (remoteId) {
 			content.payload.publishInfo = {
-				version: 3,
 				created: importTimestamp,
 				updated: importTimestamp,
 				remoteId: remoteId
