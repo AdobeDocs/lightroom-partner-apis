@@ -2397,7 +2397,7 @@
                 },
                 "payload": {
                   "type": "object"
-                }
+                },
                 "favorites": {
                   "type": "object",
                   "properties" : {
