@@ -775,7 +775,7 @@
         }
       }
     },
-    "/v2/catalogs/{catalog_id}/assets{asset_id}/rendtions/{rendition_type}": {
+    "/v2/catalogs/{catalog_id}/assets{asset_id}/renditions/{rendition_type}": {
       "get": {
         "tags": [
           "assets"
