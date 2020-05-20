@@ -567,6 +567,13 @@
             "type": "string"
           },
           {
+            "name": "If-None-Match",
+            "in": "header",
+            "description": "SHA-256 hash. Return a 412 Precondition Failed response, without creating a new asset, if an asset with this SHA-256 already exists in the catalog.",
+            "required": false,
+            "type": "string"
+          },
+          {
             "name": "catalog_id",
             "in": "path",
             "description": "Identifier of the catalog in which the asset and revision will be created.",
@@ -3013,7 +3020,72 @@
         "schema": {
           "type": "object",
           "properties": {
-            "base": "string"
+            "base" : {
+              "type": "string",
+              "description": "Base URL that can be prepended to the 'href' values in the 'links' to produce fully qualified URLs for future queries."
+            },
+            "revisions": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "$ref": "#/definitions/uuid"
+                  },
+                  "created": {
+                    "$ref": "#/definitions/iso8601DateTime"
+                  },
+                  "created_by": {
+                    "$ref": "#/definitions/uuid"
+                  },
+                  "updated": {
+                    "$ref": "#/definitions/iso8601DateTime"
+                  },
+                  "links": {
+                    "type": "object"
+                  },
+                  "payload": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          },
+          "example": {
+            "base": "<base_url>",
+            "resources": [
+              {
+                "id": "<asset_id>",
+                "created": "<created_date>",
+                "created_by": "<account_id>",
+                "updated": "<updated_date>",
+                "links": {
+                  "self": {
+                    "href": "assets/<asset_id>"
+                  },
+                  "/rels/rendition_type/<rendition_type>": {
+                    "href": "assets/<asset_id>/renditions/<rendition_type>"
+                  }
+                },
+                "payload": {
+                  "captureDate": "<image_capture_date>",
+                  "importSource": {
+                    "fileName": "<file_name>",
+                    "fileSize": "<image_file_size>",
+                    "originalWidth": "<image_width>",
+                    "originalHeight": "<image_height>",
+                    "sha256": "<image_sha256>",
+                    "importedOnDevice": "<import_device_name>",
+                    "importedBy": "<import_account_id>",
+                    "importTimestamp": "<import_time>"
+                  },
+                  "<key>": "<value>",
+                  "develop": {
+                    "<dev_key>": "<dev_value>"
+                  }
+                }
+              }
+            ]
           }
         }
       },
