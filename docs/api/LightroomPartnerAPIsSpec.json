@@ -671,9 +671,6 @@
           "403 (Storage)": {
             "$ref": "#/components/responses/ForbiddenQuota"
           },
-          "412 (Exists)": {
-            "$ref": "#/components/responses/PreconditionFailed"
-          },
           "415 (Unsupported)": {
             "$ref": "#/components/responses/UnsupportedMediaType"
           },
@@ -3005,15 +3002,6 @@
               "type": "string",
               "enum": [ "Resource not found" ]
             }
-          }
-        }
-      },
-      "PreconditionFailed": {
-        "description": "The request failed because the master file matching the provided SHA-256 hash already exists. The response body lists the matching master files.",
-        "schema": {
-          "type": "object",
-          "properties": {
-            "base": "string"
           }
         }
       },
