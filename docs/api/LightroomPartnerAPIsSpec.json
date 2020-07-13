@@ -122,10 +122,10 @@
                   "$ref": "#/definitions/uuid"
                 },
                 "created": {
-                  "$ref": "#/definitions/iso8601DateTime"
+                  "$ref": "#/definitions/utcDateTime"
                 },
                 "updated": {
-                  "$ref": "#/definitions/iso8601DateTime"
+                  "$ref": "#/definitions/utcDateTime"
                 },
                 "type": {
                   "type": "string",
@@ -303,10 +303,10 @@
                   "$ref": "#/definitions/uuid"
                 },
                 "created": {
-                  "$ref": "#/definitions/iso8601DateTime"
+                  "$ref": "#/definitions/utcDateTime"
                 },
                 "updated": {
-                  "$ref": "#/definitions/iso8601DateTime"
+                  "$ref": "#/definitions/utcDateTime"
                 },
                 "type": {
                   "type": "string",
@@ -610,14 +610,14 @@
                   "type": "object",
                   "properties": {
                     "userCreated": {
-                      "$ref": "#/definitions/iso8601DateTime"
+                      "$ref": "#/definitions/utcDateTime"
                     },
                     "userUpdated": {
-                      "$ref": "#/definitions/iso8601DateTime"
+                      "$ref": "#/definitions/utcDateTime"
                     },
                     "captureDate": {
                       "type": "string",
-                      "enum": [ "0000-00-00T00:00:00", "#/definitions/iso8601DateTime" ],
+                      "enum": [ "0000-00-00T00:00:00", "#/definitions/utcDateTime" ],
                       "required": true,
                       "description": "Capture date of the asset in ISO-8601 format. Will be populated by the server automatically from the master if set to '0000-00-00T00:00:00'"
                     },
@@ -639,7 +639,7 @@
                           "description": "Account ID of the user who imported the asset."
                         },
                         "importTimestamp": {
-                          "$ref": "#/definitions/iso8601DateTime",
+                          "$ref": "#/definitions/utcDateTime",
                           "required": true
                         }
                       }
@@ -1036,10 +1036,10 @@
                   }
                 },
                 "created":{
-                  "$ref":"#/definitions/iso8601DateTime"
+                  "$ref":"#/definitions/utcDateTime"
                 },
                 "updated":{
-                  "$ref":"#/definitions/iso8601DateTime"
+                  "$ref":"#/definitions/utcDateTime"
                 },
                 "links":{
                   "type":"object"
@@ -1190,10 +1190,10 @@
                         "$ref": "#/definitions/uuid"
                       },
                       "created": {
-                        "$ref": "#/definitions/iso8601DateTime"
+                        "$ref": "#/definitions/utcDateTime"
                       },
                       "updated": {
-                        "$ref": "#/definitions/iso8601DateTime"
+                        "$ref": "#/definitions/utcDateTime"
                       },
                       "type": {
                         "type": "string",
@@ -1560,10 +1560,10 @@
                         "enum": ["album_asset"]
                       },
                       "created": {
-                        "$ref": "#/definitions/iso8601DateTime"
+                        "$ref": "#/definitions/utcDateTime"
                       },
                       "updated": {
-                        "$ref": "#/definitions/iso8601DateTime"
+                        "$ref": "#/definitions/utcDateTime"
                       },
                       "revision_ids": {
                         "type": "array",
@@ -1901,10 +1901,10 @@
                         "type": "string"
                       },
                       "created": {
-                        "$ref": "#/definitions/iso8601DateTime"
+                        "$ref": "#/definitions/utcDateTime"
                       },
                       "updated": {
-                        "$ref": "#/definitions/iso8601DateTime"
+                        "$ref": "#/definitions/utcDateTime"
                       },
                       "links": {
                         "type": "object"
@@ -2049,10 +2049,10 @@
                         "type": "string"
                       },
                       "created": {
-                        "$ref": "#/definitions/iso8601DateTime"
+                        "$ref": "#/definitions/utcDateTime"
                       },
                       "updated": {
-                        "$ref": "#/definitions/iso8601DateTime"
+                        "$ref": "#/definitions/utcDateTime"
                       },
                       "revision_ids": {
                         "type": "array",
@@ -2310,10 +2310,10 @@
                   "type": "string"
                 },
                 "created": {
-                  "$ref": "#/definitions/iso8601DateTime"
+                  "$ref": "#/definitions/utcDateTime"
                 },
                 "updated": {
-                  "$ref": "#/definitions/iso8601DateTime"
+                  "$ref": "#/definitions/utcDateTime"
                 },
                 "revision_ids": {
                   "type": "array",
@@ -2388,10 +2388,10 @@
                   "type": "string"
                 },
                 "created": {
-                  "$ref": "#/definitions/iso8601DateTime"
+                  "$ref": "#/definitions/utcDateTime"
                 },
                 "updated": {
-                  "$ref": "#/definitions/iso8601DateTime"
+                  "$ref": "#/definitions/utcDateTime"
                 },
                 "revision_ids": {
                   "type": "array",
@@ -2409,7 +2409,7 @@
                   "type": "object",
                   "properties" : {
                     "account_id": {
-                      "$ref": "#/definitions/iso8601DateTime"
+                      "$ref": "#/definitions/utcDateTime"
                     }
                   }
 
@@ -3033,13 +3033,13 @@
                     "$ref": "#/definitions/uuid"
                   },
                   "created": {
-                    "$ref": "#/definitions/iso8601DateTime"
+                    "$ref": "#/definitions/utcDateTime"
                   },
                   "created_by": {
                     "$ref": "#/definitions/uuid"
                   },
                   "updated": {
-                    "$ref": "#/definitions/iso8601DateTime"
+                    "$ref": "#/definitions/utcDateTime"
                   },
                   "links": {
                     "type": "object"
@@ -3181,10 +3181,10 @@
       "type": "object",
       "properties": {
         "userCreated": {
-          "$ref": "#/definitions/iso8601DateTime"
+          "$ref": "#/definitions/utcDateTime"
         },
         "userUpdated": {
-          "$ref": "#/definitions/iso8601DateTime"
+          "$ref": "#/definitions/utcDateTime"
         },
         "name": {
           "type": "string"
@@ -3219,11 +3219,11 @@
               "description": "Identifier for the album that is unique to the publishing service."
             },
             "created": {
-              "$ref": "#/definitions/iso8601DateTime",
+              "$ref": "#/definitions/utcDateTime",
               "description": "Date when the externally affiliated content (identified by remoteId) was created."
             },
             "updated": {
-              "$ref": "#/definitions/iso8601DateTime",
+              "$ref": "#/definitions/utcDateTime",
               "description": "Date when the externally affiliated content identified by remoteId) was last updated."
             },
             "deleted": {
