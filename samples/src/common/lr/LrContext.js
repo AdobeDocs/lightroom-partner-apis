@@ -86,7 +86,7 @@ class LrContext {
 		await LrRequestor.putUniqueP(this._session, path, content, sha256) // 412 error if duplicate revision
 		return {
 			id: assetId,
-			master_create: `${path}/master`
+			path: `${path}/master`
 		}
 	}
 
@@ -147,7 +147,7 @@ class LrContext {
 		return albumId
 	}
 
-	putMasterP(path, mime, offset, size, data) {
+	putOriginalP(path, mime, offset, size, data) {
 		console.log(`Received ${data.length} bytes of data at ${offset}`)
 		return LrRequestor.putChunkP(this._session, path, mime, data, offset, size)
 	}

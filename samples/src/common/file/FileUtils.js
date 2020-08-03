@@ -12,15 +12,15 @@ const File = require('./File')
 const LrUtils = require('../lr/LrUtils')
 const fs = require('fs')
 
-function _uploadMasterP(lr, filePath, size, master_create, mime) {
-	let chunkHandlerP = (data, offset) => lr.putMasterP(master_create, mime, offset, size, data)
+function _uploadOriginalP(lr, filePath, size, path, mime) {
+	let chunkHandlerP = (data, offset) => lr.putOriginalP(path, mime, offset, size, data)
 	return File.streamP(filePath, lr.chunkSize, chunkHandlerP)
 }
 
 async function _uploadFileP(lr, file) {
 	let revision = await lr.createRevisionP(file.subtype, file.name, file.size, file.sha256)
 	try {
-		await _uploadMasterP(lr, file.path, file.size, revision.master_create, file.mime)
+		await _uploadOriginalP(lr, file.path, file.size, revision.path, file.mime)
 	}
 	catch (err) {
 		console.log(`error on upload left an incomplete asset: ${revision.id}`) // should retry
@@ -51,8 +51,28 @@ let FileUtils = {
 		return assets
 	},
 
+	readStringFromFileP: (name) => new Promise((resolve, reject) => {
+		fs.readFile(name,  'utf8', function(err, data) {
+			if(err) {
+				reject(err)
+			} else {
+				resolve(data)
+			}
+		})
+	}),
+
+	writeStringToFileP: (buffer, name) => new Promise((resolve, reject) => {
+		fs.writeFile(name, buffer,  'utf8', function(err) {
+			if(err) {
+				reject(err)
+			} else {
+				resolve()
+			}
+		})
+	}),
+
 	writeBufferToFileP: (buffer, name) => new Promise((resolve, reject) => {
-		fs.writeFile(name, buffer,  'binary', function(err) {
+		fs.writeFile(name, buffer, function(err) {
 			if(err) {
 				reject(err)
 			} else {
