@@ -51,7 +51,7 @@ let Lr = {
 				})
 		},
 
-		// utility function to create a new asset revision and upload its master
+		// utility function to create a new asset revision and upload the original file
 		uploadImageP: async function(token, importedBy, catalog_id, fileName, data) {
 			function _createUuid() {
 				// helper function for generating a Lightroom unique identifier
@@ -93,18 +93,18 @@ let Lr = {
 					})
 			}
 
-			function _putMasterP() {
+			function _putOriginalP() {
 				let relativeUrl = `${revisionUrl}/master`
 				let contentType = 'application/octet-stream'
 				let contentRange = `bytes 0-${data.length - 1}/${data.length}`
-				return Lr.putMasterP(token, relativeUrl, contentType, contentRange, data)
+				return Lr.putOriginalP(token, relativeUrl, contentType, contentRange, data)
 					.catch((error) => {
-						return Promise.reject(`upload failed: put master error status ${error.statusCode}`)
+						return Promise.reject(`upload failed: put original error status ${error.statusCode}`)
 					})
 			}
 
 			await _createRevisionP()
-			return _putMasterP().then(() => {
+			return _putOriginalP().then(() => {
 				return 'upload succeeded'
 			})
 		}
@@ -154,7 +154,7 @@ let Lr = {
 	// multiple times if the object is broken into chunks, so it takes in the
 	// Content-Range value. always makes a reuqest for Lightroom to generate all
 	// of the renditions associated with the asset, when the upload is complete.
-	putMasterP: function(token, relativeUrl, contentType, contentRange, data) {
+	putOriginalP: function(token, relativeUrl, contentType, contentRange, data) {
 		let options = {
 			uri: `${_lrEndpoint}${relativeUrl}`,
 			headers: {

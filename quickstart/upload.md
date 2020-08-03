@@ -280,7 +280,7 @@ The Lightroom APIs may return these errors that a shared among all of the entry 
 
 The Lightroom APIs may return these errors that are specific to the upload APIs:
 
-- _Insufficient storage_: Attempting to `PUT` a master file for an asset results in an `HTTP 413` error of the form:
+- _Insufficient storage_: Attempting to `PUT` an original file for an asset results in an `HTTP 413` error of the form:
   ```
   {
       "error_code": "1007",
@@ -289,7 +289,7 @@ The Lightroom APIs may return these errors that are specific to the upload APIs:
   ```
   A partner application should notify the user that their storage is full and make no further upload requests.
 
-- _Content type mismatch_: Attempting to `PUT` a master file for an asset results in an `HTTP 415` error of the form:
+- _Content type mismatch_: Attempting to `PUT` an original file for an asset results in an `HTTP 415` error of the form:
   ```
   {
       "error_code": "1007",

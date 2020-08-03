@@ -56,7 +56,7 @@ The samples are divided into different sub-directories of related kind. They lev
     Fetch the first asset in the catalog and print the result to the console.
 
   *     get/getincompletes.js
-    Fetch all incomplete assets (assets that have been created but do not have a corresponding master or proxy) and print the result to the console.
+    Fetch all incomplete assets (assets that have been created but do not have a corresponding original or proxy) and print the result to the console.
 
   *     get/getprojects.js
     Fetch all albums of subtype `project_set` and `project` and print the result to the console.
@@ -64,7 +64,7 @@ The samples are divided into different sub-directories of related kind. They lev
 * Upload Assets
 
   *     upload/uploadfile.js <file>
-    Create a new asset and upload the file as its master. Skip the operation if a duplicate asset is detected.
+    Create a new asset and upload the file as its original. Skip the operation if a duplicate asset is detected.
 
 * Connect Content
 
@@ -80,3 +80,29 @@ The samples are divided into different sub-directories of related kind. They lev
     Upload all media files in the given directory, then create a new project album sharing the name of the directory and add all of the media files to the project album. Create a parent `project_set` of the new project album, named with a timestamp. Prints the result of the hierarchy to the console.
 
     If duplicates are found for any of the media files, the upload is skipped, and the existing duplicate asset is added to the project album instead.
+
+* Generate Renditions
+
+  *     gen/gen2560.js <asset id>
+    Generate 2560 rendition for the asset with the given identifier.
+
+  *     gen/genfullsize.js <asset id>
+    Generate fullsize rendition for an asset with the given identifier.
+
+  *     gen/waitfor2560.js <asset id>
+    Wait for the 2560 rendition of the asset with the given identifier to be available. It will poll up to ten times, once every three seconds before timing out.
+
+  *     gen/waitforfullsize.js <asset id>
+    Wait for the fullsize rendition of the asset with the given identifier to be available. It will poll up to ten times, once every three seconds before timing out.
+
+  *     gen/getassetpriv.js <asset id>
+    Fetch the asset with the given identifier using the private APIs.
+
+  *     gen/logrendition.js <asset id>
+    Print whether the asset with the given identifier has a valid 2560 rendition and whether it has a valid fullsize rendition.
+
+  *     gen/getasset2560.js <asset id>
+    Fetch the 2560 rendition of the asset with the given identifier and output the result to the file `<asset id>.2560.jpg`.
+
+  *     gen/getassetfullsize.js <asset id>
+    Fetch the fullsize rendition of the asset with the given identifier and output the result to the file `<asset id>.fullsize.jpg`.

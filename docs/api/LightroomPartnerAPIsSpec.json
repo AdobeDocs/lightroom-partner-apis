@@ -619,7 +619,7 @@
                       "type": "string",
                       "enum": [ "0000-00-00T00:00:00", "#/definitions/utcDateTime" ],
                       "required": true,
-                      "description": "Capture date of the asset in ISO-8601 format. Will be populated by the server automatically from the master if set to '0000-00-00T00:00:00'"
+                      "description": "Capture date of the asset in ISO-8601 format. Will be populated by the server automatically from the original if set to '0000-00-00T00:00:00'"
                     },
                     "importSource": {
                       "type": "object",
@@ -695,9 +695,9 @@
         "tags": [
           "assets"
         ],
-        "summary": "Create an asset master file",
-        "description": "Create and upload a master file for the asset. Up to 200 MB may be uploaded per invocation, and larger files may be uploaded by calling this API multiple times with Content-Range headers for each part. When all parts are received the upload will be consolidated asynchronously. All partial uploads should include optional rendition type parameters to ensure the last part received has the necessary options for request post-processing.",
-        "operationId": "createAssetMaster",
+        "summary": "Create an asset original file",
+        "description": "Create and upload an original file for the asset. Up to 200 MB may be uploaded per invocation, and larger files may be uploaded by calling this API multiple times with Content-Range headers for each part. When all parts are received the upload will be consolidated asynchronously. All partial uploads should include optional rendition type parameters to ensure the last part received has the necessary options for request post-processing.",
+        "operationId": "createAssetOriginal",
         "produces": [
           "application/json"
         ],
@@ -1509,7 +1509,7 @@
           {
             "name":"exclude",
             "in":"query",
-            "description":"Used to request the list for different types of assets excluding incomplete or complete image and video assets. The valid values are \"incomplete\" and \"complete\". An image or video asset is considered to be complete if its proxy or master upload exists. An asset of subtypes profile, preset, camera_profile or lens_profile is considered complete if its master upload exists.",
+            "description":"Used to request the list for different types of assets excluding incomplete or complete image and video assets. The valid values are \"incomplete\" and \"complete\". An image or video asset is considered to be complete if its proxy or original upload exists. An asset of subtypes profile, preset, camera_profile or lens_profile is considered complete if its original upload exists.",
             "type":"string"
           },
           {
@@ -1829,7 +1829,7 @@
           {
             "name": "sha256",
             "in": "query",
-            "description": "SHA256 hash value of master file. Assets with a matching SHA256 hash will be returned. May be used in conjunction with subtype.",
+            "description": "SHA256 hash value of original file. Assets with a matching SHA256 hash will be returned. May be used in conjunction with subtype.",
             "type": "string"
           },
           {
@@ -1853,7 +1853,7 @@
           {
             "name": "exclude",
             "in": "query",
-            "description": "Used to request the list for different types of assets excluding incomplete or complete image and video assets. The valid values are \"incomplete\" and \"complete\". An image or video asset is considered to be complete if its proxy or master upload exists. An asset of subtypes profile, preset, camera_profile or lens_profile is considered complete if its master upload exists.",
+            "description": "Used to request the list for different types of assets excluding incomplete or complete image and video assets. The valid values are \"incomplete\" and \"complete\". An image or video asset is considered to be complete if its proxy or original upload exists. An asset of subtypes profile, preset, camera_profile or lens_profile is considered complete if its original upload exists.",
             "type": "string"
           },
           {
@@ -3016,7 +3016,7 @@
         }
       },
       "PreconditionFailed": {
-        "description": "The request failed because the master file matching the provided SHA-256 hash already exists. The response body lists the matching master files.",
+        "description": "The request failed because one or more orginal files matching the provided SHA-256 hash already exists. The response body lists the matching original files.",
         "schema": {
           "type": "object",
           "properties": {
