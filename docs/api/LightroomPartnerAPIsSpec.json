@@ -725,7 +725,7 @@
           {
             "name": "Content-Range",
             "in": "header",
-            "description": "Byte range for the request, including first and last bytes and entity length as defined in RFC 2616.",
+            "description": "Byte range for the request, including first and last bytes and entity length as defined in RFC 2616. Should be included only when the data cannot be uploaded in a single call.",
             "type": "string"
           },
           {
