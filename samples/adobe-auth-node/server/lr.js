@@ -96,8 +96,7 @@ let Lr = {
 			function _putOriginalP() {
 				let relativeUrl = `${revisionUrl}/master`
 				let contentType = 'application/octet-stream'
-				let contentRange = `bytes 0-${data.length - 1}/${data.length}`
-				return Lr.putOriginalP(token, relativeUrl, contentType, contentRange, data)
+				return Lr.putOriginalP(token, relativeUrl, contentType, data)
 					.catch((error) => {
 						return Promise.reject(`upload failed: put original error status ${error.statusCode}`)
 					})
@@ -150,20 +149,17 @@ let Lr = {
 		return request.put(options)
 	},
 
-	// function to upload a buffer containing image or video data. may be called
-	// multiple times if the object is broken into chunks, so it takes in the
-	// Content-Range value. always makes a reuqest for Lightroom to generate all
-	// of the renditions associated with the asset, when the upload is complete.
-	putOriginalP: function(token, relativeUrl, contentType, contentRange, data) {
+	// function to upload a buffer containing image or video data. assumes the data
+	// can be accommodated in a single call. otherwise, it is necessary to chunk
+	// the data. that is outside the scope of this example.
+	putOriginalP: function(token, relativeUrl, contentType, data) {
 		let options = {
 			uri: `${_lrEndpoint}${relativeUrl}`,
 			headers: {
 				'X-API-Key': adobeApiKey,
 				Authorization: `Bearer ${token}`,
 				method: 'PUT',
-				'Content-Type': contentType,
-				'Content-Range': contentRange,
-				'X-Generate-Renditions': 'all'
+				'Content-Type': contentType
 			},
 			body: data
 		}

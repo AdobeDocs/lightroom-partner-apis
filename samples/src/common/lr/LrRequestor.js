@@ -97,8 +97,10 @@ let _putChunkP = function(session, path, type, data, offset, size) {
 	let length = Buffer.byteLength(data)
 	let headers = {
 		'Content-Type': type,
-		'Content-Range': `bytes ${offset}-${offset + length - 1}/${size}`,
 		'Content-Length': length
+	}
+	if (size != length) {
+		headers['Content-Range'] = `bytes ${offset}-${offset + length - 1}/${size}`
 	}
 	return _authRequestP(session, 'PUT', path, headers, data)
 }
