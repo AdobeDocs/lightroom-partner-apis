@@ -671,6 +671,9 @@
           "403 (Storage)": {
             "$ref": "#/components/responses/ForbiddenQuota"
           },
+          "404 (Not Found)": {
+            "$ref": "#/components/responses/NotFound"
+          },
           "415 (Unsupported)": {
             "$ref": "#/components/responses/UnsupportedMediaType"
           },
