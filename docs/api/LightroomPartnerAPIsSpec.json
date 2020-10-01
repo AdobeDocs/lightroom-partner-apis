@@ -678,6 +678,9 @@
           "403 (Storage)": {
             "$ref": "#/components/responses/ForbiddenQuota"
           },
+          "404 (Not Found)": {
+            "$ref": "#/components/responses/NotFound"
+          },
           "412 (Exists)": {
             "$ref": "#/components/responses/PreconditionFailed"
           },
