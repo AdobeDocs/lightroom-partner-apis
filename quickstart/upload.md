@@ -309,6 +309,15 @@ The Lightroom APIs may return these errors that are specific to the upload APIs:
 
 - _Duplicate detected_: Attempting to create a new asset revision results in an `HTTP 412` precondition failed error. This indicates that the provided SHA-256 matches an existing asset in the catalog. Partner applications should skip the upload of the asset.
 
+- _Catalog_id change_: In general it is recommended that the catalog_id once obtained by calling the "Retrieve the user catalog metadata" API call, is cached and used for all successive calls for the user. However sometimes due to user's activities on certain Lightroom clients, the catalog_id of the user may change. In this case when an API call is made to "create asset revision", it will return a 404 (not found) response indicating that the catalog id is not found. In this case, call the "Retrieve the user catalog metadata" API again and get the latest catalog_id for the user and cache it for use in successive API calls. Below is a sample 404 response that may indicate a change of catalog id.
+  ```
+  {
+      "code":1000,
+      "description":"Resource not found",
+      "subtype":"ResourceNotFoundError",
+      "errors":{"catalog":["does not exist"]}
+  }
+  ```
 ### Upload workflow diagrams
 ![User logged in from partner application to Lightroom](../docs/images/UserLoggedInFromPartnerAppToLR.png)
 ![Auto-upload of images or video from partner app to Lightroom](../docs/images/AutoUploadFromPartnerAppToLR.png)
