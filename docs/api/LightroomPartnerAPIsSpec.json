@@ -596,7 +596,7 @@
         ],
         "responses": {
           "202": {
-            "description": "Accepted",
+            "description": "Accepted.(Client needs to poll on rendition link in response and accessing it might not immediately returns a success response.)",
             "schema": {
               "type": "object",
               "properties": {
