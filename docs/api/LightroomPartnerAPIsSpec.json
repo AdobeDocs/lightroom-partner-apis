@@ -595,8 +595,28 @@
           }
         ],
         "responses": {
-          "202 (OK)": {
-            "description": "Asset Rendition URL"
+          "202": {
+            "description": "Accepted",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "base": {
+                  "type": "string",
+                  "description": "Base URL that can be prepended to the 'href' values in the 'links' to produce fully qualified URLs for future queries."
+                },
+                "links": {
+                  "type": "object"
+                }
+              },
+              "example": {
+                "base": "<base_url>",
+                "links": {
+                  "/rels/rendition_type/<rendition_type>": {
+                    "href": "assets/<asset_id>/renditions/<rendition_type>"
+                  }
+                }
+              }
+            }
           },
           "400 Bad UUID": {
             "$ref": "#/components/responses/BadRequestGUID"
