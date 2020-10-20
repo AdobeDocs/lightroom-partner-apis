@@ -1120,6 +1120,116 @@
             "$ref":"#/components/responses/ServiceUnavailable"
           }
         }
+      },
+      "post": {
+        "tags": [
+          "albums"
+        ],
+        "summary": "Update album",
+        "description": "Update an existing album.",
+        "operationId": "updateAlbum",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Client ID (API Key) which is subscribed to the Lightroom APIs through console.adobe.io",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer [token] - User access token of an authenticated Lightroom customer",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "catalog_id",
+            "in": "path",
+            "description": "Identifier of the catalog containing the album.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "album_id",
+            "in": "path",
+            "description": "Identifier for the album.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Album metadata and information to be updated.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "subtype": {
+                  "type": "string",
+                  "enum": [ "project", "project_set" ]
+                },
+                "serviceId": {
+                  "type": "string",
+                  "description": "The API Key (client identifier) of the service creating the album."
+                },
+                "payload": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "new name"
+                    },
+                    "cover": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "description": "Identifier of the new cover asset"
+                        }
+                      }
+                    },
+                    "parent": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "description": "Identifier of the new parent album"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400 Bad JSON": {
+            "$ref": "#/components/responses/BadRequestJSON"
+          },
+          "400 Bad Payload": {
+            "$ref": "#/components/responses/BadRequestPayload"
+          },
+          "401 Unauthorized": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403 Invalid Key": {
+            "$ref": "#/components/responses/ForbiddenKey"
+          },
+          "415 Unsupported": {
+            "$ref": "#/components/responses/UnsupportedMediaType"
+          },
+          "503 (Unavailable)": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        }
       }
     },
     "/v2/catalogs/{catalog_id}/albums": {
