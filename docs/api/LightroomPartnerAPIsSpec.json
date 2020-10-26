@@ -1126,7 +1126,7 @@
           "albums"
         ],
         "summary": "Update album",
-        "description": "Update an existing album.",
+        "description": "Update an existing album. The existing album should be created via the same client app and of subtype project or project_set.",
         "operationId": "updateAlbum",
         "produces": [
           "application/json"
