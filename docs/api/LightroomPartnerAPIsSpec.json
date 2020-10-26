@@ -1158,40 +1158,8 @@
             "schema": {
               "type": "object",
               "properties": {
-                "subtype": {
-                  "type": "string",
-                  "enum": [ "project", "project_set" ]
-                },
-                "serviceId": {
-                  "type": "string",
-                  "description": "The API Key (client identifier) of the service creating the album."
-                },
                 "payload": {
-                  "type": "object",
-                  "properties": {
-                    "name": {
-                      "type": "string",
-                      "description": "new name"
-                    },
-                    "cover": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "string",
-                          "description": "Identifier of the new cover asset"
-                        }
-                      }
-                    },
-                    "parent": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "string",
-                          "description": "Identifier of the new parent album"
-                        }
-                      }
-                    }
-                  }
+                  "$ref": "#/definitions/albumPayload"
                 }
               }
             }
@@ -1212,6 +1180,12 @@
           },
           "403 Invalid Key": {
             "$ref": "#/components/responses/ForbiddenKey"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "403 Forbidden Operation":{
+            "$ref":"#/components/responses/ForbiddenOperation"
           },
           "415 Unsupported": {
             "$ref": "#/components/responses/UnsupportedMediaType"
