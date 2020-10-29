@@ -55,6 +55,16 @@ class LrContext {
 		return LrRequestor.getP(this._session, path)
 	}
 
+	getAsset2560RenditionP(assetId) {
+		let path = `/v2/catalogs/${this._catalogId}/assets/${assetId}/renditions/2560`
+		return LrRequestor.getP(this._session, path)
+	}
+
+	getAssetFullsizeRenditionP(assetId) {
+		let path = `/v2/catalogs/${this._catalogId}/assets/${assetId}/renditions/fullsize`
+		return LrRequestor.getP(this._session, path)
+	}
+
 	async createRevisionP(subtype, name, size, sha256) {
 		let assetId = _createUuid()
 		let revisionId = _createUuid()
@@ -188,6 +198,71 @@ class LrContext {
 				console.log('add assets: all assets in chunk are already in album')
 			}
 		}
+	}
+
+	existsP = async function(path) {
+		try {
+			await LrRequestor.headP(this._session, path)
+			return true
+		} catch (err) {
+			if (err.statusCode != 400) {
+				throw err
+			}
+			return false
+		}
+	}
+
+	waitForP = async (path) => {
+		let sleep = () => new Promise(resolve => setTimeout(resolve, 3000)) // 3 sec
+		let retries = 10
+		for (let i = 0; i < retries; i++) {
+			console.log(`try ${i}: sleeping...`)
+			await sleep()
+			console.log(`try ${i}: checking`)
+			if (await this.existsP(path)) {
+				console.log(`try ${i}: exists`)
+				return path
+			}
+		}
+		throw new Error(`timed out on: ${path}`)
+	}
+
+	waitFor2560RendtionP = function(assetId) {
+		let path = `/v2/catalogs/${this._catalogId}/assets/${assetId}/renditions/2560`
+		return this.waitForP(path)
+	}
+
+	waitForFullsizeRendtionP = function(assetId) {
+		let path = `/v2/catalogs/${this._catalogId}/assets/${assetId}/renditions/fullsize`
+		return this.waitForP(path)
+	}
+
+	asset2560RenditionExistsP(assetId) {
+		let path = `/v2/catalogs/${this._catalogId}/assets/${assetId}/renditions/2560`
+		return this.existsP(path)
+	}
+
+	assetFullsizeRenditionExistsP(assetId) {
+		let path = `/v2/catalogs/${this._catalogId}/assets/${assetId}/renditions/fullsize`
+		return this.existsP(path)
+	}
+
+	generateRenditionP = async function(assetId, type) {
+		let path = `/v2/catalogs/${this._catalogId}/assets/${assetId}/renditions`
+		let response = await LrRequestor.genP(this._session, path, type)
+
+		let link = response.links[`/rels/rendition_type/${type}`]
+		return `/v2/catalogs/${this._catalogId}/${link.href}` // return the path
+	}
+
+	generate2560RenditionP = async function(assetId) {
+		let path = await this.generateRenditionP(assetId, '2560')
+		return this.waitForP(path)
+	}
+
+	generateFullsizeRenditionP = async function(assetId) {
+		let path = await this.generateRenditionP(assetId, 'fullsize')
+		return this.waitForP(path)
 	}
 }
 

@@ -8,10 +8,10 @@ it. If you have received this file from a source other than Adobe,
 then your use, modification, or distribution of it requires the prior
 written permission of Adobe. 
 */
-const LrSessionPriv = require('./LrSessionPriv')
+const LrSession = require('../../common/lr/LrSession')
 
 async function mainP(assetId) {
-	let lr = await LrSessionPriv.currentContextP()
+	let lr = await LrSession.currentContextP()
 	let result = await lr.waitFor2560RendtionP(assetId)
 	console.log('result:', result)
 }

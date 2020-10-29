@@ -8,11 +8,11 @@ it. If you have received this file from a source other than Adobe,
 then your use, modification, or distribution of it requires the prior
 written permission of Adobe. 
 */
-const LrSessionPriv = require('./LrSessionPriv')
+const LrSession = require('../../common/lr/LrSession')
 const FileUtils = require('../../common/file/FileUtils')
 
 async function mainP(assetId) {
-	let lr = await LrSessionPriv.currentContextP()
+	let lr = await LrSession.currentContextP()
 	let buffer = await lr.getAsset2560RenditionP(assetId)
 	let name = `${assetId}.2560.jpg`
 	await FileUtils.writeBufferToFileP(buffer, name)
