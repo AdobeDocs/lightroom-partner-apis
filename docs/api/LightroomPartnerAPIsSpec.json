@@ -828,7 +828,7 @@
           {
             "name": "rendition_type",
             "in": "path",
-            "description": "One of the supported rendition types. Supported rendition types are : ['thumbnail2x', '640', '1280', '2048'].",
+            "description": "One of the supported rendition types. Supported rendition types are : ['thumbnail2x', 'fullsize', '640', '1280', '2048', '2560'].",
             "required": true,
             "type": "string"
           }
