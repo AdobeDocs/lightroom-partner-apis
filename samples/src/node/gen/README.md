@@ -14,12 +14,10 @@ Lightroom always generates and caches two renditions for each asset: a thumbnail
 
 Workflows that require renditions of higher resolution than the cached 2048 can use the Lightroom Services APIs to generate `2560` (from the proxy and having its dimensions) or `fullsize` (from the original and sharing its dimensions) renditions on demand.
 
-Rendition generation is an asynchronous process that might take several seconds to complete, depending on the dimensions of the original and the sophistication of the edits. A client calls an endpoint and receives a rendition `link` with the the URL at which the rendition will eventually be available. It then polls, through a `HEAD` call, until the rendition exists, after which it cat fetch the result.
+Rendition generation is an asynchronous process that might take several seconds to complete, depending on the dimensions of the original and the sophistication of the edits. A client calls an endpoint and receives a rendition `link` with the the URL at which the rendition will eventually be available. It then polls, through a `HEAD` call, until the rendition exists, after which it can fetch the result.
 
 There are some important considerations when generating renditions:
 
 * Lightroom Classic only uploads the 2560 proxy and has no original. Therefore, it is not possible to generate a fullsize rendition, and attempting to do so will result in an error. A client should first check if the original `link` is present in the asset. If not, it should request that a 2560 rendition be generated instead.
 
-* The 2560 or fullsize renditions are purged after an unspecified time. Therefore, it is necessary for clients to always check whether the rendition exists, even if the asset contains a corresponding `link` to a rendition.
-
-* A 2560 or fullsize rendition might be invalid because the edit metadata of the asset changed some time after the rendition was generated. In this case, the asset `link` will contain an `invalid: true` flag. Clients must always check this flag to see if they should generate a new rendition with the latest edits applied.
+* The 2560 or fullsize renditions are purged after an unspecified time. Therefore, clients should check whether the rendition exists to determine if they need to request that a new rendition be generated.
