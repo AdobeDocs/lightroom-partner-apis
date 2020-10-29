@@ -546,7 +546,7 @@
           "assets"
         ],
         "summary": "Generate renditions for an original file",
-        "description": "Generate renditions for an original file asynchronously.",
+        "description": "Generate renditions for an original file asynchronously. Allowed rendition types are fullsize and 2560. Generated rendition will be deleted after 1 day automatically.",
         "operationId": "generateRenditions",
         "produces": [
           "application/json"
