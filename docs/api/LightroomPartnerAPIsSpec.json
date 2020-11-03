@@ -1010,6 +1010,73 @@
         }
       }
     },
+    "/v2/catalogs/{catalog_id}/assets{asset_id}/xmp/develop": {
+      "get": {
+        "tags": [
+          "assets"
+        ],
+        "summary": "Get latest asset external xmp develop setting",
+        "description": "Get latest asset external xmp develop setting file",
+        "operationId": "getAssetExternalXmpDevelopSetting",
+        "produces": [
+          "application/json",
+          "application/rdf+xml"
+        ],
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Client ID (API Key) which is subscribed to the Lightroom APIs through console.adobe.io",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer [token] - User access token of an authenticated Lightroom customer",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "catalog_id",
+            "in": "path",
+            "description": "Identifier of the catalog in which asset exists.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "asset_id",
+            "in": "path",
+            "description": "Identifier of the asset for which to fetch rendition.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200 (OK)": {
+            "description": "External XMP Develop Setting file. Content type of the response is application/rdf+xml."
+          },
+          "400 Bad UUID": {
+            "$ref": "#/components/responses/BadRequestGUID"
+          },
+          "401 Unauthorized": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403 Access Forbidden":{
+            "$ref":"#/components/responses/Forbidden"
+          },
+          "403 Invalid Key":{
+            "$ref":"#/components/responses/ForbiddenKey"
+          },
+          "404 (Not Found)": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "503 (Unavailable)": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        }
+      }
+    },
     "/v2/catalogs/{catalog_id}/albums/{album_id}": {
       "put": {
         "tags": [
