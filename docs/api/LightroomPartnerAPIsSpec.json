@@ -1391,6 +1391,76 @@
             "$ref": "#/components/responses/ServiceUnavailable"
           }
         }
+      },
+      "delete": {
+        "tags": [
+          "albums"
+        ],
+        "summary": "Delete album",
+        "description": "Delete an existing album. The existing album should be created via the same client app and of subtype project or project_set.",
+        "operationId": "deleteAlbum",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Client ID (API Key) which is subscribed to the Lightroom APIs through console.adobe.io",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer [token] - User access token of an authenticated Lightroom customer",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "catalog_id",
+            "in": "path",
+            "description": "Identifier of the catalog containing the album.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "album_id",
+            "in": "path",
+            "description": "Identifier for the album.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "child_albums",
+            "in": "query",
+            "description": "This parameter when passed with a value, for example: true would delete all the child albums as well of the album specified. The deletion of child albums will be done asynchronously.",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400 Bad JSON": {
+            "$ref": "#/components/responses/BadRequestJSON"
+          },
+          "401 Unauthorized": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403 Invalid Key": {
+            "$ref": "#/components/responses/ForbiddenKey"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "403 Forbidden Operation":{
+            "$ref":"#/components/responses/ForbiddenOperation"
+          },
+          "503 (Unavailable)": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        }
       }
     },
     "/v2/catalogs/{catalog_id}/albums": {
