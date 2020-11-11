@@ -1092,6 +1092,9 @@
                   },
                   "/rels/rendition_type/2048": {
                     "href": "assets/<cover_asset_id>/revisions/<revision_id>/renditions/<rendition_id>"
+                  },
+                  "/rels/xmp/develop": {
+                    "href": "assets/<cover_asset_id>"
                   }
                 }
               }
@@ -2050,6 +2053,9 @@
                   "/rels/asset": {
                     "href": "assets/{asset_id}",
                     "templated": true
+                  },
+                  "/rels/xmp/develop": {
+                    "href": "assets/<asset_id>"
                   }
                 }
               }
@@ -2141,6 +2147,9 @@
                       },
                       "/rels/rendition_type/<rendition_type>": {
                         "href": "assets/<asset_id>/revisions/<revision_id>/renditions/<rendition_id>"
+                      },
+                      "/rels/xmp/develop": {
+                        "href": "assets/<cover_asset_id>"
                       }
                     },
                     "payload": {
@@ -2178,6 +2187,9 @@
                       },
                       "/rels/rendition_type/<rendition_type>": {
                         "href": "assets/<asset_id>/revisions/<revision_id>/renditions/<rendition_id>"
+                      },
+                      "/rels/xmp/develop": {
+                        "href": "assets/<cover_asset_id>"
                       }
                     },
                     "unshareable": "<unshareable>",
@@ -2383,6 +2395,9 @@
                   },
                   "/rels/rendition_type/<rendition_type>": {
                     "href": "assets/<asset_id>/revisions/<revision_id>/renditions/<rendition_id>"
+                  },
+                  "/rels/xmp/develop": {
+                    "href": "assets/<cover_asset_id>"
                   }
                 },
                 "payload": {
