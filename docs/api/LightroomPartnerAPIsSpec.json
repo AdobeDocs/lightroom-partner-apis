@@ -540,6 +540,136 @@
         }
       }
     },
+    "/v2/catalogs/{catalog_id}/assets/{asset_id}/renditions": {
+      "post": {
+        "tags": [
+          "assets"
+        ],
+        "summary": "Generate renditions for an original file",
+        "description": "Generate renditions for an original file asynchronously. Allowed rendition types are fullsize and 2560. Generated rendition will be deleted after 1 day automatically.",
+        "operationId": "generateRenditions",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Client ID (API Key) which is subscribed to the Lightroom APIs through console.adobe.io",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Generate-Renditions",
+            "in": "path",
+            "description": "One or multiple of the supported rendition types separated by ','. Supported rendition types are : ['fullsize', '2560'].",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer [token] - User access token of an authenticated Lightroom customer",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Content-Length",
+            "in": "header",
+            "description": "Length in bytes of the content.",
+            "type": "integer"
+          },
+          {
+            "name": "catalog_id",
+            "in": "path",
+            "description": "Identifier of the catalog in which the asset and revision was created.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "asset_id",
+            "in": "path",
+            "description": "Identifier of the asset for which rendition gets generated.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Accepted.(Client needs to poll on rendition link in response and accessing it might not immediately returns a success response.)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "base": {
+                  "type": "string",
+                  "description": "Base URL that can be prepended to the 'href' values in the 'links' to produce fully qualified URLs for future queries."
+                },
+                "links": {
+                  "type": "object"
+                }
+              },
+              "example": {
+                "base": "<base_url>",
+                "links": {
+                  "/rels/rendition_type/<rendition_type>": {
+                    "href": "assets/<asset_id>/renditions/<rendition_type>"
+                  }
+                }
+              }
+            }
+          },
+          "400 Bad UUID": {
+            "$ref": "#/components/responses/BadRequestGUID"
+          },
+          "400 Bad Asset Subtype": {
+            "$ref": "#/components/responses/BadRequestSubtype"
+          },
+          "400 Bad Rendition Type": {
+            "description": "Request failed due to unsupported rendition type",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "object",
+                  "properties": {
+                    "rendition_type": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "enum": ["not supported"]
+                      }
+                    }
+                  }
+                },
+                "code": {
+                  "type": "integer",
+                  "enum": [ 1005 ]
+                },
+                "description": {
+                  "type": "string",
+                  "enum": [ "Input Validation Error" ]
+                }
+              }
+            }
+          },
+          "400 Missing X-Generate-Renditions": {
+            "$ref": "#/components/responses/BadRequestMissingParameter"
+          },
+          "401 Unauthorized": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403 Invalid Key": {
+            "$ref": "#/components/responses/ForbiddenKey"
+          },
+          "404 (Not Found)": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "503 (Unavailable)": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        }
+      }
+    },
     "/v2/catalogs/{catalog_id}/assets/{asset_id}/revisions/{revision_id}": {
       "put": {
         "tags": [
@@ -671,8 +801,8 @@
           "403 (Storage)": {
             "$ref": "#/components/responses/ForbiddenQuota"
           },
-          "412 (Exists)": {
-            "$ref": "#/components/responses/PreconditionFailed"
+          "404 (Not Found)": {
+            "$ref": "#/components/responses/NotFound"
           },
           "415 (Unsupported)": {
             "$ref": "#/components/responses/UnsupportedMediaType"
@@ -775,7 +905,7 @@
         }
       }
     },
-    "/v2/catalogs/{catalog_id}/assets{asset_id}/rendtions/{rendition_type}": {
+    "/v2/catalogs/{catalog_id}/assets{asset_id}/renditions/{rendition_type}": {
       "get": {
         "tags": [
           "assets"
@@ -860,6 +990,73 @@
           },
           "401 Unauthorized": {
             "$ref": "#/components/responses/Unauthorized"
+          },
+          "404 (Not Found)": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "503 (Unavailable)": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        }
+      }
+    },
+    "/v2/catalogs/{catalog_id}/assets{asset_id}/xmp/develop": {
+      "get": {
+        "tags": [
+          "assets"
+        ],
+        "summary": "Get latest asset external xmp develop setting",
+        "description": "Get latest asset external xmp develop setting file",
+        "operationId": "getAssetExternalXmpDevelopSetting",
+        "produces": [
+          "application/json",
+          "application/rdf+xml"
+        ],
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Client ID (API Key) which is subscribed to the Lightroom APIs through console.adobe.io",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer [token] - User access token of an authenticated Lightroom customer",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "catalog_id",
+            "in": "path",
+            "description": "Identifier of the catalog in which asset exists.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "asset_id",
+            "in": "path",
+            "description": "Identifier of the asset for which to fetch rendition.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200 (OK)": {
+            "description": "External XMP Develop Setting file. Content type of the response is application/rdf+xml."
+          },
+          "400 Bad UUID": {
+            "$ref": "#/components/responses/BadRequestGUID"
+          },
+          "401 Unauthorized": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403 Access Forbidden":{
+            "$ref":"#/components/responses/Forbidden"
+          },
+          "403 Invalid Key":{
+            "$ref":"#/components/responses/ForbiddenKey"
           },
           "404 (Not Found)": {
             "$ref": "#/components/responses/NotFound"
@@ -1072,26 +1269,20 @@
                   "/rels/parent_album": {
                     "href": "albums/<parent_album_id>"
                   },
-                  "/rels/web_album": {
-                    "href": "<web_url>/libraries/<catalog_id>/albums/<album_id>"
-                  },
                   "/rels/cover_asset": {
                     "href": "assets/<cover_asset_id>"
                   },
-                  "/rels/child_albums": {
-                    "href": "albums/<album_id>/albums"
-                  },
                   "/rels/rendition_type/320": {
-                    "href": "assets/<cover_asset_id>/revisions/<revision_id>/renditions/<rendition_id>"
+                    "href": "assets/<cover_asset_id>/renditions/320"
                   },
                   "/rels/rendition_type/640": {
-                    "href": "assets/<cover_asset_id>/revisions/<revision_id>/renditions/<rendition_id>"
+                    "href": "assets/<cover_asset_id>/renditions/640"
                   },
                   "/rels/rendition_type/1280": {
-                    "href": "assets/<cover_asset_id>/revisions/<revision_id>/renditions/<rendition_id>"
+                    "href": "assets/<cover_asset_id>/renditions/1280"
                   },
                   "/rels/rendition_type/2048": {
-                    "href": "assets/<cover_asset_id>/revisions/<revision_id>/renditions/<rendition_id>"
+                    "href": "assets/<cover_asset_id>/renditions/2048"
                   },
                   "/rels/xmp/develop": {
                     "href": "assets/<asset_id>/xmp/develop",
@@ -1119,6 +1310,160 @@
           },
           "503 (Unavailable)":{
             "$ref":"#/components/responses/ServiceUnavailable"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "albums"
+        ],
+        "summary": "Update album",
+        "description": "Update an existing album. The existing album should be created via the same client app and of subtype project or project_set.",
+        "operationId": "updateAlbum",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Client ID (API Key) which is subscribed to the Lightroom APIs through console.adobe.io",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer [token] - User access token of an authenticated Lightroom customer",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "catalog_id",
+            "in": "path",
+            "description": "Identifier of the catalog containing the album.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "album_id",
+            "in": "path",
+            "description": "Identifier for the album.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Album metadata and information to be updated.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "payload": {
+                  "$ref": "#/definitions/albumPayload"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400 Bad JSON": {
+            "$ref": "#/components/responses/BadRequestJSON"
+          },
+          "400 Bad Payload": {
+            "$ref": "#/components/responses/BadRequestPayload"
+          },
+          "401 Unauthorized": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403 Invalid Key": {
+            "$ref": "#/components/responses/ForbiddenKey"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "403 Forbidden Operation":{
+            "$ref":"#/components/responses/ForbiddenOperation"
+          },
+          "415 Unsupported": {
+            "$ref": "#/components/responses/UnsupportedMediaType"
+          },
+          "503 (Unavailable)": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "albums"
+        ],
+        "summary": "Delete album",
+        "description": "Delete an existing album. The existing album should be created via the same client app and of subtype project or project_set.",
+        "operationId": "deleteAlbum",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Client ID (API Key) which is subscribed to the Lightroom APIs through console.adobe.io",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer [token] - User access token of an authenticated Lightroom customer",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "catalog_id",
+            "in": "path",
+            "description": "Identifier of the catalog containing the album.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "album_id",
+            "in": "path",
+            "description": "Identifier for the album.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "child_albums",
+            "in": "query",
+            "description": "This parameter when passed with a value, for example: true would delete all the child albums as well of the album specified. The deletion of child albums will be done asynchronously.",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400 Bad JSON": {
+            "$ref": "#/components/responses/BadRequestJSON"
+          },
+          "401 Unauthorized": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403 Invalid Key": {
+            "$ref": "#/components/responses/ForbiddenKey"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "403 Forbidden Operation":{
+            "$ref":"#/components/responses/ForbiddenOperation"
+          },
+          "503 (Unavailable)": {
+            "$ref": "#/components/responses/ServiceUnavailable"
           }
         }
       }
@@ -1507,7 +1852,7 @@
           {
             "name":"embed",
             "in":"query",
-            "description":"Semicolon-delimited list of additional data to include. When the list includes \"asset\", the asset subdocuments contains all the fields with just the importedByUser and its id. When the list includes \"asset\" and \"user\", the asset subdocuments contains all the fields as shown below, including feedbackuser. Otherwise, only the id and self href link are returned in the asset subdocuments.",
+            "description":"Semicolon-delimited list of additional data to include. When the list includes \"asset\", the asset subdocuments contains all the fields. Otherwise, only the id and self href link are returned in the asset subdocuments.",
             "type":"string"
           },
           {
@@ -1589,9 +1934,6 @@
                           },
                           "payload":{
                             "type":"object"
-                          },
-                          "importedByUser": {
-                            "type":"object"
                           }
                         }
                       }
@@ -1644,7 +1986,7 @@
                           "href": "assets/<asset_id>"
                         },
                         "/rels/rendition_type/<rendition_type>": {
-                          "href": "assets/<asset_id>/revisions/<revision_id>/renditions/<rendition_id>"
+                          "href": "assets/<asset_id>/renditions/<rendition_type>"
                         }
                       },
                       "payload": {
@@ -1662,32 +2004,6 @@
                         "<key>": "<value>",
                         "develop": {
                           "<dev_key>": "<dev_value>"
-                        }
-                      },
-                      "importedByUser": {
-                        "id": "<account_id>",
-                        "created": "<created_date>",
-                        "updated": "<updated_date>",
-                        "type": "feedbackuser",
-                        "full_name": "<full_name>",
-                        "first_name": "<first_name>",
-                        "last_name": "<last_name>",
-                        "avatar": {
-                          "placeholder": "{boolean}"
-                        },
-                        "links": {
-                          "/rels/avatars/small": {
-                            "href": "/v2/avatars/<account_id>/<timestamp>/small",
-                            "size": 50
-                          },
-                          "/rels/avatars/medium": {
-                            "href": "/v2/avatars/<account_id>/<timestamp>/medium",
-                            "size": 115
-                          },
-                          "/rels/avatars/large": {
-                            "href": "/v2/avatars/<account_id>/<timestamp>/large",
-                            "size": 138
-                          }
                         }
                       }
                     },
@@ -1728,7 +2044,7 @@
                           "href": "assets/<asset_id>"
                         },
                         "/rels/rendition_type/<rendition_type>": {
-                          "href": "assets/<asset_id>/revisions/<revision_id>/renditions/<rendition_id>"
+                          "href": "assets/<asset_id>/renditions/<rendition_type>"
                         }
                       },
                       "payload": {
@@ -1963,7 +2279,7 @@
                         "href": "assets/<asset_id>"
                       },
                       "/rels/rendition_type/<rendition_type>": {
-                        "href": "assets/<asset_id>/revisions/<revision_id>/renditions/<rendition_id>"
+                        "href": "assets/<asset_id>/renditions/<rendition_type>"
                       }
                     },
                     "payload": {
@@ -1995,7 +2311,7 @@
                         "href": "assets/<asset_id>"
                       },
                       "/rels/rendition_type/<rendition_type>": {
-                        "href": "assets/<asset_id>/revisions/<revision_id>/renditions/<rendition_id>"
+                        "href": "assets/<asset_id>/renditions/<rendition_type>"
                       }
                     },
                     "unshareable": "<unshareable>",
@@ -2039,9 +2355,6 @@
                         "title": "<copyrighted_title>",
                         "owner": "<copyrighted_owner>"
                       }
-                    },
-                    "importedByUser": {
-                      "id": "<imported_by_user>"
                     }
                   }
                 ],
@@ -2150,7 +2463,7 @@
                         "href": "assets/<asset_id>"
                       },
                       "/rels/rendition_type/<rendition_type>": {
-                        "href": "assets/<asset_id>/revisions/<revision_id>/renditions/<rendition_id>"
+                       "href": "assets/<asset_id>/renditions/<rendition_type>"
                       },
                       "/rels/xmp/develop": {
                         "href": "assets/<asset_id>/xmp/develop",
@@ -2192,7 +2505,7 @@
                         "href": "assets/<asset_id>"
                       },
                       "/rels/rendition_type/<rendition_type>": {
-                        "href": "assets/<asset_id>/revisions/<revision_id>/renditions/<rendition_id>"
+                        "href": "assets/<asset_id>/renditions/<rendition_type>"
                       },
                       "/rels/xmp/develop": {
                         "href": "assets/<asset_id>/xmp/develop",
@@ -2241,9 +2554,6 @@
                         "title": "<copyrighted_title>",
                         "owner": "<copyrighted_owner>"
                       }
-                    },
-                    "importedByUser": {
-                      "id": "<imported_by_user>"
                     }
                   }
                 ],
@@ -2380,9 +2690,6 @@
                 },
                 "payload": {
                   "type": "object"
-                },
-                "importedByUser": {
-                  "id": "<imported_by_user>"
                 }
               },
               "example": {
@@ -2402,7 +2709,7 @@
                     "href": "assets/<asset_id>"
                   },
                   "/rels/rendition_type/<rendition_type>": {
-                    "href": "assets/<asset_id>/revisions/<revision_id>/renditions/<rendition_id>"
+                    "href": "assets/<asset_id>/renditions/<rendition_type>"
                   },
                   "/rels/xmp/develop": {
                     "href": "assets/<asset_id>/xmp/develop",
@@ -2426,9 +2733,6 @@
                   "develop": {
                     "<dev_key>": "<dev_value>"
                   }
-                },
-                "importedByUser": {
-                  "id": "<imported_by_user>"
                 }
               }
             }
@@ -2470,9 +2774,6 @@
                 "payload": {
                   "type": "object"
                 },
-                "importedByUser": {
-                  "id": "<imported_by_user>"
-                },
                 "favorites": {
                   "type": "object",
                   "properties" : {
@@ -2494,7 +2795,7 @@
                     "href": "/v2/catalogs/<catalog_id>/assets/<asset_id>"
                   },
                   "/rels/rendition_type/<rendition_type>": {
-                    "href": "/v2/catalogs/<catalog_id>/assets/<asset_id>/revisions/<revision_id>/renditions/<rendition_id>"
+                    "href": "/v2/catalogs/<catalog_id>/assets/<asset_id>/renditions/<rendition_type>"
                   },
                   "/rels/latest_revision": {
                     "href": "/v2/catalogs/<catalog_id>/assets/<asset_id>/revisions/<revision_id>",
@@ -2548,9 +2849,6 @@
                     "title": "<copyrighted_title>",
                     "owner": "<copyrighted_owner>"
                   }
-                },
-                "importedByUser": {
-                  "id": "<imported_by_user>"
                 }
               }
             }
@@ -2806,6 +3104,34 @@
                   "items": {
                     "type": "string",
                     "enum": ["favorite query param can only be true. favorite=false not supported"]
+                  }
+                }
+              }
+            },
+            "code": {
+              "type": "integer",
+              "enum": [ 1005 ]
+            },
+            "description": {
+              "type": "string",
+              "enum": [ "Input Validation Error" ]
+            }
+          }
+        }
+      },
+      "BadRequestMissingParameter": {
+        "description": "The request failed due to missing parameter.",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "errors": {
+              "type": "object",
+              "properties": {
+                "parameter": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": ["must be specified"]
                   }
                 }
               }
@@ -3083,15 +3409,6 @@
               "type": "string",
               "enum": [ "Resource not found" ]
             }
-          }
-        }
-      },
-      "PreconditionFailed": {
-        "description": "The request failed because the master file matching the provided SHA-256 hash already exists. The response body lists the matching master files.",
-        "schema": {
-          "type": "object",
-          "properties": {
-            "base": "string"
           }
         }
       },
