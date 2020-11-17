@@ -1286,8 +1286,8 @@
                   },
                   "/rels/xmp/develop": {
                     "href": "assets/<asset_id>/xmp/develop",
-                    "invalid": "<external_xmp_develop_setting_true>",
-                    "fileSize": "true"
+                    "invalid": "true",
+                    "fileSize": "<external_xmp_develop_setting_file_size>"
                   }
                 }
               }
@@ -2371,8 +2371,8 @@
                   },
                   "/rels/xmp/develop": {
                     "href": "assets/<asset_id>/xmp/develop",
-                    "invalid": "<external_xmp_develop_setting_true>",
-                    "fileSize": "true"
+                    "invalid": "true",
+                    "fileSize": "<external_xmp_develop_setting_file_size>"
                   }
                 }
               }
@@ -2467,8 +2467,8 @@
                       },
                       "/rels/xmp/develop": {
                         "href": "assets/<asset_id>/xmp/develop",
-                        "invalid": "<external_xmp_develop_setting_true>",
-                        "fileSize": "true"
+                        "invalid": "true",
+                        "fileSize": "<external_xmp_develop_setting_file_size>"
                       }
                     },
                     "payload": {
@@ -2509,8 +2509,8 @@
                       },
                       "/rels/xmp/develop": {
                         "href": "assets/<asset_id>/xmp/develop",
-                        "invalid": "<external_xmp_develop_setting_true>",
-                        "fileSize": "true"
+                        "invalid": "true",
+                        "fileSize": "<external_xmp_develop_setting_file_size>"
                       }
                     },
                     "unshareable": "<unshareable>",
@@ -2713,8 +2713,8 @@
                   },
                   "/rels/xmp/develop": {
                     "href": "assets/<asset_id>/xmp/develop",
-                    "invalid": "<external_xmp_develop_setting_true>",
-                    "fileSize": "true"
+                    "invalid": "true",
+                    "fileSize": "<external_xmp_develop_setting_file_size>"
                   }
                 },
                 "payload": {
