@@ -1094,7 +1094,9 @@
                     "href": "assets/<cover_asset_id>/revisions/<revision_id>/renditions/<rendition_id>"
                   },
                   "/rels/xmp/develop": {
-                    "href": "assets/<cover_asset_id>"
+                    "href": "assets/<asset_id>/xmp/develop",
+                    "invalid": "<external_xmp_develop_setting_invalid>",
+                    "fileSize": "<external_xmp_develop_setting_file_size>"
                   }
                 }
               }
@@ -2055,7 +2057,9 @@
                     "templated": true
                   },
                   "/rels/xmp/develop": {
-                    "href": "assets/<asset_id>"
+                    "href": "assets/<asset_id>/xmp/develop",
+                    "invalid": "<external_xmp_develop_setting_invalid>",
+                    "fileSize": "<external_xmp_develop_setting_file_size>"
                   }
                 }
               }
@@ -2149,7 +2153,9 @@
                         "href": "assets/<asset_id>/revisions/<revision_id>/renditions/<rendition_id>"
                       },
                       "/rels/xmp/develop": {
-                        "href": "assets/<cover_asset_id>"
+                        "href": "assets/<asset_id>/xmp/develop",
+                        "invalid": "<external_xmp_develop_setting_invalid>",
+                        "fileSize": "<external_xmp_develop_setting_file_size>"
                       }
                     },
                     "payload": {
@@ -2189,7 +2195,9 @@
                         "href": "assets/<asset_id>/revisions/<revision_id>/renditions/<rendition_id>"
                       },
                       "/rels/xmp/develop": {
-                        "href": "assets/<cover_asset_id>"
+                        "href": "assets/<asset_id>/xmp/develop",
+                        "invalid": "<external_xmp_develop_setting_invalid>",
+                        "fileSize": "<external_xmp_develop_setting_file_size>"
                       }
                     },
                     "unshareable": "<unshareable>",
@@ -2397,7 +2405,9 @@
                     "href": "assets/<asset_id>/revisions/<revision_id>/renditions/<rendition_id>"
                   },
                   "/rels/xmp/develop": {
-                    "href": "assets/<cover_asset_id>"
+                    "href": "assets/<asset_id>/xmp/develop",
+                    "invalid": "<external_xmp_develop_setting_invalid>",
+                    "fileSize": "<external_xmp_develop_setting_file_size>"
                   }
                 },
                 "payload": {
