@@ -1095,7 +1095,7 @@
                   },
                   "/rels/xmp/develop": {
                     "href": "assets/<asset_id>/xmp/develop",
-                    "invalid": "<external_xmp_develop_setting_invalid>",
+                    "invalid": "<external_xmp_develop_setting_true>",
                     "fileSize": "<external_xmp_develop_setting_file_size>"
                   }
                 }
@@ -2058,7 +2058,7 @@
                   },
                   "/rels/xmp/develop": {
                     "href": "assets/<asset_id>/xmp/develop",
-                    "invalid": "<external_xmp_develop_setting_invalid>",
+                    "invalid": "<external_xmp_develop_setting_true>",
                     "fileSize": "<external_xmp_develop_setting_file_size>"
                   }
                 }
@@ -2154,7 +2154,7 @@
                       },
                       "/rels/xmp/develop": {
                         "href": "assets/<asset_id>/xmp/develop",
-                        "invalid": "<external_xmp_develop_setting_invalid>",
+                        "invalid": "<external_xmp_develop_setting_true>",
                         "fileSize": "<external_xmp_develop_setting_file_size>"
                       }
                     },
@@ -2196,7 +2196,7 @@
                       },
                       "/rels/xmp/develop": {
                         "href": "assets/<asset_id>/xmp/develop",
-                        "invalid": "<external_xmp_develop_setting_invalid>",
+                        "invalid": "<external_xmp_develop_setting_true>",
                         "fileSize": "<external_xmp_develop_setting_file_size>"
                       }
                     },
@@ -2406,7 +2406,7 @@
                   },
                   "/rels/xmp/develop": {
                     "href": "assets/<asset_id>/xmp/develop",
-                    "invalid": "<external_xmp_develop_setting_invalid>",
+                    "invalid": "<external_xmp_develop_setting_true>",
                     "fileSize": "<external_xmp_develop_setting_file_size>"
                   }
                 },
