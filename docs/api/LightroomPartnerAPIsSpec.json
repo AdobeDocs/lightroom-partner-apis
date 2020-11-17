@@ -1287,7 +1287,7 @@
                   "/rels/xmp/develop": {
                     "href": "assets/<asset_id>/xmp/develop",
                     "invalid": "<external_xmp_develop_setting_true>",
-                    "fileSize": "<external_xmp_develop_setting_file_size>"
+                    "fileSize": "true"
                   }
                 }
               }
@@ -2372,7 +2372,7 @@
                   "/rels/xmp/develop": {
                     "href": "assets/<asset_id>/xmp/develop",
                     "invalid": "<external_xmp_develop_setting_true>",
-                    "fileSize": "<external_xmp_develop_setting_file_size>"
+                    "fileSize": "true"
                   }
                 }
               }
@@ -2468,7 +2468,7 @@
                       "/rels/xmp/develop": {
                         "href": "assets/<asset_id>/xmp/develop",
                         "invalid": "<external_xmp_develop_setting_true>",
-                        "fileSize": "<external_xmp_develop_setting_file_size>"
+                        "fileSize": "true"
                       }
                     },
                     "payload": {
@@ -2510,7 +2510,7 @@
                       "/rels/xmp/develop": {
                         "href": "assets/<asset_id>/xmp/develop",
                         "invalid": "<external_xmp_develop_setting_true>",
-                        "fileSize": "<external_xmp_develop_setting_file_size>"
+                        "fileSize": "true"
                       }
                     },
                     "unshareable": "<unshareable>",
@@ -2714,7 +2714,7 @@
                   "/rels/xmp/develop": {
                     "href": "assets/<asset_id>/xmp/develop",
                     "invalid": "<external_xmp_develop_setting_true>",
-                    "fileSize": "<external_xmp_develop_setting_file_size>"
+                    "fileSize": "true"
                   }
                 },
                 "payload": {
