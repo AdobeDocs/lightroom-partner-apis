@@ -1287,6 +1287,7 @@
                   "/rels/xmp/develop": {
                     "href": "assets/<asset_id>/xmp/develop",
                     "invalid": "true",
+                    "discription": "The read xmp/develop link in the response will have the invalid flag as true if revision with SHA256 has been created but external xmp/develop has not been uploaded yet.",
                     "fileSize": "<external_xmp_develop_setting_file_size>"
                   }
                 }
@@ -2372,6 +2373,7 @@
                   "/rels/xmp/develop": {
                     "href": "assets/<asset_id>/xmp/develop",
                     "invalid": "true",
+                    "discription": "The read xmp/develop link in the response will have the invalid flag as true if revision with SHA256 has been created but external xmp/develop has not been uploaded yet.",
                     "fileSize": "<external_xmp_develop_setting_file_size>"
                   }
                 }
@@ -2468,6 +2470,7 @@
                       "/rels/xmp/develop": {
                         "href": "assets/<asset_id>/xmp/develop",
                         "invalid": "true",
+                        "discription": "The read xmp/develop link in the response will have the invalid flag as true if revision with SHA256 has been created but external xmp/develop has not been uploaded yet.",
                         "fileSize": "<external_xmp_develop_setting_file_size>"
                       }
                     },
@@ -2714,6 +2717,7 @@
                   "/rels/xmp/develop": {
                     "href": "assets/<asset_id>/xmp/develop",
                     "invalid": "true",
+                    "discription": "The read xmp/develop link in the response will have the invalid flag as true if revision with SHA256 has been created but external xmp/develop has not been uploaded yet.",
                     "fileSize": "<external_xmp_develop_setting_file_size>"
                   }
                 },
