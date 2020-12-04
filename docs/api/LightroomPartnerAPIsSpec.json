@@ -1813,7 +1813,7 @@
           "assets"
         ],
         "summary": "Retrieve assets",
-        "description":"Lists assets in an album. The assets in an album are returned sorted on either order if order* parameters are used. The assets in an album are returned sorted on captured date if order* parameters are not used and captured* parameters are used. Please note that the created and updated dates for Album asset documents will be returned as \"0000-00-00T00:00:00\". Successful response may also return invalid flag in the rendition link only for types 2560 and fullsize. A rendition becomes invalid when an asset is edited after rendition has been generated. These renditions can be generated via Generate Renditions API",
+        "description":"Retrieve a list of existing assets that caller owns. Successful response may also return invalid flag in the rendition link only for types 2560 and fullsize. A rendition becomes invalid when an asset is edited after rendition has been generated. These renditions can be generated via Generate Renditions API",
         "operationId": "getAssets",
         "produces": [
           "application/json"
