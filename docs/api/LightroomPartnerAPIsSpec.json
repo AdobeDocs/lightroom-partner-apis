@@ -1813,7 +1813,7 @@
           "assets"
         ],
         "summary": "Retrieve assets",
-        "description":"Retrieve a list of existing assets that caller owns. Successful response may also return invalid flag in the rendition link only for types 2560 and fullsize. A rendition becomes invalid when an asset is edited after rendition has been generated. These renditions can be generated via Generate Renditions API",
+        "description": "Retrieve a list of existing assets that caller owns. Successful response may also return invalid flag in the rendition link only for types 2560 and fullsize. A rendition becomes invalid when an asset is edited after rendition has been generated. These renditions can be generated via Generate Renditions API",
         "operationId": "getAssets",
         "produces": [
           "application/json"
