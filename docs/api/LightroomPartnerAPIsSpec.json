@@ -561,7 +561,7 @@
           },
           {
             "name": "X-Generate-Renditions",
-            "in": "path",
+            "in": "header",
             "description": "One or multiple of the supported rendition types separated by ','. Supported rendition types are : ['fullsize', '2560'].",
             "required": true,
             "type": "string"
