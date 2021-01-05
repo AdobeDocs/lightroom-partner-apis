@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "description": "Documentation for the Lightroom APIs, made available through [adobe.io](https://www.adobe.io).",
+    "description": "Documentation for the Lightroom APIs, made available through [adobe.io](https://www.adobe.io).\n\n[API Change Logs](https://www.stage.adobe.io/apis/creativecloud/lightroom/docs.html#!apichangelog.md).",
     "version": "1.0.0",
     "title": "Lightroom API",
     "license": {
