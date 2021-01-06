@@ -1811,13 +1811,13 @@
           {
             "name":"order_after",
             "in":"query",
-            "description":"Used to request assets having order value greater than specified value. Next and previous pages will be found in the \"links.next.href\" and \"links.prev.href\" links respectively. If next/prev link is missing, it indicates that there is no next/prev page. Some rules about using order_after: 1) Specify \"-\" to get the first page. 2) Can be max of 1024 characters. 3) Should follow the syntax specified in http://belt.sea.adobe.com/album_asset/index.html 4) captured_before cannot be used with order_after 5) captured_after can be used only if order_after==\"\"",
+            "description":"Used to request assets having order value greater than specified value. Next and previous pages will be found in the \"links.next.href\" and \"links.prev.href\" links respectively. If next/prev link is missing, it indicates that there is no next/prev page. Some rules about using order_after: 1) Specify \"-\" to get the first page. 2) Can be max of 1024 characters. 3) Should be a lex64 sort order string with characters in the set: [-0-9A-Z_a-z] with sort order in the same sequence as in the set [-0-9A-Z_a-z]. 4) captured_before cannot be used with order_after 5) captured_after can be used only if order_after==\"\"",
             "type":"dateTime"
           },
           {
             "name":"order_before",
             "in":"query",
-            "description":"Used to request assets having order value lesser than specified value. Next and previous pages will be found in the \"links.next.href\" and \"links.prev.href\" links respectively. If next/prev link is missing, it indicates that there is no next/prev page. Some rules about using order_before: 1) Specify order_before as \"\" and captured_before as a future date to get the first page. 2) Can be max of 1024 characters. 3) Should follow the syntax specified in http://belt.sea.adobe.com/album_asset/index.html 4) captured_after cannot be used with order_before 5) captured_before can be used only if order_before==\"\"",
+            "description":"Used to request assets having order value lesser than specified value. Next and previous pages will be found in the \"links.next.href\" and \"links.prev.href\" links respectively. If next/prev link is missing, it indicates that there is no next/prev page. Some rules about using order_before: 1) Specify order_before as \"\" and captured_before as a future date to get the first page. 2) Can be max of 1024 characters. 3) Should be a lex64 sort order string with characters in the set: [-0-9A-Z_a-z] with sort order in the same sequence as in the set [-0-9A-Z_a-z]. 4) captured_after cannot be used with order_before 5) captured_before can be used only if order_before==\"\"",
             "type":"dateTime"
           },
           {
