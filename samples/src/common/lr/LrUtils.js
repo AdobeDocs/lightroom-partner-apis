@@ -47,11 +47,16 @@ let LrUtils = {
 		if (album.subtype == 'project') {
 			await LrUtils.logAlbumAssetsP(lr, album, offset + '  ')
 		}
-		else {
-			// XXX fix me
-			let childAlbums = album._childAlbums || []
-			for (const child of childAlbums) {
-				await LrUtils.logAlbumP(lr, child, offset + '  ')
+	},
+
+	logAlbumHierarchyP: async (lr, node, offset = '') => {
+		await LrUtils.logAlbumP(lr, node.data, offset)
+		if (node.folders || node.albums) {
+			for (const inode of node.folders) {
+				await LrUtils.logAlbumHierarchyP(lr, inode, offset + '  ')
+			}
+			for (const inode of node.albums) {
+				await LrUtils.logAlbumHierarchyP(lr, inode, offset + '  ')
 			}
 		}
 	},
