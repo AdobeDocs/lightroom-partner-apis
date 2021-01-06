@@ -13,19 +13,14 @@ import { until } from 'lit-html/directives/until.js'
 import LrContext from '../../common/lr/LrContext'
 import LrUtils from '../../common/lr/LrUtils'
 
-function _getCachedAlbumAssetsP(lr, album) {
-	if (!album._assetsPromise) {
-		album._assetsPromise = lr.getAlbumAssetsP(album.id)
-	}
-	return album._assetsPromise
-}
-
 class AlbumGridView extends LitElement {
 
 	static _lr // current lightroom session
+	static _cache
 
 	static setGlobals(session, account, catalog, preferredLanguage = 'en-US', singleSelect = false) {
 		this._lr = new LrContext(session, account, catalog)
+		this._cache = {}
 	}
 
 	static setImageManager(manager) {
@@ -70,7 +65,16 @@ class AlbumGridView extends LitElement {
 	attributeChangedCallback(name, oldValue, newValue) {
 		if (name == 'context' && newValue) {
 			const { source, preselected } = JSON.parse(newValue)
-			_getCachedAlbumAssetsP(AlbumGridView._lr, source).then((albumAssets) => {
+
+			if (!AlbumGridView._cache) {
+				console.error('need to initialize album grid component')
+				return
+			}
+
+			if (!AlbumGridView._cache[source.id]) {
+				AlbumGridView._cache[source.id] = AlbumGridView._lr.getAlbumAssetsP(source.id)
+			}
+			AlbumGridView._cache[source.id].then((albumAssets) => {
 				this._assets = albumAssets.map((albumAsset) => albumAsset.asset)
 			})
 		}

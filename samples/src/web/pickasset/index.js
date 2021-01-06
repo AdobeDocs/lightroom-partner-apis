@@ -53,9 +53,9 @@ async function mainP() {
 
 		let imageManager = new LrImageManager(lr._session, lr.account, lr.catalog)
 
-		let albumGridXComponentConstructor = window.customElements.get('lr-samples-albumgrid')
-		albumGridXComponentConstructor.setGlobals(lr._session, lr.account, lr.catalog)
-		albumGridXComponentConstructor.setImageManager(imageManager)
+		let albumGridComponentConstructor = window.customElements.get('lr-samples-albumgrid')
+		albumGridComponentConstructor.setGlobals(lr._session, lr.account, lr.catalog)
+		albumGridComponentConstructor.setImageManager(imageManager)
 
 		let folderGridComponentConstructor = window.customElements.get('lr-samples-foldergrid')
 		folderGridComponentConstructor.setImageManager(imageManager)

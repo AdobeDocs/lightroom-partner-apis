@@ -14,7 +14,7 @@ const LrUtils = require('../../common/lr/LrUtils')
 async function mainP() {
 	let lr = await LrSession.currentContextP()
 	let root = await LrUtils.getRootProjectSetP(lr)
-	await LrUtils.logAlbumP(lr, root)
+	await LrUtils.logAlbumHierarchyP(lr, root)
 }
 
 mainP().then(() => console.log('done')).catch(e => console.error('error:', e))
