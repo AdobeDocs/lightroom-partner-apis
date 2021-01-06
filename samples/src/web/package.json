@@ -8,5 +8,10 @@
   "browserslist": "last 2 chrome version, last 2 firefox version, last 2 safari version",
   "devDependencies": {
     "parcel-bundler": "^1.12.4"
+  },
+  "dependencies": {
+    "@spectrum-css/typography": "^3.0.0-beta.1",
+    "@spectrum-css/vars": "^3.0.0-beta.2",
+    "lit-element": "^2.4.0"
   }
 }

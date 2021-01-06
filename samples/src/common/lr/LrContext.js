@@ -102,7 +102,11 @@ class LrContext {
 
 	getAlbumsP(subtype) {
 		let path = `/v2/catalogs/${this._catalogId}/albums?subtype=${subtype}`
-		return LrRequestor.getPagedP(this._session, path).then((response) => response.resources)
+		return LrRequestor.getPagedP(this._session, path).then((response) => {
+			let albums = response.resources
+			albums.forEach(resource => resource.base = response.base)
+			return response.resources
+		})
 	}
 
 	getAlbumP(albumId) {
@@ -126,6 +130,17 @@ class LrContext {
 			let assetId = album.links['/rels/cover_asset'].href.match(/assets\/([a-f0-9]{32})\/?/)[1]
 			return this.getAssetThumbnailRenditionP(assetId)
 		}
+	}
+
+	async getAlbumCoverOrFallbackBlobP(album) {
+		let buffer = await this.getAlbumCoverP(album)
+		if (!buffer) {
+			let albumAsset = await this.getFirstAlbumAssetP(album.id) // first asset
+			if (albumAsset) {
+				buffer = await this.getAssetThumbnailRenditionP(albumAsset.asset.id)
+			}
+		}
+		return buffer ? new Blob([ new Uint8Array(buffer) ], { type: 'image/jpeg' }) : null
 	}
 
 	async createAlbumP (subtype, name, parentId, remoteId) {
@@ -200,7 +215,7 @@ class LrContext {
 		}
 	}
 
-	existsP = async function(path) {
+	async existsP(path) {
 		try {
 			await LrRequestor.headP(this._session, path)
 			return true
@@ -212,7 +227,7 @@ class LrContext {
 		}
 	}
 
-	waitForP = async (path) => {
+	async waitForP(path) {
 		let sleep = () => new Promise(resolve => setTimeout(resolve, 3000)) // 3 sec
 		let retries = 10
 		for (let i = 0; i < retries; i++) {
@@ -227,12 +242,12 @@ class LrContext {
 		throw new Error(`timed out on: ${path}`)
 	}
 
-	waitFor2560RendtionP = function(assetId) {
+	waitFor2560RendtionP(assetId) {
 		let path = `/v2/catalogs/${this._catalogId}/assets/${assetId}/renditions/2560`
 		return this.waitForP(path)
 	}
 
-	waitForFullsizeRendtionP = function(assetId) {
+	waitForFullsizeRendtionP(assetId) {
 		let path = `/v2/catalogs/${this._catalogId}/assets/${assetId}/renditions/fullsize`
 		return this.waitForP(path)
 	}
@@ -247,7 +262,7 @@ class LrContext {
 		return this.existsP(path)
 	}
 
-	generateRenditionP = async function(assetId, type) {
+	async generateRenditionP(assetId, type) {
 		let path = `/v2/catalogs/${this._catalogId}/assets/${assetId}/renditions`
 		let response = await LrRequestor.genP(this._session, path, type)
 
@@ -255,12 +270,12 @@ class LrContext {
 		return `/v2/catalogs/${this._catalogId}/${link.href}` // return the path
 	}
 
-	generate2560RenditionP = async function(assetId) {
+	async generate2560RenditionP(assetId) {
 		let path = await this.generateRenditionP(assetId, '2560')
 		return this.waitForP(path)
 	}
 
-	generateFullsizeRenditionP = async function(assetId) {
+	async generateFullsizeRenditionP(assetId) {
 		let path = await this.generateRenditionP(assetId, 'fullsize')
 		return this.waitForP(path)
 	}

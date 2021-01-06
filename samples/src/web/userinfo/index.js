@@ -9,7 +9,7 @@ then your use, modification, or distribution of it requires the prior
 written permission of Adobe. 
 */
 import './styles.css'
-import InfoView from '../../common/components/InfoView'
+import InfoView from '../components/InfoView'
 import LrSession from '../../common/lr/LrSession'
 
 async function mainP() {
@@ -17,11 +17,10 @@ async function mainP() {
 	document.body.appendChild(infoView.element)
 	try {
 		let lr = await LrSession.currentContextP()
-		let status = lr.account.entitlement.status
-		infoView.log(lr.account.full_name)
-		infoView.log(lr.account.email)
-		infoView.log(status)
-		infoView.log('catalog found')
+		infoView.name = lr.account.full_name
+		infoView.email = lr.account.email
+		infoView.entitlement = lr.account.entitlement.status
+		infoView.status = 'catalog found'
 	} catch (err) {
 		infoView.warning(err.message) // throws error on validation
 	}

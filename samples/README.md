@@ -20,7 +20,7 @@ Common code for making requests and managing Lightroom content can be found `src
 
 * `LrSession.js`: This module authenticates a user via `LrAuth.js` and validates that they are entitled to use Lightroom (their account has either a `trial` or `subscriber` status) and that they have a catalog. It will throw an error if these conditions are not satisfied, and return an `LrContext.js` object on success.
 
-* `LrContext.js`: Set of application-frieldly wrappers for calling the methods in `LrRequestor.js`. Constructs API paths, forms request bodies when needed, and traps expected error conditions.
+* `LrContext.js`: Set of application-friendly wrappers for calling the methods in `LrRequestor.js`. Constructs API paths, forms request bodies when needed, and traps expected error conditions.
 
 * `LrUtils.js`: A collection of different utlities that applications might find useful.
 
