@@ -48,6 +48,7 @@ let LrUtils = {
 			await LrUtils.logAlbumAssetsP(lr, album, offset + '  ')
 		}
 		else {
+			// XXX fix me
 			let childAlbums = album._childAlbums || []
 			for (const child of childAlbums) {
 				await LrUtils.logAlbumP(lr, child, offset + '  ')
@@ -55,57 +56,59 @@ let LrUtils = {
 		}
 	},
 
-	createAlbumHierarchy: function(root, albums) {
-		albums.sort(function (a, b) {
-			// alphabetical sort, with sets first
-			if (a.subtype != b.subtype) {
+	createAlbumHierarchy: function(subtype, name, albums) {
+		let root = {
+			folders: [],
+			albums: [],
+			data: {
+				id: subtype,
+				subtype,
+				payload: { name },
+				links: {}
+			}
+		}
+
+		albums.sort(function (a, b) { // alphabetical sort, with sets first
+		if (a.subtype != b.subtype) {
 				return a.subtype > b.subtype ? -1 : 1
 			}
 			return a.payload.name < b.payload.name ? -1 : 1
 		})
 
-		let albumSetHash = {}
-		albums.forEach(function (album) {
-			album._childAlbums = []
+		let inodeHash = {}
+		albums.forEach((album) => {
 			if (album.subtype == 'collection_set' || album.subtype == 'project_set') {
-				albumSetHash[album.id] = album
+				inodeHash[album.id] = {
+					folders: [],
+					albums: [],
+					data: album
+				}
 			}
 		})
 
-		albums.forEach(function (album) {
-			let entry = album.payload.parent && albumSetHash[album.payload.parent.id]
-			if (entry) {
-				album._parent = entry
-				entry._childAlbums.push(album)
+		albums.forEach((album) => {
+			let parent = (album.payload.parent && inodeHash[album.payload.parent.id]) || root
+			let child = inodeHash[album.id] || { data: album }
+			child.parent = parent
+			if (album.subtype == 'collection_set' || album.subtype == 'project_set') {
+				parent.folders.push(child)
 			}
 			else {
-				album._parent = root
-				root._childAlbums.push(album)
+				parent.albums.push(child)
 			}
 		})
+
 		return root
 	},
 
 	getRootCollectionSetP: async (lr) => {
 		let albums = await lr.getAlbumsP('collection_set%3Bcollection')
-		let root = {
-			subtype: 'collection_set',
-			payload: { name: 'Root Collection Set' },
-			links: {},
-			_childAlbums: []
-		}
-		return LrUtils.createAlbumHierarchy(root, albums)
+		return LrUtils.createAlbumHierarchy('collection_set', 'Albums', albums)
 	},
 
 	getRootProjectSetP: async (lr) => {
 		let albums = await lr.getAlbumsP('project_set%3Bproject')
-		let root = {
-			subtype: 'project_set',
-			payload: { name: 'Root Project Set' },
-			links: {},
-			_childAlbums: []
-		}
-		return LrUtils.createAlbumHierarchy(root, albums)
+		return LrUtils.createAlbumHierarchy('project_set', 'Projects', albums)
 	}
 }
 

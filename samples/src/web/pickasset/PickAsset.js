@@ -8,24 +8,34 @@ it. If you have received this file from a source other than Adobe,
 then your use, modification, or distribution of it requires the prior
 written permission of Adobe. 
 */
-import AssetRendition from '../../common/components/AssetRendition'
-import HorizontalPicker from '../../common/components/HorizontalPicker'
-
 class PickAsset {
-	constructor(lr) {
+	constructor(root, onClick) {
 		this.element = document.createElement('div')
-		let rendition = AssetRendition()
-		let picker = HorizontalPicker(lr, (asset) => {
-			if (rendition) {
-				rendition.element.remove()
-			}
-			rendition = AssetRendition(asset)
-			this.element.appendChild(rendition.element)
+
+		let picker = document.createElement('lr-samples-albumgrid')
+		picker.className = 'well'
+		picker.addEventListener('selected-changed', (event) => {
+			let asset = event.detail && event.detail.selected && event.detail.selected[0] // first asset
+			if (!asset || !onClick) return
+			onClick(asset)
 		})
-		this.element.appendChild(picker.element)
-		this.element.appendChild(document.createElement('hr'))
-		this.element.appendChild(rendition.element)
+
+		let albumPicker = document.createElement('lr-samples-foldergrid')
+		albumPicker.className = 'lhp'
+		albumPicker.addEventListener('selected-changed', (event) => {
+			let album = event.detail.selected[0]
+			let context = JSON.stringify({
+				preselected: [],
+				source: album // show first album
+			})
+			picker.setAttribute('context', context)
+		})
+
+		this.element.appendChild(albumPicker)
+		this.element.appendChild(picker)
+
+		albumPicker.active = root
 	}
 }
 
-export default (lr) => new PickAsset(lr)
+export default (root, onClick) => new PickAsset(root, onClick)

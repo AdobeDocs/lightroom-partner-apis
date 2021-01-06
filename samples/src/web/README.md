@@ -36,7 +36,7 @@ The `npx` command can be used to have Parcel package and host the given sample: 
 
 * Asset Picker
 
-    npx parcel assetpicker/index.html
+    npx parcel pickasset/index.html
 
     This example demonstrates browsing assets contained in collection and project hierarchies of an authenticated Adobe Lightroom customer.
 
