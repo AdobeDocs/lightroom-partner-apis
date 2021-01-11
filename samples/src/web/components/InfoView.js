@@ -14,17 +14,11 @@ class InfoView {
 	constructor() {
 		this.element = document.createElement('div')
 
-		let name = document.createElement('div')
-		name.className = 'info'
-		this._name = document.createTextNode('loading name...')
-		name.appendChild(this._name)
-		this.element.appendChild(name)
-
-		let email = document.createElement('div')
-		email.className = 'info'
-		this._email = document.createTextNode('loading email...')
-		email.appendChild(this._email)
-		this.element.appendChild(email)
+		let user = document.createElement('div')
+		user.className = 'info'
+		this._user = document.createTextNode('loading user...')
+		user.appendChild(this._user)
+		this.element.appendChild(user)
 
 		let entitlement = document.createElement('div')
 		entitlement.className = 'info'
@@ -39,16 +33,10 @@ class InfoView {
 		this.element.appendChild(status)
 	}
 
-	set name(name) {
-		let node = document.createTextNode(name)
-		this._name.replaceWith(node)
-		this._name = node
-	}
-
-	set email(email) {
-		let node = document.createTextNode(email)
-		this._email.replaceWith(node)
-		this._email = node
+	set user(user) {
+		let node = document.createTextNode(user)
+		this._user.replaceWith(node)
+		this._user = node
 	}
 
 	set entitlement(entitlement) {

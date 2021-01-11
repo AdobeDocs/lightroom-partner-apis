@@ -13,16 +13,23 @@ import InfoView from '../components/InfoView'
 import LrSession from '../../common/lr/LrSession'
 
 async function mainP() {
+	// construct the top-level page with a header
+	let header = document.createElement('div')
+	header.className = 'header'
+	document.body.appendChild(header)
+
+	// authenticate; check account and catalog; and show entitlement
 	let infoView = InfoView()
-	document.body.appendChild(infoView.element)
+	header.appendChild(infoView.element)
 	try {
 		let lr = await LrSession.currentContextP()
-		infoView.name = lr.account.full_name
-		infoView.email = lr.account.email
+		infoView.user = `${ lr.account.full_name } (${ lr.account.email })`
 		infoView.entitlement = lr.account.entitlement.status
-		infoView.status = 'catalog found'
-	} catch (err) {
-		infoView.warning(err.message) // throws error on validation
+		infoView.status = 'account and catalog found'
+	}
+	catch (err) {
+		infoView.status = err.message
+		return // bail out
 	}
 }
 

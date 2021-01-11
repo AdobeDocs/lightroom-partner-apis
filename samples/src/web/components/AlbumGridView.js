@@ -47,6 +47,22 @@ class AlbumGridView extends LitElement {
 				overflow-x: hidden;
 				overflow-y: auto;
 			}
+			.container::-webkit-scrollbar {
+				width: 10px;
+				height: 10px;
+			}
+			.container::-webkit-scrollbar-thumb {
+				background-color: var(--spectrum-global-color-gray-500);
+				border-radius: 8px;
+				width: 8px;
+				height: 8px;
+				border-top: 2px solid rgba(0, 0, 0, 0);
+				border-bottom: 2px solid rgba(0, 0, 0, 0);
+				background-clip: padding-box;
+			}
+			.container::-webkit-scrollbar-track, .container::-webkit-scrollbar-track-piece {
+				background: var(--spectrum-global-color-gray-200);
+			}
 			.grid {
 				display: flex;
 				flex-direction: row;
@@ -67,16 +83,24 @@ class AlbumGridView extends LitElement {
 			const { source, preselected } = JSON.parse(newValue)
 
 			if (!AlbumGridView._cache) {
-				console.error('need to initialize album grid component')
+				console.error('need to initialize samples album grid component')
 				return
 			}
 
-			if (!AlbumGridView._cache[source.id]) {
-				AlbumGridView._cache[source.id] = AlbumGridView._lr.getAlbumAssetsP(source.id)
+			if (source.type === 'album') {
+				if (!AlbumGridView._cache[source.id]) {
+					AlbumGridView._cache[source.id] = AlbumGridView._lr.getAlbumAssetsP(source.id)
+				}
+				AlbumGridView._cache[source.id].then((albumAssets) => {
+					this._assets = albumAssets.map((albumAsset) => albumAsset.asset)
+				})
 			}
-			AlbumGridView._cache[source.id].then((albumAssets) => {
-				this._assets = albumAssets.map((albumAsset) => albumAsset.asset)
-			})
+			if (source.type === 'catalog') {
+				if (!AlbumGridView._cache[source.id]) {
+					AlbumGridView._cache[source.id] = AlbumGridView._lr.getFirstPageOfAssetsP()
+				}
+				AlbumGridView._cache[source.id].then((assets) => this._assets = assets)
+			}
 		}
 	}
 
@@ -98,7 +122,7 @@ class AlbumGridView extends LitElement {
 	render() {
 		return html`<div class='container'><div class='grid'>
 			${ this._assets.map((asset) => html`
-				<img style=width:${ LrUtils.getAssetAspectRatio(asset) * 150 + 'px' };height:150px
+				<img style=width:${ LrUtils.getAssetAspectRatio(asset) * 100 + 'px' };height:100px
 					src=${ until(this._getCachedAssetThumbnailObjectURLP(asset), '') }
 					@click=${ (event) => this._onAssetClick(asset) }>
 				</img>
