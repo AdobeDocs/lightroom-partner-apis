@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "description": "Documentation for the Lightroom APIs, made available through [adobe.io](https://www.adobe.io). API Change Logs are available [here](https://www.stage.adobe.io/apis/creativecloud/lightroom/docs.html#!apichangelog.md).",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "title": "Lightroom API",
     "license": {
       "name": "Apache 2.0",
@@ -670,14 +670,292 @@
         }
       }
     },
-    "/v2/catalogs/{catalog_id}/assets/{asset_id}/revisions/{revision_id}": {
+    "/v2/catalogs/{catalog_id}/assets/{asset_id}" : {
+      "get": {
+        "tags": [
+          "assets"
+        ],
+        "summary": "Get a catalog asset",
+        "description": "Retrieves information about a single asset in a catalog that the caller owns. Successful response may also return invalid flag in the rendition link only for types 2560 and fullsize. A rendition becomes invalid when an asset is edited after rendition has been generated. These renditions can be generated via Generate Renditions API",
+        "operationId": "getAsset",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Client ID (API Key) which is subscribed to the Lightroom APIs through console.adobe.io",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer [token] - User access token of an authenticated Lightroom customer",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "catalog_id",
+            "in": "path",
+            "description": "Identifier of the catalog",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "asset_id",
+            "in": "path",
+            "description": "Identifier of the asset",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200 OK": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "base" : {
+                  "type": "string",
+                  "description": "Base URL that can be prepended to the 'href' values in the 'links' to produce fully qualified URLs for future queries."
+                },
+                "id": {
+                  "$ref": "#/definitions/uuid"
+                },
+                "type": {
+                  "type": "string",
+                  "enum": ["asset"]
+                },
+                "subtype": {
+                  "type": "string"
+                },
+                "created": {
+                  "$ref": "#/definitions/iso8601DateTime"
+                },
+                "updated": {
+                  "$ref": "#/definitions/iso8601DateTime"
+                },
+                "revision_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "links": {
+                  "type": "object"
+                },
+                "payload": {
+                  "type": "object"
+                }
+              },
+              "example": {
+                "base": "<base_url>",
+                "id": "<asset_id>",
+                "type": "asset",
+                "subtype": "image",
+                "created": "<created_date>",
+                "updated": "<updated_date>",
+                "revision_ids": [
+                  "<revision_id1>",
+                  "<revision_id2>",
+                  "<revision_id3>"
+                ],
+                "links": {
+                  "self": {
+                    "href": "assets/<asset_id>"
+                  },
+                  "/rels/rendition_type/<rendition_type>": {
+                    "href": "assets/<asset_id>/renditions/<rendition_type>"
+                  },
+                  "/rels/xmp/develop": {
+                    "href": "assets/<asset_id>/xmp/develop",
+                    "invalid": "true",
+                    "fileSize": "<external_xmp_develop_setting_file_size>"
+                  }
+                },
+                "payload": {
+                  "captureDate": "<image_capture_date>",
+                  "importSource": {
+                    "fileName": "<file_name>",
+                    "fileSize": <image_file_size>,
+                    "originalWidth": <image_width>,
+                    "originalHeight": <image_height>,
+                    "sha256": "<image_sha256>",
+                    "importedOnDevice": "<import_device_name>",
+                    "importedBy": "<import_account_id>",
+                    "importTimestamp": "<import_time>"
+                  },
+                  "<key>": "<value>",
+                  "develop": {
+                    "<dev_key>": "<dev_value>"
+                  }
+                }
+              }
+            }
+          },
+          "200 OK (Response for video asset)": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "base" : {
+                  "type": "string",
+                  "description": "Base URL that can be prepended to the 'href' values in the 'links' to produce fully qualified URLs for future queries."
+                },
+                "id": {
+                  "$ref": "#/definitions/uuid"
+                },
+                "type": {
+                  "type": "string",
+                  "enum": ["asset"]
+                },
+                "subtype": {
+                  "type": "string"
+                },
+                "created": {
+                  "$ref": "#/definitions/iso8601DateTime"
+                },
+                "updated": {
+                  "$ref": "#/definitions/iso8601DateTime"
+                },
+                "revision_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "links": {
+                  "type": "object"
+                },
+                "payload": {
+                  "type": "object"
+                },
+                "favorites": {
+                  "type": "object",
+                  "properties" : {
+                    "account_id": {
+                      "$ref": "#/definitions/iso8601DateTime"
+                    }
+                  }
+
+                },
+                "fingerprint": {
+                  "type": "object"
+                }
+              },
+              "example": {
+                "base": "<base_url>",
+                "id": "<asset_id>",
+                "links": {
+                  "self": {
+                    "href": "/v2/catalogs/<catalog_id>/assets/<asset_id>"
+                  },
+                  "/rels/rendition_type/<rendition_type>": {
+                    "href": "/v2/catalogs/<catalog_id>/assets/<asset_id>/renditions/<rendition_type>"
+                  },
+                  "/rels/latest_revision": {
+                    "href": "/v2/catalogs/<catalog_id>/assets/<asset_id>/revisions/<revision_id>",
+                    "created_by": "urn:carousel:account:<account_id>"
+                  }
+                },
+                "created": "<created_date>",
+                "updated": "<updated_date>",
+                "subtype": "video",
+                "unshareable": <unshareable>,
+                "payload": {
+                  "captureDate": "<image_capture_date>",
+                  "importSource": {
+                    "fileName": "<file_name>",
+                    "fileSize": <image_file_size>,
+                    "originalWidth": <image_width>,
+                    "originalHeight": <image_height>,
+                    "sha256": "<image_sha256>",
+                    "importedOnDevice": "<import_device_name>",
+                    "importedBy": "<import_account_id>",
+                    "importTimestamp": "<import_time>"
+                  },
+                  "video": {
+                    "frameRate": [
+                      "<video_frame_rate_numerator>",
+                      "<video_frame_rate_denominator>"
+                    ],
+                    "duration": [
+                      "<video_duration_numerator>",
+                      "<video_duration_denominator>"
+                    ],
+                    "displayAspectRatio": [
+                      "<video_aspect_ratio_numerator>",
+                      "<video_aspect_ratio_denominator>"
+                    ],
+                    "storageWidth": <video_storage_width>,
+                    "storageHeight": <video_storage_height>
+                  },
+                  "<key>": "<value>",
+                  "develop": {
+                    "<dev_key>": "<dev_value>"
+                  }
+                },
+                "favorites": {
+                  "<account_id>": "<created_date>"
+                },
+                "fingerprint": {
+                  "pass": <pass>,
+                  "file_href": "/v2/catalogs/<catalog_id>/assets/<asset_id>/revisions/<revision_id>/renditions/<rendition_id>",
+                  "copyright": {
+                    "title": "<copyrighted_title>",
+                    "owner": "<copyrighted_owner>"
+                  }
+                }
+              }
+            }
+          },
+          "400 (Bad UUID)": {
+            "$ref": "#/components/responses/BadRequestGUID"
+          },
+          "400 (Bad asset_ids)": {
+            "$ref": "#/components/responses/BadRequestAssetIds"
+          },
+          "400 (Bad group)": {
+            "$ref": "#/components/responses/BadRequestGroup"
+          },
+          "400 (Bad name)": {
+            "$ref": "#/components/responses/BadRequestName"
+          },
+          "400 (Bad favorite param)": {
+            "$ref": "#/components/responses/BadRequestFavorite"
+          },
+          "400 (Bad subtype with name/group)": {
+            "$ref": "#/components/responses/BadRequestMissingSubtypeWithGroupOrName"
+          },
+          "400 (Bad subtype with favorite)": {
+            "$ref": "#/components/responses/BadRequestMissingSubtypeWithFavorite"
+          },
+          "400 (Bad date/time)": {
+            "$ref": "#/components/responses/BadRequestInvalidDateTime"
+          },
+          "401 (Unauthorized)": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403 (Invalid Key)": {
+            "$ref": "#/components/responses/ForbiddenKey"
+          },
+          "403 (Forbidden)": {
+            "$ref": "#/components/responses/ForbiddenClient"
+          },
+          "503 (Unavailable)": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        }
+      },
       "put": {
         "tags": [
           "assets"
         ],
-        "summary": "Create asset revision",
-        "description": "Create a new asset with an initial revision.",
-        "operationId": "createAssetRevision",
+        "summary": "Create asset",
+        "description": "Create a new asset with initial metadata and import information.",
+        "operationId": "createAsset",
         "produces": [
           "application/json"
         ],
@@ -707,13 +985,6 @@
             "name": "asset_id",
             "in": "path",
             "description": "Client-generated Lightroom unique identifier for the new asset.",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "revision_id",
-            "in": "path",
-            "description": "Client-generated Lightroom unique identifier for the new revision.",
             "required": true,
             "type": "string"
           },
@@ -2573,286 +2844,6 @@
                   "/rels/asset": {
                     "href": "assets/{asset_id}",
                     "templated": true
-                  }
-                }
-              }
-            }
-          },
-          "400 (Bad UUID)": {
-            "$ref": "#/components/responses/BadRequestGUID"
-          },
-          "400 (Bad asset_ids)": {
-            "$ref": "#/components/responses/BadRequestAssetIds"
-          },
-          "400 (Bad group)": {
-            "$ref": "#/components/responses/BadRequestGroup"
-          },
-          "400 (Bad name)": {
-            "$ref": "#/components/responses/BadRequestName"
-          },
-          "400 (Bad favorite param)": {
-            "$ref": "#/components/responses/BadRequestFavorite"
-          },
-          "400 (Bad subtype with name/group)": {
-            "$ref": "#/components/responses/BadRequestMissingSubtypeWithGroupOrName"
-          },
-          "400 (Bad subtype with favorite)": {
-            "$ref": "#/components/responses/BadRequestMissingSubtypeWithFavorite"
-          },
-          "400 (Bad date/time)": {
-            "$ref": "#/components/responses/BadRequestInvalidDateTime"
-          },
-          "401 (Unauthorized)": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "403 (Invalid Key)": {
-            "$ref": "#/components/responses/ForbiddenKey"
-          },
-          "403 (Forbidden)": {
-            "$ref": "#/components/responses/ForbiddenClient"
-          },
-          "503 (Unavailable)": {
-            "$ref": "#/components/responses/ServiceUnavailable"
-          }
-        }
-      }
-    },
-    "/v2/catalogs/{catalog_id}/assets/{asset_id}" : {
-      "get": {
-        "tags": [
-          "assets"
-        ],
-        "summary": "Get a catalog asset",
-        "description": "Retrieves information about a single asset in a catalog that the caller owns. Successful response may also return invalid flag in the rendition link only for types 2560 and fullsize. A rendition becomes invalid when an asset is edited after rendition has been generated. These renditions can be generated via Generate Renditions API",
-        "operationId": "getAsset",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "X-API-Key",
-            "in": "header",
-            "description": "Client ID (API Key) which is subscribed to the Lightroom APIs through console.adobe.io",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "Bearer [token] - User access token of an authenticated Lightroom customer",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "catalog_id",
-            "in": "path",
-            "description": "Identifier of the catalog",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "asset_id",
-            "in": "path",
-            "description": "Identifier of the asset",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200 OK": {
-            "description": "OK",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "base" : {
-                  "type": "string",
-                  "description": "Base URL that can be prepended to the 'href' values in the 'links' to produce fully qualified URLs for future queries."
-                },
-                "id": {
-                  "$ref": "#/definitions/uuid"
-                },
-                "type": {
-                  "type": "string",
-                  "enum": ["asset"]
-                },
-                "subtype": {
-                  "type": "string"
-                },
-                "created": {
-                  "$ref": "#/definitions/iso8601DateTime"
-                },
-                "updated": {
-                  "$ref": "#/definitions/iso8601DateTime"
-                },
-                "revision_ids": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "links": {
-                  "type": "object"
-                },
-                "payload": {
-                  "type": "object"
-                }
-              },
-              "example": {
-                "base": "<base_url>",
-                "id": "<asset_id>",
-                "type": "asset",
-                "subtype": "image",
-                "created": "<created_date>",
-                "updated": "<updated_date>",
-                "revision_ids": [
-                  "<revision_id1>",
-                  "<revision_id2>",
-                  "<revision_id3>"
-                ],
-                "links": {
-                  "self": {
-                    "href": "assets/<asset_id>"
-                  },
-                  "/rels/rendition_type/<rendition_type>": {
-                    "href": "assets/<asset_id>/renditions/<rendition_type>"
-                  },
-                  "/rels/xmp/develop": {
-                    "href": "assets/<asset_id>/xmp/develop",
-                    "invalid": "true",
-                    "fileSize": "<external_xmp_develop_setting_file_size>"
-                  }
-                },
-                "payload": {
-                  "captureDate": "<image_capture_date>",
-                  "importSource": {
-                    "fileName": "<file_name>",
-                    "fileSize": <image_file_size>,
-                    "originalWidth": <image_width>,
-                    "originalHeight": <image_height>,
-                    "sha256": "<image_sha256>",
-                    "importedOnDevice": "<import_device_name>",
-                    "importedBy": "<import_account_id>",
-                    "importTimestamp": "<import_time>"
-                  },
-                  "<key>": "<value>",
-                  "develop": {
-                    "<dev_key>": "<dev_value>"
-                  }
-                }
-              }
-            }
-          },
-          "200 OK (Response for video asset)": {
-            "description": "OK",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "base" : {
-                  "type": "string",
-                  "description": "Base URL that can be prepended to the 'href' values in the 'links' to produce fully qualified URLs for future queries."
-                },
-                "id": {
-                  "$ref": "#/definitions/uuid"
-                },
-                "type": {
-                  "type": "string",
-                  "enum": ["asset"]
-                },
-                "subtype": {
-                  "type": "string"
-                },
-                "created": {
-                  "$ref": "#/definitions/iso8601DateTime"
-                },
-                "updated": {
-                  "$ref": "#/definitions/iso8601DateTime"
-                },
-                "revision_ids": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "links": {
-                  "type": "object"
-                },
-                "payload": {
-                  "type": "object"
-                },
-                "favorites": {
-                  "type": "object",
-                  "properties" : {
-                    "account_id": {
-                      "$ref": "#/definitions/iso8601DateTime"
-                    }
-                  }
-
-                },
-                "fingerprint": {
-                  "type": "object"
-                }
-              },
-              "example": {
-                "base": "<base_url>",
-                "id": "<asset_id>",
-                "links": {
-                  "self": {
-                    "href": "/v2/catalogs/<catalog_id>/assets/<asset_id>"
-                  },
-                  "/rels/rendition_type/<rendition_type>": {
-                    "href": "/v2/catalogs/<catalog_id>/assets/<asset_id>/renditions/<rendition_type>"
-                  },
-                  "/rels/latest_revision": {
-                    "href": "/v2/catalogs/<catalog_id>/assets/<asset_id>/revisions/<revision_id>",
-                    "created_by": "urn:carousel:account:<account_id>"
-                  }
-                },
-                "created": "<created_date>",
-                "updated": "<updated_date>",
-                "subtype": "video",
-                "unshareable": <unshareable>,
-                "payload": {
-                  "captureDate": "<image_capture_date>",
-                  "importSource": {
-                    "fileName": "<file_name>",
-                    "fileSize": <image_file_size>,
-                    "originalWidth": <image_width>,
-                    "originalHeight": <image_height>,
-                    "sha256": "<image_sha256>",
-                    "importedOnDevice": "<import_device_name>",
-                    "importedBy": "<import_account_id>",
-                    "importTimestamp": "<import_time>"
-                  },
-                  "video": {
-                    "frameRate": [
-                      "<video_frame_rate_numerator>",
-                      "<video_frame_rate_denominator>"
-                    ],
-                    "duration": [
-                      "<video_duration_numerator>",
-                      "<video_duration_denominator>"
-                    ],
-                    "displayAspectRatio": [
-                      "<video_aspect_ratio_numerator>",
-                      "<video_aspect_ratio_denominator>"
-                    ],
-                    "storageWidth": <video_storage_width>,
-                    "storageHeight": <video_storage_height>
-                  },
-                  "<key>": "<value>",
-                  "develop": {
-                    "<dev_key>": "<dev_value>"
-                  }
-                },
-                "favorites": {
-                  "<account_id>": "<created_date>"
-                },
-                "fingerprint": {
-                  "pass": <pass>,
-                  "file_href": "/v2/catalogs/<catalog_id>/assets/<asset_id>/revisions/<revision_id>/renditions/<rendition_id>",
-                  "copyright": {
-                    "title": "<copyrighted_title>",
-                    "owner": "<copyrighted_owner>"
                   }
                 }
               }
