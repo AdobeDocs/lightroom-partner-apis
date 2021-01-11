@@ -30,6 +30,11 @@ class LrContext {
 		this._catalogId = catalog.id
 	}
 
+	getFirstPageOfAssetsP() {
+		let path = `/v2/catalogs/${this._catalogId}/assets?subtype=image%3Bvideo`
+		return LrRequestor.getP(this._session, path).then((response) => response.resources)
+	}
+
 	getFirstAssetP() {
 		let path = `/v2/catalogs/${this._catalogId}/assets?subtype=image%3Bvideo&limit=1`
 		return LrRequestor.getP(this._session, path)
