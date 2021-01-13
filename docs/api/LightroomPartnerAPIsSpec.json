@@ -818,8 +818,8 @@
         "tags": [
           "assets"
         ],
-        "summary": "Put latest asset external xmp develop setting file\n",
-        "description": "Put latest asset external xmp develop setting file",
+        "summary": "Create or Copy latest asset external xmp develop setting file",
+        "description": "Create or Copy latest asset external xmp develop setting file",
         "operationId": "putAssetExternalXmpDevelopSetting",
         "produces": [
           "application/json"
@@ -847,66 +847,25 @@
             "type": "string"
           },
           {
+            "name": "Content-Length",
+            "in": "path",
+            "description": "Content length, in bytes. Current maximum size is 200 Mb.",
+            "required": true,
+            "type": "non Negative Integer"
+          },
+          {
+            "name": "Content-Type",
+            "in": "path",
+            "description": "Content type, Use application/rdf+xml for Create and for application/json for Copy",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "asset_id",
             "in": "path",
             "description": "Client-generated Lightroom unique identifier for the new asset.",
             "required": true,
             "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Initial asset metadata and import information.",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "subtype": {
-                  "type": "string",
-                  "enum": [ "image", "video" ]
-                },
-                "payload": {
-                  "type": "object",
-                  "properties": {
-                    "userCreated": {
-                      "$ref": "#/definitions/iso8601DateTime"
-                    },
-                    "userUpdated": {
-                      "$ref": "#/definitions/iso8601DateTime"
-                    },
-                    "captureDate": {
-                      "type": "string",
-                      "enum": [ "0000-00-00T00:00:00", "#/definitions/iso8601DateTime" ],
-                      "required": true,
-                      "description": "Capture date of the asset in ISO-8601 format. Will be populated by the server automatically from the master if set to '0000-00-00T00:00:00'"
-                    },
-                    "importSource": {
-                      "type": "object",
-                      "properties": {
-                        "fileName": {
-                          "type": "string",
-                          "required": true
-                        },
-                        "importedOnDevice": {
-                          "type": "string",
-                          "required": true,
-                          "description": "Name of the device that imported the image."
-                        },
-                        "importedBy": {
-                          "type": "string",
-                          "required": true,
-                          "description": "Account ID of the user who imported the asset."
-                        },
-                        "importTimestamp": {
-                          "$ref": "#/definitions/iso8601DateTime",
-                          "required": true
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
           }
         ],
         "responses": {
