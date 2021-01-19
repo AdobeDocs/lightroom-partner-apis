@@ -823,6 +823,119 @@
         }
       }
     },
+    "/v2/catalogs/{catalog_id}/assets/{asset_id}/xmp/develop": {
+      "put": {
+        "tags": [
+          "assets"
+        ],
+        "summary": "Create latest asset external xmp develop setting file",
+        "description": "This API support two workflows. The first workflow is to upload external XMP develop settings file for the asset. Content-type header for this case is application/rdf+xml. The second workflow is to create an external XMP develop settings file by copying from another asset's external xmp develop setting file. Content-type header for this case is application/json.",
+        "operationId": "putAssetExternalXmpDevelopSetting",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Client ID (API Key) which is subscribed to the Lightroom APIs through console.adobe.io",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer [token] - User access token of an authenticated Lightroom customer",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "catalog_id",
+            "in": "path",
+            "description": "Identifier of the catalog in which the asset and revision will be created.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Content-Length",
+            "in": "path",
+            "description": "Content length, in bytes. Current maximum size is 200 Mb.",
+            "required": true,
+            "type": "non Negative Integer"
+          },
+          {
+            "name": "Content-Type",
+            "in": "path",
+            "description": "For uploading a new xmp/develop file content-type='application/rdf+xml' and for copying xmp/develop file from another asset content-type='application/json'",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "asset_id",
+            "in": "path",
+            "description": "Client-generated Lightroom unique identifier for the new asset.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The below request body example is for copying external xmp/develop file from another asset. (For upload external xmp/develop  case the body will be a xml string. Eg. '\\<xml.../xml\\>')",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "file_href": {
+                  "type": "string",
+                  "description": "External xmp/develop link of source asset."
+                }
+              },
+              "example": {
+                "file_href":"/v2/catalogs/{catalog_id}/assets/{source_asset_id}/xmp/develop"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201 (Created)": {
+            "description": "Created"
+          },
+          "400 (Bad UUID)": {
+            "$ref": "#/components/responses/BadRequestGUID"
+          },
+          "400 (Bad JSON)": {
+            "$ref": "#/components/responses/BadRequestJSON"
+          },
+          "400 (Bad Subtype)": {
+            "$ref": "#/components/responses/BadRequestSubtype"
+          },
+          "400 (Bad Payload)": {
+            "$ref": "#/components/responses/BadRequestPayload"
+          },
+          "401 (Unauthorized)": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403 (Invalid Key)": {
+            "$ref": "#/components/responses/ForbiddenKey"
+          },
+          "403 (Exists)": {
+            "$ref": "#/components/responses/ForbiddenExists"
+          },
+          "403 (Storage)": {
+            "$ref": "#/components/responses/ForbiddenQuota"
+          },
+          "404 (Not Found)": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "415 (Unsupported)": {
+            "$ref": "#/components/responses/UnsupportedMediaType"
+          },
+          "503 (Unavailable)": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        }
+      }
+    },
     "/v2/catalogs/{catalog_id}/assets/{asset_id}/revisions/{revision_id}/master": {
       "put": {
         "tags": [
