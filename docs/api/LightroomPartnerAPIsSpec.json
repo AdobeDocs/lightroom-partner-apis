@@ -818,8 +818,8 @@
         "tags": [
           "assets"
         ],
-        "summary": "Create or Copy latest asset external xmp develop setting file",
-        "description": "Create or Copy latest asset external xmp develop setting file",
+        "summary": "Create latest asset external xmp develop setting file",
+        "description": "This API support two workflows. The first workflow is to upload external XMP develop settings file for the asset. Content-type header for this case is application/rdf+xml. The second workflow is to create an external XMP develop settings file by copying from another asset's external xmp develop setting file. Content-type header for this case is application/json.",
         "operationId": "putAssetExternalXmpDevelopSetting",
         "produces": [
           "application/json"
@@ -856,7 +856,7 @@
           {
             "name": "Content-Type",
             "in": "path",
-            "description": "Content type, Use application/rdf+xml for Create and for application/json for Copy",
+            "description": "For uploading a new xmp/develop file content-type='application/rdf+xml' and for copying xmp/develop file from another asset content-type='application/json'",
             "required": true,
             "type": "string"
           },
@@ -866,6 +866,24 @@
             "description": "Client-generated Lightroom unique identifier for the new asset.",
             "required": true,
             "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The below request body example is for copying external xmp/develop file from another asset. (For upload external xmp/develop  case the body will be a xml string. Eg. '\\<xml.../xml\\>')",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "file_href": {
+                  "type": "string",
+                  "description": "External xmp/develop link of source asset."
+                }
+              },
+              "example": {
+                "file_href":"/v2/catalogs/{catalog_id}/assets/{source_asset_id}/xmp/develop"
+              }
+            }
           }
         ],
         "responses": {
