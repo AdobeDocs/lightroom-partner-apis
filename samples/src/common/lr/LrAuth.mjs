@@ -18,7 +18,8 @@ if (process && process.env) {
 	preauthenticatedToken = process.env.TOKEN || preauthenticatedToken
 }
 
-LrAuth = {
+let LrAuth = {
+	getHost: () => preauthenticatedHost,
 	getApiKey: () => preauthenticatedApiKey,
 
 	authenticateP: async () => {
@@ -30,4 +31,4 @@ LrAuth = {
 	}
 }
 
-module.exports = LrAuth
+export default LrAuth

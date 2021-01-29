@@ -8,9 +8,9 @@ it. If you have received this file from a source other than Adobe,
 then your use, modification, or distribution of it requires the prior
 written permission of Adobe. 
 */
-const LrAuth = require('./LrAuth')
-const LrRequestor = require('./LrRequestor')
-const LrContext = require('./LrContext')
+import LrAuth from './LrAuth.mjs'
+import LrRequestor from './LrRequestor.mjs'
+import LrContext from './LrContext.mjs'
 
 let _lr
 
@@ -62,4 +62,4 @@ let LrSession = {
 	}
 }
 
-module.exports = LrSession
+export default LrSession

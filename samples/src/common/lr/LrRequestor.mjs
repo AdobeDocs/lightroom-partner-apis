@@ -8,7 +8,7 @@ it. If you have received this file from a source other than Adobe,
 then your use, modification, or distribution of it requires the prior
 written permission of Adobe. 
 */
-const https = require('https')
+import https from 'https'
 
 let _toJSON = (body) => {
 	if (body.length == 0) {
@@ -118,4 +118,4 @@ let LrRequestor = {
 	genP: (session, path, type) => _authRequestP(session, 'POST', path, { 'X-Generate-Renditions': type })
 }
 
-module.exports = LrRequestor
+export default LrRequestor

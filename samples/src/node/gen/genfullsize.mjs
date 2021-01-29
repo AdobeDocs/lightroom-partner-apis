@@ -8,15 +8,12 @@ it. If you have received this file from a source other than Adobe,
 then your use, modification, or distribution of it requires the prior
 written permission of Adobe. 
 */
-const LrSession = require('../../common/lr/LrSession')
-const FileUtils = require('../../common/file/FileUtils')
+import LrSession from '../../common/lr/LrSession.mjs'
 
 async function mainP(assetId) {
 	let lr = await LrSession.currentContextP()
-	let buffer = await lr.getAsset2048RenditionP(assetId)
-	let name = `${assetId}.2048.jpg`
-	await FileUtils.writeBufferToFileP(buffer, name)
-	console.log('success: ', name)
+	let response = await lr.generateFullsizeRenditionP(assetId)
+	console.log(JSON.stringify(response, null, 2))
 }
 
 mainP(process.argv[2]).then(() => console.log('done')).catch(e => console.error('error:', e))

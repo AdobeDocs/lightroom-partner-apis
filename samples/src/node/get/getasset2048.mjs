@@ -8,13 +8,13 @@ it. If you have received this file from a source other than Adobe,
 then your use, modification, or distribution of it requires the prior
 written permission of Adobe. 
 */
-const LrSession = require('../../common/lr/LrSession')
-const FileUtils = require('../../common/file/FileUtils')
+import LrSession from '../../common/lr/LrSession.mjs'
+import FileUtils from '../../common/file/FileUtils.mjs'
 
 async function mainP(assetId) {
 	let lr = await LrSession.currentContextP()
-	let buffer = await lr.getAssetFullsizeRenditionP(assetId)
-	let name = `${assetId}.fullsize.jpg`
+	let buffer = await lr.getAsset2048RenditionP(assetId)
+	let name = `${assetId}.2048.jpg`
 	await FileUtils.writeBufferToFileP(buffer, name)
 	console.log('success: ', name)
 }

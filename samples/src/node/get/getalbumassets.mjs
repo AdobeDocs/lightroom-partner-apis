@@ -8,12 +8,12 @@ it. If you have received this file from a source other than Adobe,
 then your use, modification, or distribution of it requires the prior
 written permission of Adobe. 
 */
-const LrSession = require('../../common/lr/LrSession')
+import LrSession from '../../common/lr/LrSession.mjs'
 
-async function mainP(assetId) {
+async function mainP(albumId) {
 	let lr = await LrSession.currentContextP()
-	console.log('2560 exists:', await lr.asset2560RenditionExistsP(assetId))
-	console.log('fullsize exists:', await lr.assetFullsizeRenditionExistsP(assetId))
+	let response = await lr.getAlbumAssetsP(albumId)
+	console.log(JSON.stringify(response, null, 2))
 }
 
 mainP(process.argv[2]).then(() => console.log('done')).catch(e => console.error('error:', e))

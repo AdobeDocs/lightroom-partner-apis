@@ -8,8 +8,8 @@ it. If you have received this file from a source other than Adobe,
 then your use, modification, or distribution of it requires the prior
 written permission of Adobe. 
 */
-const LrRequestor = require('./LrRequestor')
-const crypto = require('crypto')
+import LrRequestor from './LrRequestor.mjs'
+import crypto from 'crypto'
 
 function _createUuid() {
 	// helper function for generating a Lightroom unique identifier
@@ -286,4 +286,4 @@ class LrContext {
 	}
 }
 
-module.exports = LrContext
+export default LrContext
