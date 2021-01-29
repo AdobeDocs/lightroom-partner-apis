@@ -8,9 +8,9 @@ it. If you have received this file from a source other than Adobe,
 then your use, modification, or distribution of it requires the prior
 written permission of Adobe. 
 */
-const File = require('./File')
-const LrUtils = require('../lr/LrUtils')
-const fs = require('fs')
+import File from './File.mjs'
+import LrUtils from '../lr/LrUtils.mjs'
+import fs from 'fs'
 
 function _uploadOriginalP(lr, filePath, size, path, mime) {
 	let chunkHandlerP = (data, offset) => lr.putOriginalP(path, mime, offset, size, data)
@@ -82,4 +82,4 @@ let FileUtils = {
 	})
 }
 
-module.exports = FileUtils
+export default FileUtils

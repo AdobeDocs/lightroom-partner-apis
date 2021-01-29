@@ -8,12 +8,13 @@ it. If you have received this file from a source other than Adobe,
 then your use, modification, or distribution of it requires the prior
 written permission of Adobe. 
 */
-const LrSession = require('../../common/lr/LrSession')
+import LrSession from '../../common/lr/LrSession.mjs'
+import LrUtils from '../../common/lr/LrUtils.mjs'
 
-async function mainP(albumId) {
+async function mainP() {
 	let lr = await LrSession.currentContextP()
-	let album = await lr.getAlbumP(albumId)
-	console.log(JSON.stringify(album, null, 2))
+	let root = await LrUtils.getRootProjectSetP(lr)
+	await LrUtils.logAlbumHierarchyP(lr, root)
 }
 
-mainP(process.argv[2]).then(() => console.log('done')).catch(e => console.error('error:', e))
+mainP().then(() => console.log('done')).catch(e => console.error('error:', e))

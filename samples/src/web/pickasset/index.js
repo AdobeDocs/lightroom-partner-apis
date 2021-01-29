@@ -14,7 +14,7 @@ import './styles.css'
 import InfoView from '../components/InfoView'
 import LrSession from '../../common/lr/LrSession'
 import LrUtils from '../../common/lr/LrUtils'
-import LrImageManager from '../../common/lr/LrImageManager'
+import LrImageManager from './LrImageManager'
 import '../components/AlbumGridView'
 
 function InsertFolderView(container, folderRoot, imageManager, onClickAlbum) {

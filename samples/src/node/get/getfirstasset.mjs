@@ -8,11 +8,11 @@ it. If you have received this file from a source other than Adobe,
 then your use, modification, or distribution of it requires the prior
 written permission of Adobe. 
 */
-const LrSession = require('../../common/lr/LrSession')
+import LrSession from '../../common/lr/LrSession.mjs'
 
 async function mainP() {
 	let lr = await LrSession.currentContextP()
-	let response = await lr.getIncompletesP()
+	let response = await lr.getFirstAssetP()
 	console.log(JSON.stringify(response, null, 2))
 }
 

@@ -8,15 +8,21 @@ it. If you have received this file from a source other than Adobe,
 then your use, modification, or distribution of it requires the prior
 written permission of Adobe. 
 */
-const LrSession = require('../../common/lr/LrSession')
-const FileUtils = require('../../common/file/FileUtils')
+import LrSession from '../../common/lr/LrSession.mjs'
+import FileUtils from '../../common/file/FileUtils.mjs'
 
-async function mainP(assetId) {
+async function mainP(albumId) {
 	let lr = await LrSession.currentContextP()
-	let buffer = await lr.getAsset2560RenditionP(assetId)
-	let name = `${assetId}.2560.jpg`
-	await FileUtils.writeBufferToFileP(buffer, name)
-	console.log('success: ', name)
+	let album = await lr.getAlbumP(albumId)
+	let buffer = await lr.getAlbumCoverP(album)
+	if (buffer) {
+		let name = `${albumId}.thumb.jpg`
+		await FileUtils.writeBufferToFileP(buffer, name)
+		console.log('success: ', name)
+	}
+	else {
+		console.log('success: no album cover')
+	}
 }
 
 mainP(process.argv[2]).then(() => console.log('done')).catch(e => console.error('error:', e))

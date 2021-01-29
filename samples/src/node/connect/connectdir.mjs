@@ -8,11 +8,11 @@ it. If you have received this file from a source other than Adobe,
 then your use, modification, or distribution of it requires the prior
 written permission of Adobe. 
 */
-const LrSession = require('../../common/lr/LrSession')
-const LrUtils = require('../../common/lr/LrUtils')
-const File = require('../../common/file/File')
-const FileUtils = require('../../common/file/FileUtils')
-const path = require('path')
+import LrSession from '../../common/lr/LrSession.mjs'
+import LrUtils from '../../common/lr/LrUtils.mjs'
+import File from '../../common/file/File.mjs'
+import FileUtils from '../../common/file/FileUtils.mjs'
+import path from 'path'
 
 async function _projectFromDirP(lr, dirPath, parentId) {
 	let files = await File.filesP(dirPath)

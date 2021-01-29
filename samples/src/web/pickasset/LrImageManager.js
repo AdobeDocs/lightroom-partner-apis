@@ -8,7 +8,7 @@ it. If you have received this file from a source other than Adobe,
 then your use, modification, or distribution of it requires the prior
 written permission of Adobe. 
 */
-const LrContext = require('./LrContext')
+import LrContext from '../../common/lr/LrContext'
 
 class Deferred {
 	constructor() {
@@ -104,4 +104,4 @@ class LrImageManager {
 	
 }
 
-module.exports = LrImageManager
+export default LrImageManager

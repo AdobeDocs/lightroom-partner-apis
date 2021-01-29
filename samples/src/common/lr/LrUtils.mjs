@@ -117,4 +117,4 @@ let LrUtils = {
 	}
 }
 
-module.exports = LrUtils
+export default LrUtils

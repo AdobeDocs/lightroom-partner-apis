@@ -15,7 +15,7 @@ This directory contains various examples using the Lightroom Services APIs in a 
 * The samples acquire the API Key and user access token through the
 `process.env.KEY` and `process.env.TOKEN` environment variables. These can be passed into the application on the command line:
 
-      KEY='<API Key>' TOKEN='<user access token>' node <sample.js>
+      KEY='<API Key>' TOKEN='<user access token>' node <sample.mjs>
 
 ### Samples
 
@@ -23,47 +23,47 @@ The samples are divided into different sub-directories of related kind. They lev
 
 * Health
 
-  *     health/gethealth.js
+  *     health/gethealth.mjs
     Query the health endpoint of the Lightroom Services and print the result the console.
 
 * Get Content
 
-  *     get/getalbum.js <album id>
+  *     get/getalbum.mjs <album id>
     Fetch the album with the given identifier and print the result to the console.
 
-  *     get/getalbumassets.js <album id>
+  *     get/getalbumassets.mjs <album id>
     Fetch the album assets of the album with the given identifier and print the result to the console.
 
-  *     get/getalbumcover.js <album id>
+  *     get/getalbumcover.mjs <album id>
     Fetch the album cover of the album with the given identifier and print the result to the console.
 
-  *     get/getasset.js <asset id>
+  *     get/getasset.mjs <asset id>
     Fetch the asset with the given identifier and print the result to the console.
 
-  *     get/getasset2048.js <asset id>
+  *     get/getasset2048.mjs <asset id>
     Fetch the 2048 rendition of the asset with the given identifier and output the result to the file `<asset id>.2048.jpg`.
 
-  *     get/getassetthumb.js <asset id>
+  *     get/getassetthumb.mjs <asset id>
     Fetch the thumbnail rendition of the asset with the given identifier and output the result to the file `<asset id>.thumb.jpg`.
 
-  *     get/getcollections.js
+  *     get/getcollections.mjs
     Fetch all albums of subtype `collection_set` and `collection` and print the result to the console.
 
-  *     get/getfirstalbumasset.js <album id>
+  *     get/getfirstalbumasset.mjs <album id>
     Fetch the first album asset of the album with the given identifier and print the result to the console.
 
-  *     get/getfirstasset.js
+  *     get/getfirstasset.mjs
     Fetch the first asset in the catalog and print the result to the console.
 
-  *     get/getincompletes.js
+  *     get/getincompletes.mjs
     Fetch all incomplete assets (assets that have been created but do not have a corresponding original or proxy) and print the result to the console.
 
-  *     get/getprojects.js
+  *     get/getprojects.mjs
     Fetch all albums of subtype `project_set` and `project` and print the result to the console.
 
 * Upload Assets
 
-  *     upload/uploadfile.js <file>
+  *     upload/uploadfile.mjs <file>
     Create a new asset and upload the file as its original. Skip the operation if a duplicate asset is detected.
 
 * Connect Content
@@ -83,26 +83,23 @@ The samples are divided into different sub-directories of related kind. They lev
 
 * Generate Renditions
 
-  *     gen/gen2560.js <asset id>
+  *     gen/gen2560.mjs <asset id>
     Generate 2560 rendition for the asset with the given identifier.
 
-  *     gen/genfullsize.js <asset id>
+  *     gen/genfullsize.mjs <asset id>
     Generate fullsize rendition for an asset with the given identifier.
 
-  *     gen/waitfor2560.js <asset id>
+  *     gen/waitfor2560.mjs <asset id>
     Wait for the 2560 rendition of the asset with the given identifier to be available. It will poll up to ten times, once every three seconds before timing out.
 
-  *     gen/waitforfullsize.js <asset id>
+  *     gen/waitforfullsize.mjs <asset id>
     Wait for the fullsize rendition of the asset with the given identifier to be available. It will poll up to ten times, once every three seconds before timing out.
 
-  *     gen/getassetpriv.js <asset id>
-    Fetch the asset with the given identifier using the private APIs.
-
-  *     gen/logrendition.js <asset id>
+  *     gen/renditionsexist.mjs <asset id>
     Print whether the asset with the given identifier has a valid 2560 rendition and whether it has a valid fullsize rendition.
 
-  *     gen/getasset2560.js <asset id>
+  *     gen/getasset2560.mjs <asset id>
     Fetch the 2560 rendition of the asset with the given identifier and output the result to the file `<asset id>.2560.jpg`.
 
-  *     gen/getassetfullsize.js <asset id>
+  *     gen/getassetfullsize.mjs <asset id>
     Fetch the fullsize rendition of the asset with the given identifier and output the result to the file `<asset id>.fullsize.jpg`.

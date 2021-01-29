@@ -24,6 +24,7 @@ body {
 }
 
 .header {
+	color: var(--spectrum-global-color-gray-200);
 	background-color: var(--spectrum-global-color-gray-700);
 	position: absolute;
 	left: 0;

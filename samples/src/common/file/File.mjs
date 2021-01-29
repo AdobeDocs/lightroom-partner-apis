@@ -8,9 +8,9 @@ it. If you have received this file from a source other than Adobe,
 then your use, modification, or distribution of it requires the prior
 written permission of Adobe. 
 */
-const fs = require('fs')
-const path = require('path')
-const crypto = require('crypto')
+import fs from 'fs'
+import path from 'path'
+import crypto from 'crypto'
 
 let _subtypeGuess = function(filePath) {
 	let videoExts = [
@@ -84,4 +84,4 @@ let File = {
 
 }
 
-module.exports = File
+export default File

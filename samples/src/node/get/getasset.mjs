@@ -8,12 +8,12 @@ it. If you have received this file from a source other than Adobe,
 then your use, modification, or distribution of it requires the prior
 written permission of Adobe. 
 */
-const LrAuth = require('../../common/lr/LrAuth')
-const LrRequestor = require('../../common/lr/LrRequestor')
+import LrSession from '../../common/lr/LrSession.mjs'
 
-async function mainP() {
-	let response = await LrRequestor.healthP(LrAuth.getApiKey())
-	console.log(JSON.stringify(response, null, 2))
+async function mainP(assetId) {
+	let lr = await LrSession.currentContextP()
+	let asset = await lr.getAssetP(assetId)
+	console.log(JSON.stringify(asset, null, 2))
 }
 
-mainP().then(() => console.log('done')).catch(e => console.error('error:', e))
+mainP(process.argv[2]).then(() => console.log('done')).catch(e => console.error('error:', e))
