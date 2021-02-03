@@ -84,11 +84,6 @@
 			"pages": [],
 			"path": "apichangelog.md",
 			"title": "API Change Logs"
-		},
-		{
-			"pages": [],
-			"path": "apichangelogtest.md",
-			"title": "API Change Logs Test"
 		}
 	]
 }
