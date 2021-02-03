@@ -69,6 +69,11 @@
 				}
 			],
 			"title": "Sample Code"
+		},
+		{
+			"pages": [],
+			"path": "apichangelog.md",
+			"title": "API Change Logs"
 		}
 	]
 }
