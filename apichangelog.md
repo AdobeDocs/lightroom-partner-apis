@@ -6,8 +6,7 @@ This document provides information about new features and bug fixes with the Lig
 
 - Existing Create Master  API (PUT) - `/v2/catalogs/{catalog_id}/assets/{asset_id}/revisions/{revision_id}/master` is removed and will be deprecated soon. Please use above mentioned Create Master API instead for uploading master.
 
-### Version 1.1.0 (3 Feb, 2021)
-
+### Version 1.1.0 (11 Jan, 2021)
 - Added new Create Asset API (PUT)- `/v2/catalogs/{catalog_id}/assets/{asset_id}` . It can be used to create a new asset with initial metadata and import information.
 
 - Existing Create Asset Revision API (PUT) - `/v2/catalogs/{catalog_id}/assets/{asset_id}/revisions/{revision_id}` is removed and will be deprecated soon. Please use above mentioned Create Asset API instead for creating asset.
