@@ -1084,7 +1084,7 @@
         }
       }
     },
-    "/v2/catalogs/{catalog_id}/assets/{asset_id}/revisions/{revision_id}/master": {
+    "/v2/catalogs/{catalog_id}/assets/{asset_id}/master": {
       "put": {
         "tags": [
           "assets"
@@ -1140,13 +1140,6 @@
             "name": "asset_id",
             "in": "path",
             "description": "Identifier of the asset to which the XMP settings are associated.",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "revision_id",
-            "in": "path",
-            "description": "Identifier of the revision to which the XMP settings are associated.",
             "required": true,
             "type": "string"
           }
