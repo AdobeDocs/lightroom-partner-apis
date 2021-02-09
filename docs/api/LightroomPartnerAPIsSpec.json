@@ -1132,7 +1132,7 @@
           {
             "name": "catalog_id",
             "in": "path",
-            "description": "Identifier of the catalog in which the asset and revision will be created.",
+            "description": "Identifier of the catalog in which the asset will be created.",
             "required": true,
             "type": "string"
           },
