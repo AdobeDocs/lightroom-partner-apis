@@ -1,6 +1,11 @@
 ## API Change Logs
 This document provides information about new features and bug fixes with the Lightroom APIs.
 
+### Version 1.2.0 (9 Feb, 2021)
+- Added new Create Master API (PUT)- `/v2/catalogs/{catalog_id}/assets/{asset_id}/master` . It can be used to upload master for a new asset.
+
+- Existing Create Master API (PUT) - `/v2/catalogs/{catalog_id}/assets/{asset_id}/revisions/{revision_id}/master` is removed and will be deprecated soon. Please use above mentioned Create Master API instead for uploading master.
+
 ### Version 1.1.0 (11 Jan, 2021)
 - Added new Create Asset API (PUT)- `/v2/catalogs/{catalog_id}/assets/{asset_id}` . It can be used to create a new asset with initial metadata and import information.
 
