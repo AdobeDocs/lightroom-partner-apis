@@ -13,18 +13,40 @@ import { until } from 'lit-html/directives/until.js'
 import LrContext from '../../common/lr/LrContext'
 import LrUtils from '../../common/lr/LrUtils'
 
-class AlbumGridView extends LitElement {
+class LrGrid extends LitElement {
 
-	static _lr // current lightroom session
-	static _cache
+	static _lrContext // current lightroom session
+	static _session
+	static _account
+	static _catalog
+	static _imageManager
+	static _cache = {}
 
-	static setGlobals(session, account, catalog, preferredLanguage = 'en-US', singleSelect = false) {
-		this._lr = new LrContext(session, account, catalog)
-		this._cache = {}
+	static set session(session) {
+		this._session = {
+			accessToken: session.accessToken,
+			apiKey: session.apiKey,
+			host: session.host
+		}
 	}
 
-	static setImageManager(manager) {
+	static set account(account) {
+		this._account = account
+	}
+
+	static set catalog(catalog) {
+		this._catalog = catalog
+	}
+
+	static set imageManager(manager) {
 		this._imageManager = manager
+	}
+
+	static get _lr() {
+		if (!this._lrContext) {
+			this._lrContext = new LrContext(this._session, this._account, this._catalog)
+		}
+		return this._lrContext
 	}
 
 	static get properties() {
@@ -82,24 +104,24 @@ class AlbumGridView extends LitElement {
 		if (name == 'context' && newValue) {
 			const { source, preselected } = JSON.parse(newValue)
 
-			if (!AlbumGridView._cache) {
+			if (!LrGrid._cache) {
 				console.error('need to initialize samples album grid component')
 				return
 			}
 
 			if (source.type === 'album') {
-				if (!AlbumGridView._cache[source.id]) {
-					AlbumGridView._cache[source.id] = AlbumGridView._lr.getAlbumAssetsP(source.id)
+				if (!LrGrid._cache[source.id]) {
+					LrGrid._cache[source.id] = LrGrid._lr.getAlbumAssetsP(source.id)
 				}
-				AlbumGridView._cache[source.id].then((albumAssets) => {
+				LrGrid._cache[source.id].then((albumAssets) => {
 					this._assets = albumAssets.map((albumAsset) => albumAsset.asset)
 				})
 			}
 			if (source.type === 'catalog') {
-				if (!AlbumGridView._cache[source.id]) {
-					AlbumGridView._cache[source.id] = AlbumGridView._lr.getFirstPageOfAssetsP()
+				if (!LrGrid._cache[source.id]) {
+					LrGrid._cache[source.id] = LrGrid._lr.getFirstPageOfAssetsP()
 				}
-				AlbumGridView._cache[source.id].then((assets) => this._assets = assets)
+				LrGrid._cache[source.id].then((assets) => this._assets = assets)
 			}
 		}
 	}
@@ -113,8 +135,8 @@ class AlbumGridView extends LitElement {
 	}
 
 	_getCachedAssetThumbnailObjectURLP(asset) {
-		if (AlbumGridView._imageManager) {
-			return AlbumGridView._imageManager.getAssetThumbnailObjectURLP(asset)
+		if (LrGrid._imageManager) {
+			return LrGrid._imageManager.getAssetThumbnailObjectURLP(asset)
 		}
 		return ''
 	}
@@ -131,4 +153,4 @@ class AlbumGridView extends LitElement {
 	}
 }
 
-customElements.define('lr-samples-albumgrid', AlbumGridView)
+customElements.define('lr-samples-grid', LrGrid)
