@@ -1443,7 +1443,7 @@
         }
       }
     },
-    "/v2/catalogs/{catalog_id}/assets/{asset_id}/revisions/{revision_id}/master": {
+    "/v2/catalogs/{catalog_id}/assets/{asset_id}/master": {
       "put": {
         "tags": [
           "assets"
@@ -1491,7 +1491,7 @@
           {
             "name": "catalog_id",
             "in": "path",
-            "description": "Identifier of the catalog in which the asset and revision will be created.",
+            "description": "Identifier of the catalog in which the asset will be created.",
             "required": true,
             "type": "string"
           },
@@ -1499,13 +1499,6 @@
             "name": "asset_id",
             "in": "path",
             "description": "Identifier of the asset to which the XMP settings are associated.",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "revision_id",
-            "in": "path",
-            "description": "Identifier of the revision to which the XMP settings are associated.",
             "required": true,
             "type": "string"
           }
@@ -1766,7 +1759,7 @@
           "assets"
         ],
         "summary": "Create asset external xmp develop setting file",
-        "description": "API to upload external XMP develop settings file for the asset.",
+        "description": "This API support two workflows. The first workflow is to upload external XMP develop settings file for the asset. Content-type header for this case is application/rdf+xml. The second workflow is to create an external XMP develop settings file by copying from another asset's external xmp develop setting file. Content-type header for this case is application/json.",
         "operationId": "putAssetExternalXmpDevelopSetting",
         "produces": [
           "application/json"
@@ -1803,7 +1796,7 @@
           {
             "name": "Content-Type",
             "in": "path",
-            "description": "application/rdf+xml",
+            "description": "For uploading a new xmp/develop file content-type='application/rdf+xml' and for copying xmp/develop file from another asset content-type='application/json'",
             "required": true,
             "type": "string"
           },
@@ -1817,8 +1810,20 @@
           {
             "in": "body",
             "name": "body",
-            "description": "For upload external xmp/develop case the body will be a xml string. Eg. '\\<xml.../xml\\>'",
-            "required": true
+            "description": "The below request body example is for copying external xmp/develop file from another asset. (For upload external xmp/develop  case the body will be a xml string. Eg. '\\<xml.../xml\\>')",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "file_href": {
+                  "type": "string",
+                  "description": "External xmp/develop link of source asset."
+                }
+              },
+              "example": {
+                "file_href":"/v2/catalogs/{catalog_id}/assets/{source_asset_id}/xmp/develop"
+              }
+            }
           }
         ],
         "responses": {
