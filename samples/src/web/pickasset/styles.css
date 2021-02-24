@@ -8,17 +8,11 @@ it. If you have received this file from a source other than Adobe,
 then your use, modification, or distribution of it requires the prior
 written permission of Adobe. 
 */
-:root {
-	--sp-color-gray-100: 50, 50, 50;
-	--sp-color-gray-700: 185, 185, 185;
-}
-
 body {
 	background-color: var(--spectrum-global-color-gray-100);
 	margin: 0px;
 	padding: 0px;
 	overflow: hidden;
-	color: var(--spectrum-global-color-gray-700);
 	font-size: 14px;
 	font-family: var(--spectrum-font-family-base);
 	font-weight: 100;

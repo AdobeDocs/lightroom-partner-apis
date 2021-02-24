@@ -137,7 +137,7 @@ class LrContext {
 		}
 	}
 
-	async getAlbumCoverOrFallbackBlobP(album) {
+	async getAlbumCoverThumbnailRenditionOrFallbackP(album) {
 		let buffer = await this.getAlbumCoverP(album)
 		if (!buffer) {
 			let albumAsset = await this.getFirstAlbumAssetP(album.id) // first asset
@@ -145,7 +145,7 @@ class LrContext {
 				buffer = await this.getAssetThumbnailRenditionP(albumAsset.asset.id)
 			}
 		}
-		return buffer ? new Blob([ new Uint8Array(buffer) ], { type: 'image/jpeg' }) : null
+		return buffer
 	}
 
 	async createAlbumP (subtype, name, parentId, remoteId) {
@@ -225,7 +225,7 @@ class LrContext {
 			await LrRequestor.headP(this._session, path)
 			return true
 		} catch (err) {
-			if (err.statusCode != 400) {
+			if (err.statusCode != 404) {
 				throw err
 			}
 			return false

@@ -15,7 +15,8 @@ import InfoView from '../components/InfoView'
 import LrSession from '../../common/lr/LrSession'
 import LrUtils from '../../common/lr/LrUtils'
 import LrImageManager from './LrImageManager'
-import '../components/AlbumGridView'
+import LrRenditionManager from './LrRenditionManager'
+import '../components/LrGrid'
 
 function InsertFolderView(container, folderRoot, imageManager, onClickAlbum) {
 	const _allPhotosTemplate = (onClick) => html`
@@ -48,7 +49,7 @@ function InsertFolderView(container, folderRoot, imageManager, onClickAlbum) {
 	const _albumTemplate = (imageManager, album, onClick) => html`
 		<div class='spectrum-SideNav-item' @click=${ (event) => onClick(album) }>
 			<div class='spectrum-SideNav-itemLink'>
-				<img class='spectrum-Icon spectrum-Icon--sizeM spectrum-SideNav-itemIcon' src=${ until(imageManager.getAlbumCoverObjectURLP(album), '') }></img>
+				<img class='spectrum-Icon spectrum-Icon--sizeM spectrum-SideNav-itemIcon' src=${ until(imageManager.getAlbumCoverThumbnailObjectURLP(album), '') }></img>
 				${ album.payload.name }
 			</div>
 		</div>
@@ -132,12 +133,15 @@ async function mainP() {
 		return // bail out
 	}
 
-	let imageManager = new LrImageManager(lr._session, lr.account, lr.catalog)
+	let renditionManager = new LrRenditionManager(lr._session, lr.account, lr.catalog)
+	let imageManager = new LrImageManager(renditionManager)
 
 	// album grid in the well
-	let albumGridComponentConstructor = window.customElements.get('lr-samples-albumgrid')
-	albumGridComponentConstructor.setGlobals(lr._session, lr.account, lr.catalog)
-	albumGridComponentConstructor.setImageManager(imageManager)
+	let albumGridComponentConstructor = window.customElements.get('lr-samples-grid')
+	albumGridComponentConstructor.session = lr._session
+	albumGridComponentConstructor.account = lr.account
+	albumGridComponentConstructor.catalog = lr.catalog
+	albumGridComponentConstructor.imageManager = imageManager
 	let picker = new albumGridComponentConstructor()
 	picker.addEventListener('selected-changed', (event) => {
 		let selection = event.detail
