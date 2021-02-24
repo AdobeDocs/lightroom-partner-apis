@@ -10,6 +10,28 @@ written permission of Adobe.
 */
 import LrRequest from './LrRequest.mjs'
 
+let _toJSON = (body) => {
+	if (body.length == 0) {
+		return // catch empty body to avoid an error in JSON parser
+	}
+	let decoder = new TextDecoder('utf-8')
+	var string = decoder.decode(body)
+	let while1Regex = /^while\s*\(\s*1\s*\)\s*{\s*}\s*/ // strip off while(1){}
+	return JSON.parse(string.replace(while1Regex, ''))
+}
+
+let _isJSON = (contentType) => contentType == 'application/json' || contentType == 'application/json;charset=utf-8'
+
+let _onEnd = (res) => {
+	if (res.status < 200 || res.status > 299) {
+		throw {
+			statusCode: res.status,
+			error: _toJSON(res.body)
+		}
+	}
+	return _isJSON(res.contentType) ? _toJSON(res.body) : res.body
+}
+
 let _unauthGetP = function(session, path, signal) {
 	let headers = {
 		'X-API-Key': session.apiKey
@@ -21,7 +43,7 @@ let _unauthGetP = function(session, path, signal) {
 		path: path,
 		headers: headers
 	}
-	return LrRequest(options, undefined, signal)
+	return LrRequest.requestP(options, undefined, signal).then(res => _onEnd(res))
 }
 
 let _authRequestP = function(session, method, path, headers, data, signal) {
@@ -35,7 +57,7 @@ let _authRequestP = function(session, method, path, headers, data, signal) {
 		path: path,
 		headers: headers
 	}
-	return LrRequest(options, data, signal)
+	return LrRequest.requestP(options, data, signal).then(res => _onEnd(res))
 }
 
 let _getPagedP = async function(session, path, resources = []) {

@@ -8,64 +8,88 @@ it. If you have received this file from a source other than Adobe,
 then your use, modification, or distribution of it requires the prior
 written permission of Adobe. 
 */
-import https from 'https'
-
-let _toJSON = (body) => {
-	if (body.length == 0) {
-		return // catch empty body to avoid an error in JSON parser
-	}
-	let decoder = new TextDecoder('utf-8')
-	var string = decoder.decode(body)
-	let while1Regex = /^while\s*\(\s*1\s*\)\s*{\s*}\s*/ // strip off while(1){}
-	return JSON.parse(string.replace(while1Regex, ''))
-}
-
-let _isJSON = (contentType) => contentType == 'application/json' || contentType == 'application/json;charset=utf-8'
-
-let _onEnd = (status, contentType, body, resolve, reject) => {
-	if (status < 200 || status > 299) {
-		reject({
-			statusCode: status,
-			error: _toJSON(body)
-		})
-	}
-	else {
-		resolve(_isJSON(contentType) ? _toJSON(body) : body)
-	}
-}
-
-let _browserRequestP = (options, data, signal) => new Promise((resolve, reject) => {
-	if (options.method !== 'GET') {
-		reject('only gets for now')
-		return
-	}
-	let url = `${options.protocol}//${options.host}${options.path}`
-	options = {
-		method: options.method,
-		cache: 'no-cache',
-		headers: options.headers,
-		signal
-	}
-	fetch(url, options).then(res => {
-		let status = res.status
-		let contentType = res.headers.get('content-type')
-		res.arrayBuffer().then(body => _onEnd(status, contentType, body, resolve, reject))
-	}).catch(reject)
-})
-
-let _nodeRequestP = (options, data, signal) => new Promise((resolve, reject) => {
-	let req = https.request(options, (res) => {
-		let chunks = []
-		res.on('data', (chunk) => chunks.push(Buffer.from(chunk)))
-		res.on('end', () => _onEnd(res.statusCode, res.headers['content-type'], Buffer.concat(chunks), resolve, reject))
-	}).on('error', reject).end(data)
-
-	if (signal) {
-		signal.onabort = () => req.destroy(new Error('aborted'))
-	}
-})
+let LrRequest = {}
 
 let node
 try { node = process.versions.node } catch (err) {}
 
-export default node ? _nodeRequestP : _browserRequestP
+if (node) {
+	// import https from 'https' // could use static import if we are only on node
+	// import http from 'http' // could use static import if we are only on node
+	let _httpsPromise = import('https')
+	let _httpPromise = import('http')
+
+	let _requestP = (module, options, data, signal) => new Promise((resolve, reject) => {
+		let req = module.request(options, (res) => {
+			let chunks = []
+			res.on('data', (chunk) => chunks.push(Buffer.from(chunk)))
+			res.on('end', () => resolve({
+				status: res.statusCode,
+				contentType: res.headers['content-type'],
+				body: Buffer.concat(chunks)
+			}))
+		}).on('error', reject).end(data)
+
+		if (signal) {
+			signal.onabort = () => req.destroy(new Error('request aborted'))
+		}
+	})
+
+	LrRequest.requestP = (options, data, signal) => {
+		let modulePromise = options.protocol === 'http:' ? _httpPromise : _httpsPromise
+		return modulePromise.then(module => _requestP(module, options, data, signal))
+	}
+}
+else {
+	let _fetchP = (options, data, signal) => new Promise((resolve, reject) => {
+		if (options.method !== 'GET') {
+			reject('only gets for now')
+			return
+		}
+		let port = options.port ? `:${options.port}` : ''
+		let url = `${options.protocol}//${options.host}${port}${options.path}`
+		options = {
+			method: options.method,
+			headers: options.headers,
+			signal
+		}
+		fetch(url, options).then(res => {
+			res.arrayBuffer().then(body => resolve({
+				status: res.status,
+				contentType: res.headers.get('content-type'),
+				body
+			}))
+		}).catch(reject)
+	})
+
+	let _xhrP = (options, data, signal) => new Promise((resolve, reject) => {
+		if (options.method !== 'GET') {
+			reject('only gets for now')
+			return
+		}
+		let port = options.port ? `:${options.port}` : ''
+		let url = `${options.protocol}//${options.host}${port}${options.path}`
+		let xhr = new XMLHttpRequest()
+		xhr.open(options.method, url, true)
+		Object.entries(options.headers).forEach(([key, value]) => xhr.setRequestHeader(key, value))
+		xhr.responseType = 'arraybuffer'
+		xhr.onload = () => resolve({
+			status: xhr.status,
+			contentType: xhr.getResponseHeader('content-type'),
+			body: xhr.response
+		})
+		xhr.onabort = () => reject(new Error('xhr aborted'))
+		xhr.onerror = () => reject(new Error('xhr failed'))
+		xhr.send()
+
+		if (signal) {
+			signal.onabort = () => xhr.abort()
+		}
+	})
+
+	LrRequest.fetchP = _fetchP
+	LrRequest.xhrP = _xhrP
+	LrRequest.requestP = _xhrP // default
+}
+
+export default LrRequest
