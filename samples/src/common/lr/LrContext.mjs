@@ -225,7 +225,7 @@ class LrContext {
 			await LrRequestor.headP(this._session, path)
 			return true
 		} catch (err) {
-			if (err.statusCode != 400) {
+			if (err.statusCode != 404) {
 				throw err
 			}
 			return false
