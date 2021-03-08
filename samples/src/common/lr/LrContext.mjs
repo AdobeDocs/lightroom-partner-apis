@@ -9,15 +9,7 @@ then your use, modification, or distribution of it requires the prior
 written permission of Adobe. 
 */
 import LrRequestor from './LrRequestor.mjs'
-import crypto from 'crypto'
-
-function _createUuid() {
-	// helper function for generating a Lightroom unique identifier
-	let bytes = crypto.randomBytes(16)
-	bytes[6] = bytes[6] & 0x0f | 0x40
-	bytes[8] = bytes[8] & 0x3f | 0x80
-	return bytes.toString('hex')
-}
+import CryptoUtils from '../crypto/CryptoUtils.mjs'
 
 class LrContext {
 	constructor(session, account, catalog) {
@@ -51,9 +43,8 @@ class LrContext {
 	}
 
 	async createRevisionP(subtype, name, size, sha256) {
-		let assetId = _createUuid()
-		let revisionId = _createUuid()
-		let path = `/v2/catalogs/${this._catalogId}/assets/${assetId}/revisions/${revisionId}`
+		let assetId = await CryptoUtils.uuidP()
+		let path = `/v2/catalogs/${this._catalogId}/assets/${assetId}`
 		let importTimestamp = (new Date()).toISOString()
 		let content = {
 			subtype: subtype,
@@ -129,7 +120,7 @@ class LrContext {
 	}
 
 	async createAlbumP (subtype, name, parentId, remoteId) {
-		let albumId = _createUuid()
+		let albumId = await CryptoUtils.uuidP()
 		let path = `/v2/catalogs/${this._catalogId}/albums/${albumId}`
 		let importTimestamp = (new Date()).toISOString()
 		let content = {

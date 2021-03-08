@@ -10,7 +10,7 @@ written permission of Adobe.
 */
 import fs from 'fs'
 import path from 'path'
-import crypto from 'crypto'
+import CryptoUtils from '../crypto/CryptoUtils.mjs'
 
 let _subtypeGuess = function(filePath) {
 	let videoExts = [
@@ -51,18 +51,15 @@ let File = {
 		stream.once('readable', readableHandler)
 	}),
 
-	sha256P: async function(filePath) {
-		const sha256 = crypto.createHash('sha256')
-		let chunkHandlerP = (data) => sha256.update(data)
-		await File.streamP(filePath, 20 * 1024 * 1024, chunkHandlerP)
-		return sha256.digest('hex')
+	streamController: (filePath) => {
+		return (chunkSize, chunkHandlerP) => File.streamP(filePath, chunkSize, chunkHandlerP)
 	},
 
 	fileP: async function(filePath) {
 		let stats = await fs.promises.stat(filePath)
 		let subtype = _subtypeGuess(filePath)
 		let mime = subtype == 'video' ? 'application/octet-stream;video' : 'application/octet-stream' // or 'video/*'
-		let sha256 = await File.sha256P(filePath)
+		let sha256 = await CryptoUtils.sha256P(File.streamController(filePath))
 		return {
 			path: filePath,
 			name: path.basename(filePath),
