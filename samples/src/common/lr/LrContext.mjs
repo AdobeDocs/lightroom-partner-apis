@@ -106,15 +106,12 @@ class LrContext {
 		}
 	}
 
-	async getAlbumCoverThumbnailRenditionOrFallbackP(album) {
-		let buffer = await this.getAlbumCoverP(album)
-		if (!buffer) {
-			let albumAsset = await this.getFirstAlbumAssetP(album.id) // first asset
-			if (albumAsset) {
-				buffer = await this.getAssetRenditionP(albumAsset.asset.id, 'thumbnail2x')
-			}
+	async getAlbumCoverOrFallbackAssetIdP(album) {
+		if (album.links['/rels/cover_asset']) {
+			return album.links['/rels/cover_asset'].href.match(/assets\/([a-f0-9]{32})\/?/)[1]
 		}
-		return buffer
+		let albumAsset = await this.getFirstAlbumAssetP(album.id) // first asset
+		return albumAsset?.asset.id  // undefined if the album is empty
 	}
 
 	async createAlbumP (subtype, name, parentId, remoteId) {

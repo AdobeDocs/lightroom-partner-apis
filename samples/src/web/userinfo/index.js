@@ -9,7 +9,7 @@ then your use, modification, or distribution of it requires the prior
 written permission of Adobe. 
 */
 import './styles.css'
-import InfoView from '../components/InfoView'
+import InfoView from '../common/info/InfoView'
 import LrSession from '../../common/lr/LrSession'
 
 async function mainP() {
