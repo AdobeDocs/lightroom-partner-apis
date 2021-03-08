@@ -9,7 +9,7 @@ then your use, modification, or distribution of it requires the prior
 written permission of Adobe. 
 */
 import LrAuth from '../../common/lr/LrAuth.mjs'
-import LrRequest from '../../common/lr/LrRequest.mjs'
+import RequestUtils from '../../common/request/RequestUtils.mjs'
 
 let _abortHealthP = function(apiKey, delay) {
 	let headers = {
@@ -27,7 +27,7 @@ let _abortHealthP = function(apiKey, delay) {
 	let signal = {
 		onabort: () => console.log('uncaught abort')
 	}
-	let promise = LrRequest.requestP(options, undefined, signal)
+	let promise = RequestUtils.requestP(options, undefined, signal)
 	setTimeout(() => {
 		signal.onabort()
 	}, delay)
