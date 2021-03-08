@@ -9,13 +9,13 @@ then your use, modification, or distribution of it requires the prior
 written permission of Adobe. 
 */
 import LrSession from '../../common/lr/LrSession.mjs'
-import File from '../../common/file/File.mjs'
-import FileUtils from '../../common/file/FileUtils.mjs'
+import File from '../common/file/File.mjs'
+import OriginalUtils from '../../common/original/OriginalUtils.mjs'
 
 async function mainP(filePath) {
 	let lr = await LrSession.currentContextP()
-	let file = await File.fileP(filePath)
-	let assetId = await FileUtils.uploadFileP(lr, file)
+	let orig = await File.originalP(filePath)
+	let assetId = await OriginalUtils.uploadP(lr, orig)
 	console.log(`asset id: ${assetId}`)
 }
 

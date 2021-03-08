@@ -70,10 +70,8 @@ class LrContext {
 			}
 		}
 		await LrRequestor.putUniqueP(this._session, path, content, sha256) // 412 error if duplicate revision
-		return {
-			id: assetId,
-			path: `${path}/master`
-		}
+
+		return assetId
 	}
 
 	getAlbumsP(subtype) {
@@ -148,9 +146,13 @@ class LrContext {
 		return albumId
 	}
 
-	putOriginalP(path, mime, offset, size, data) {
-		console.log(`Received ${data.length} bytes of data at ${offset}`)
-		return LrRequestor.putChunkP(this._session, path, mime, data, offset, size)
+	putOriginalP(assetId, mime, size, streamP) {
+		let path = `/v2/catalogs/${this._catalogId}/assets/${assetId}/master`
+		let chunkHandlerP = (data, offset) => {
+			console.log(`Received ${data.byteLength} bytes of data at ${offset}`)
+			return LrRequestor.putChunkP(this._session, path, mime, data, offset, size)
+		}
+		return streamP(this.chunkSize, chunkHandlerP)
 	}
 
 	async addAssetsToAlbumP(albumId, assets) {

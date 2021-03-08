@@ -10,13 +10,12 @@ written permission of Adobe.
 */
 import LrSession from '../../common/lr/LrSession.mjs'
 import LrUtils from '../../common/lr/LrUtils.mjs'
-import File from '../../common/file/File.mjs'
-import FileUtils from '../../common/file/FileUtils.mjs'
+import Directory from '../common/file/Directory.mjs'
 import path from 'path'
 
 async function _projectFromDirP(lr, dirPath, parentId) {
-	let files = await File.filesP(dirPath)
-	let assets = await FileUtils.uploadFilesP(lr, files)
+	let origs = await Directory.filesP(dirPath)
+	let assets = await Directory.uploadFilesP(lr, origs)
 	let name = path.basename(dirPath) // name project the same as the directory
 	let projectId = await lr.createAlbumP('project', name, parentId, `${name}.remoteId`)
 	await lr.addAssetsToAlbumP(projectId, assets)

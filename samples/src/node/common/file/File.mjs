@@ -10,27 +10,9 @@ written permission of Adobe.
 */
 import fs from 'fs'
 import path from 'path'
-import CryptoUtils from '../crypto/CryptoUtils.mjs'
-
-let _subtypeGuess = function(filePath) {
-	let videoExts = [
-		'.mp4',
-		'.MP4',
-		'.mov',
-		'.MOV',
-		'.avi',
-		'.AVI',
-		'.mpg',
-		'.MPG',
-		'.m4v',
-		'.M4V'
-	]
-	let fileext = path.extname(filePath)
-	return videoExts.find((ext) => ext == fileext) ? 'video' : 'image'
-}
+import OriginalUtils from '../../../common/original/OriginalUtils.mjs'
 
 let File = {
-
 	streamP: (filePath, chunkSize, chunkHandlerP) => new Promise((resolve, reject) => {
 		let offset = 0
 		async function readableHandler() {
@@ -55,30 +37,12 @@ let File = {
 		return (chunkSize, chunkHandlerP) => File.streamP(filePath, chunkSize, chunkHandlerP)
 	},
 
-	fileP: async function(filePath) {
+	originalP: async function(filePath) {
 		let stats = await fs.promises.stat(filePath)
-		let subtype = _subtypeGuess(filePath)
-		let mime = subtype == 'video' ? 'application/octet-stream;video' : 'application/octet-stream' // or 'video/*'
-		let sha256 = await CryptoUtils.sha256P(File.streamController(filePath))
-		return {
-			path: filePath,
-			name: path.basename(filePath),
-			ext: path.extname(filePath),
-			mime: mime,
-			subtype: subtype,
-			parent: path.dirname(filePath),
-			sha256: sha256,
-			size: stats.size
-		}
-	},
-
-	filesP: async function(dirPath) {
-		let entries = await fs.promises.readdir(dirPath, { withFileTypes: true })
-		let files = entries.filter((entry) => !entry.isDirectory())
-		files = files.filter((file) => !(/^\./).test(file.name)) // skip hidden
-		return Promise.all(files.map((file) => File.fileP(path.join(dirPath, file.name))))
+		let parent = path.dirname(filePath)
+		let name = path.basename(filePath)
+		return OriginalUtils.create(filePath, parent, name, stats.size, File.streamController(filePath))
 	}
-
 }
 
 export default File
