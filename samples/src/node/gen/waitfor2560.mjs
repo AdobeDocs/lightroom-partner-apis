@@ -12,7 +12,7 @@ import LrSession from '../../common/lr/LrSession.mjs'
 
 async function mainP(assetId) {
 	let lr = await LrSession.currentContextP()
-	let result = await lr.waitFor2560RendtionP(assetId)
+	let result = await lr.waitForRenditionP(assetId, '2560')
 	console.log('result:', result)
 }
 

@@ -92,7 +92,7 @@ async function Insert2048Rendition(container, lr, asset) {
 
 	// fetch the 2048 image and update the image source with it
 	try {
-		let buffer = await lr.getAsset2048RenditionP(asset.id)
+		let buffer = await lr.getAssetRenditionP(asset.id, '2048')
 		let blob = new Blob([ new Uint8Array(buffer) ], { type: 'image/jpeg' })
 		img.src = URL.createObjectURL(blob)
 	}

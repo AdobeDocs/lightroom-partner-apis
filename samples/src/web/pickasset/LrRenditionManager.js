@@ -56,7 +56,7 @@ class LrRenditionManager {
 	getDeferredAssetThumbnailObjectURL(asset) {
 		let deferred = new Deferred()
 
-		this._lr.getAssetThumbnailRenditionP(asset.id).then((buffer) => {
+		this._lr.getAssetRenditionP(asset.id, 'thumbnail2x').then((buffer) => {
 			deferred.resolve(this._create(asset.id, buffer))
 		})
 

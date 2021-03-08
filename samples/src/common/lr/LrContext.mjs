@@ -50,26 +50,6 @@ class LrContext {
 		return LrRequestor.getPagedP(this._session, path)
 	}
 
-	getAssetThumbnailRenditionP(assetId) {
-		let path = `/v2/catalogs/${this._catalogId}/assets/${assetId}/renditions/thumbnail2x`
-		return LrRequestor.getP(this._session, path)
-	}
-
-	getAsset2048RenditionP(assetId) {
-		let path = `/v2/catalogs/${this._catalogId}/assets/${assetId}/renditions/2048`
-		return LrRequestor.getP(this._session, path)
-	}
-
-	getAsset2560RenditionP(assetId) {
-		let path = `/v2/catalogs/${this._catalogId}/assets/${assetId}/renditions/2560`
-		return LrRequestor.getP(this._session, path)
-	}
-
-	getAssetFullsizeRenditionP(assetId) {
-		let path = `/v2/catalogs/${this._catalogId}/assets/${assetId}/renditions/fullsize`
-		return LrRequestor.getP(this._session, path)
-	}
-
 	async createRevisionP(subtype, name, size, sha256) {
 		let assetId = _createUuid()
 		let revisionId = _createUuid()
@@ -133,7 +113,7 @@ class LrContext {
 	async getAlbumCoverP(album) {
 		if (album.links['/rels/cover_asset']) {
 			let assetId = album.links['/rels/cover_asset'].href.match(/assets\/([a-f0-9]{32})\/?/)[1]
-			return this.getAssetThumbnailRenditionP(assetId)
+			return this.getAssetRenditionP(assetId, 'thumbnail2x')
 		}
 	}
 
@@ -142,7 +122,7 @@ class LrContext {
 		if (!buffer) {
 			let albumAsset = await this.getFirstAlbumAssetP(album.id) // first asset
 			if (albumAsset) {
-				buffer = await this.getAssetThumbnailRenditionP(albumAsset.asset.id)
+				buffer = await this.getAssetRenditionP(albumAsset.asset.id, 'thumbnail2x')
 			}
 		}
 		return buffer
@@ -247,23 +227,18 @@ class LrContext {
 		throw new Error(`timed out on: ${path}`)
 	}
 
-	waitFor2560RendtionP(assetId) {
-		let path = `/v2/catalogs/${this._catalogId}/assets/${assetId}/renditions/2560`
+	getAssetRenditionP(assetId, type) {
+		let path = `/v2/catalogs/${this._catalogId}/assets/${assetId}/renditions/${type}`
+		return LrRequestor.getP(this._session, path)
+	}
+
+	waitForRenditionP(assetId, type) {
+		let path = `/v2/catalogs/${this._catalogId}/assets/${assetId}/renditions/${type}`
 		return this.waitForP(path)
 	}
 
-	waitForFullsizeRendtionP(assetId) {
-		let path = `/v2/catalogs/${this._catalogId}/assets/${assetId}/renditions/fullsize`
-		return this.waitForP(path)
-	}
-
-	asset2560RenditionExistsP(assetId) {
-		let path = `/v2/catalogs/${this._catalogId}/assets/${assetId}/renditions/2560`
-		return this.existsP(path)
-	}
-
-	assetFullsizeRenditionExistsP(assetId) {
-		let path = `/v2/catalogs/${this._catalogId}/assets/${assetId}/renditions/fullsize`
+	assetRenditionExistsP(assetId, type) {
+		let path = `/v2/catalogs/${this._catalogId}/assets/${assetId}/renditions/${type}`
 		return this.existsP(path)
 	}
 
@@ -273,16 +248,6 @@ class LrContext {
 
 		let link = response.links[`/rels/rendition_type/${type}`]
 		return `/v2/catalogs/${this._catalogId}/${link.href}` // return the path
-	}
-
-	async generate2560RenditionP(assetId) {
-		let path = await this.generateRenditionP(assetId, '2560')
-		return this.waitForP(path)
-	}
-
-	async generateFullsizeRenditionP(assetId) {
-		let path = await this.generateRenditionP(assetId, 'fullsize')
-		return this.waitForP(path)
 	}
 }
 

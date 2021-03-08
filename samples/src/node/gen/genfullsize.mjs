@@ -12,7 +12,8 @@ import LrSession from '../../common/lr/LrSession.mjs'
 
 async function mainP(assetId) {
 	let lr = await LrSession.currentContextP()
-	let response = await lr.generateFullsizeRenditionP(assetId)
+	let path = await lr.generateRenditionP(assetId, 'fullsize')
+	let response = await lr.waitForRenditionP(assetId, 'fullsize')
 	console.log(JSON.stringify(response, null, 2))
 }
 
