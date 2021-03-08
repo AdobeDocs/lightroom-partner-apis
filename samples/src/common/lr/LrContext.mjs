@@ -146,6 +146,11 @@ class LrContext {
 		return albumId
 	}
 
+	deleteAlbumP = function(albumId) {
+		let path = `/v2/catalogs/${this._catalogId}/albums/${albumId}`
+		return LrRequestor.deleteP(this._session, path)
+	}
+
 	putOriginalP(assetId, mime, size, streamP) {
 		let path = `/v2/catalogs/${this._catalogId}/assets/${assetId}/master`
 		let chunkHandlerP = (data, offset) => {
