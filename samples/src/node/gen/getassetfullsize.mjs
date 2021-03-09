@@ -13,7 +13,7 @@ import FileUtils from '../../common/file/FileUtils.mjs'
 
 async function mainP(assetId) {
 	let lr = await LrSession.currentContextP()
-	let buffer = await lr.getAssetFullsizeRenditionP(assetId)
+	let buffer = await lr.getAssetRenditionP(assetId, 'fullsize')
 	let name = `${assetId}.fullsize.jpg`
 	await FileUtils.writeBufferToFileP(buffer, name)
 	console.log('success: ', name)

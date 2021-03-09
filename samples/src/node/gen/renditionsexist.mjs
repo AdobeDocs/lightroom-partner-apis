@@ -12,8 +12,8 @@ import LrSession from '../../common/lr/LrSession.mjs'
 
 async function mainP(assetId) {
 	let lr = await LrSession.currentContextP()
-	console.log('2560 exists:', await lr.asset2560RenditionExistsP(assetId))
-	console.log('fullsize exists:', await lr.assetFullsizeRenditionExistsP(assetId))
+	console.log('2560 exists:', await lr.assetRenditionExistsP(assetId, '2560'))
+	console.log('fullsize exists:', await lr.assetRenditionExistsP(assetId, 'fullsize'))
 }
 
 mainP(process.argv[2]).then(() => console.log('done')).catch(e => console.error('error:', e))

@@ -6,6 +6,12 @@
   "author": "",
   "license": "MIT",
   "browserslist": "last 2 chrome version, last 2 firefox version, last 2 safari version",
+  "scripts": {
+    "preinstall": "npx npm-force-resolutions"
+  },
+  "resolutions": {
+    "@babel/preset-env": "7.13.8"
+  },
   "devDependencies": {
     "parcel-bundler": "^1.12.4"
   },

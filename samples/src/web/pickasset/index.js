@@ -11,14 +11,14 @@ written permission of Adobe.
 import { html, render } from 'lit-html'
 import { until } from 'lit-html/directives/until.js'
 import './styles.css'
-import InfoView from '../components/InfoView'
+import InfoView from '../common/info/InfoView'
 import LrSession from '../../common/lr/LrSession'
 import LrUtils from '../../common/lr/LrUtils'
-import LrImageManager from './LrImageManager'
-import LrRenditionManager from './LrRenditionManager'
-import '../components/LrGrid'
+import LrAssetThumbnailManager from '../common/image/LrAssetThumbnailManager'
+import LrAssetRenditionProvider from '../common/image/LrAssetRenditionProvider'
+import '../common/grid/LrGrid'
 
-function InsertFolderView(container, folderRoot, imageManager, onClickAlbum) {
+function InsertFolderView(container, folderRoot, coverThumbnailP, onClickAlbum) {
 	const _allPhotosTemplate = (onClick) => html`
 		<div class='spectrum-SideNav-item'>
 			<div class='spectrum-SideNav-itemLink' @click=${ (event) => onClick() }>
@@ -46,36 +46,38 @@ function InsertFolderView(container, folderRoot, imageManager, onClickAlbum) {
 		</div>
 	`
 
-	const _albumTemplate = (imageManager, album, onClick) => html`
+	const _albumTemplate = (coverThumbnailP, album, onClick) => html`
 		<div class='spectrum-SideNav-item' @click=${ (event) => onClick(album) }>
 			<div class='spectrum-SideNav-itemLink'>
-				<img class='spectrum-Icon spectrum-Icon--sizeM spectrum-SideNav-itemIcon' src=${ until(imageManager.getAlbumCoverThumbnailObjectURLP(album), '') }></img>
+				<img class='spectrum-Icon spectrum-Icon--sizeM spectrum-SideNav-itemIcon' src=${ until(coverThumbnailP(album), '') }></img>
 				${ album.payload.name }
 			</div>
 		</div>
 	`
 
-	const navTemplate = (imageManager, node, onClickFolder, onClickAlbum) => html`
+	const navTemplate = (coverThumbnailP, node, onClickFolder, onClickAlbum) => html`
 		<nav>
 			<div class='spectrum-SideNav spectrum-SideNav--multiLevel'>
 				${ _allPhotosTemplate(() => onClickAlbum()) }
 				${ _breadcrumbTemplate(node, (node) => onClickFolder(node.parent)) }
 				<div class='spectrum-SideNav spectrum-SideNav--multiLevel'>
 					${ node.folders.map((node) => _folderTemplate(node, onClickFolder)) }
-					${ node.albums.map((node) => _albumTemplate(imageManager, node.data, onClickAlbum)) }
+					${ node.albums.map((node) => _albumTemplate(coverThumbnailP, node.data, onClickAlbum)) }
 				</div>
 			</div>
 		</nav>
 	`
 
-	let update = (node) => render(navTemplate(imageManager, node, (node) => update(node), onClickAlbum), container)
+	let update = (node) => render(navTemplate(coverThumbnailP, node, (node) => update(node), onClickAlbum), container)
 	update(folderRoot)
 }
 
-async function Insert2048Rendition(container, lr, asset) {
-	if (!asset) {
+async function Insert2048Rendition(container, lr, assetId) {
+	if (!assetId) {
 		return
 	}
+
+	let provider = new LrAssetRenditionProvider(lr, assetId, '2048')
 
 	// create a popover div to display the rendition
 	let img = document.createElement('img')
@@ -83,21 +85,17 @@ async function Insert2048Rendition(container, lr, asset) {
 	rendition.className = 'popover'
 	rendition.appendChild(img)
 	rendition.onclick = () => {
-		if (img.src) {
-			URL.revokeObjectURL(img.src)
-		}
+		provider.dispose()
 		rendition.remove()
 	}
 	container.appendChild(rendition)
 
 	// fetch the 2048 image and update the image source with it
 	try {
-		let buffer = await lr.getAsset2048RenditionP(asset.id)
-		let blob = new Blob([ new Uint8Array(buffer) ], { type: 'image/jpeg' })
-		img.src = URL.createObjectURL(blob)
+		await provider.promise.then(objectURL => img.src = objectURL)
 	}
 	catch (err) {
-		console.log('failed to fetch the 2048 rendition of asset:', asset.id)
+		console.log('failed to fetch the 2048 rendition of asset:', assetId)
 	}
 }
 
@@ -133,20 +131,19 @@ async function mainP() {
 		return // bail out
 	}
 
-	let renditionManager = new LrRenditionManager(lr._session, lr.account, lr.catalog)
-	let imageManager = new LrImageManager(renditionManager)
+	let thumbnailManager = new LrAssetThumbnailManager(lr._session, lr.account, lr.catalog)
 
 	// album grid in the well
 	let albumGridComponentConstructor = window.customElements.get('lr-samples-grid')
 	albumGridComponentConstructor.session = lr._session
 	albumGridComponentConstructor.account = lr.account
 	albumGridComponentConstructor.catalog = lr.catalog
-	albumGridComponentConstructor.imageManager = imageManager
+	albumGridComponentConstructor.imageManager = thumbnailManager
 	let picker = new albumGridComponentConstructor()
 	picker.addEventListener('selected-changed', (event) => {
 		let selection = event.detail
 		let asset = selection && selection.selected[0] // first selected
-		Insert2048Rendition(document.body, lr, asset)
+		Insert2048Rendition(document.body, lr, asset.id)
 	})
 	let activeAlbumChanged = (album) => {
 		let source = album ? album : lr.catalog // if no album, show all photos
@@ -159,7 +156,11 @@ async function mainP() {
 	well.appendChild(picker)
 
 	// create a folder view in the left hand panel
-	InsertFolderView(lhp, folderRoot, imageManager, activeAlbumChanged)
+	let coverThumbnailP = async (album) => {
+		let assetId = await lr.getAlbumCoverOrFallbackAssetIdP(album)
+		return thumbnailManager.getAssetRenditionObjectURLP(assetId, 'thumbnail2x')
+	}
+	InsertFolderView(lhp, folderRoot, coverThumbnailP, activeAlbumChanged)
 }
 
 mainP()

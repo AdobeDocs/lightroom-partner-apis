@@ -10,8 +10,8 @@ written permission of Adobe.
 */
 import { LitElement, html, css } from 'lit-element'
 import { until } from 'lit-html/directives/until.js'
-import LrContext from '../../common/lr/LrContext'
-import LrUtils from '../../common/lr/LrUtils'
+import LrContext from '../../../common/lr/LrContext'
+import LrUtils from '../../../common/lr/LrUtils'
 
 class LrGrid extends LitElement {
 
@@ -136,7 +136,7 @@ class LrGrid extends LitElement {
 
 	_getCachedAssetThumbnailObjectURLP(asset) {
 		if (LrGrid._imageManager) {
-			return LrGrid._imageManager.getAssetThumbnailObjectURLP(asset)
+			return LrGrid._imageManager.getAssetRenditionObjectURLP(asset.id, 'thumbnail2x')
 		}
 		return ''
 	}

@@ -8,12 +8,13 @@ it. If you have received this file from a source other than Adobe,
 then your use, modification, or distribution of it requires the prior
 written permission of Adobe. 
 */
-import LrSession from '../../common/lr/LrSession.mjs'
-
-async function mainP(assetId) {
-	let lr = await LrSession.currentContextP()
-	let result = await lr.waitForRenditionP(assetId, '2560')
-	console.log('result:', result)
+let FileUtils = {
+	readP: (file) => new Promise((resolve, reject) => {
+		let reader = new FileReader()
+		reader.onload = () => resolve(reader.result)
+		reader.onerror = () => reject(reader.error)
+		reader.readAsArrayBuffer(file)
+	})
 }
 
-mainP(process.argv[2]).then(() => console.log('done')).catch(e => console.error('error:', e))
+export default FileUtils

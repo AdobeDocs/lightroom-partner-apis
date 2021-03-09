@@ -8,7 +8,7 @@ it. If you have received this file from a source other than Adobe,
 then your use, modification, or distribution of it requires the prior
 written permission of Adobe. 
 */
-let LrRequest = {}
+let RequestUtils = {}
 
 let node
 try { node = process.versions.node } catch (err) {}
@@ -20,6 +20,9 @@ if (node) {
 	let _httpPromise = import('http')
 
 	let _requestP = (module, options, data, signal) => new Promise((resolve, reject) => {
+		if (data) {
+			options.headers['content-length'] = Buffer.byteLength(data)
+		}
 		let req = module.request(options, (res) => {
 			let chunks = []
 			res.on('data', (chunk) => chunks.push(Buffer.from(chunk)))
@@ -35,7 +38,7 @@ if (node) {
 		}
 	})
 
-	LrRequest.requestP = (options, data, signal) => {
+	RequestUtils.requestP = (options, data, signal) => {
 		let modulePromise = options.protocol === 'http:' ? _httpPromise : _httpsPromise
 		return modulePromise.then(module => _requestP(module, options, data, signal))
 	}
@@ -63,10 +66,7 @@ else {
 	})
 
 	let _xhrP = (options, data, signal) => new Promise((resolve, reject) => {
-		if (options.method !== 'GET') {
-			reject('only gets for now')
-			return
-		}
+		let blob = data ? new Blob([data]) : undefined
 		let port = options.port ? `:${options.port}` : ''
 		let url = `${options.protocol}//${options.host}${port}${options.path}`
 		let xhr = new XMLHttpRequest()
@@ -80,16 +80,16 @@ else {
 		})
 		xhr.onabort = () => reject(new Error('xhr aborted'))
 		xhr.onerror = () => reject(new Error('xhr failed'))
-		xhr.send()
+		xhr.send(blob)
 
 		if (signal) {
 			signal.onabort = () => xhr.abort()
 		}
 	})
 
-	LrRequest.fetchP = _fetchP
-	LrRequest.xhrP = _xhrP
-	LrRequest.requestP = _xhrP // default
+	RequestUtils.fetchP = _fetchP
+	RequestUtils.xhrP = _xhrP
+	RequestUtils.requestP = _xhrP // default
 }
 
-export default LrRequest
+export default RequestUtils

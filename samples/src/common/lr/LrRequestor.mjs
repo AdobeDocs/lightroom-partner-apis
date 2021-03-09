@@ -8,10 +8,10 @@ it. If you have received this file from a source other than Adobe,
 then your use, modification, or distribution of it requires the prior
 written permission of Adobe. 
 */
-import LrRequest from './LrRequest.mjs'
+import RequestUtils from '../request/RequestUtils.mjs'
 
 let _toJSON = (body) => {
-	if (body.length == 0) {
+	if (body.byteLength === 0) {
 		return // catch empty body to avoid an error in JSON parser
 	}
 	let decoder = new TextDecoder('utf-8')
@@ -43,7 +43,7 @@ let _unauthGetP = function(session, path, signal) {
 		path: path,
 		headers: headers
 	}
-	return LrRequest.requestP(options, undefined, signal).then(res => _onEnd(res))
+	return RequestUtils.requestP(options, undefined, signal).then(res => _onEnd(res))
 }
 
 let _authRequestP = function(session, method, path, headers, data, signal) {
@@ -57,7 +57,7 @@ let _authRequestP = function(session, method, path, headers, data, signal) {
 		path: path,
 		headers: headers
 	}
-	return LrRequest.requestP(options, data, signal).then(res => _onEnd(res))
+	return RequestUtils.requestP(options, data, signal).then(res => _onEnd(res))
 }
 
 let _getPagedP = async function(session, path, resources = []) {
@@ -72,23 +72,16 @@ let _getPagedP = async function(session, path, resources = []) {
 }
 
 let _sendJSONP = function(session, method, path, json, sha256) {
-	let data = JSON.stringify(json)
-	let headers = {
-		'Content-Type': 'application/json',
-		'Content-Length': Buffer.byteLength(data)
-	}
+	let headers = { 'Content-Type': 'application/json' }
 	if (sha256) {
 		headers['If-None-Match'] = sha256
 	}
-	return _authRequestP(session, method, path, headers, data)
+	return _authRequestP(session, method, path, headers, JSON.stringify(json))
 }
 
 let _putChunkP = function(session, path, type, data, offset, size) {
-	let length = Buffer.byteLength(data)
-	let headers = {
-		'Content-Type': type,
-		'Content-Length': length
-	}
+	let headers = { 'Content-Type': type }
+	let length = data.byteLength
 	if (size != length) {
 		headers['Content-Range'] = `bytes ${offset}-${offset + length - 1}/${size}`
 	}

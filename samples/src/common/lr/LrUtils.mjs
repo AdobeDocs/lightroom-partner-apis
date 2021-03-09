@@ -9,11 +9,7 @@ then your use, modification, or distribution of it requires the prior
 written permission of Adobe. 
 */
 let LrUtils = {
-	getAssetIdFromRevision: function(revision) {
-		return revision.links['/rels/asset'].href.match(/assets\/([a-f0-9]{32})\/?/)[1]
-	},
-
-	getAssetAspectRatio: function(asset) {
+	getAssetAspectRatio: (asset) => {
 		if (asset.payload.develop) {
 			let width = asset.payload.develop.croppedWidth
 			let height = asset.payload.develop.croppedHeight
@@ -61,7 +57,7 @@ let LrUtils = {
 		}
 	},
 
-	createAlbumHierarchy: function(subtype, name, albums) {
+	createAlbumHierarchy: (subtype, name, albums) => {
 		let root = {
 			folders: [],
 			albums: [],
@@ -73,11 +69,11 @@ let LrUtils = {
 			}
 		}
 
-		albums.sort(function (a, b) { // alphabetical sort, with sets first
-		if (a.subtype != b.subtype) {
-				return a.subtype > b.subtype ? -1 : 1
-			}
-			return a.payload.name < b.payload.name ? -1 : 1
+		albums.sort((a, b) => { // alphabetical sort, with sets first
+			if (a.subtype != b.subtype) {
+					return a.subtype > b.subtype ? -1 : 1
+				}
+				return a.payload.name < b.payload.name ? -1 : 1
 		})
 
 		let inodeHash = {}

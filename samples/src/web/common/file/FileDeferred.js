@@ -8,12 +8,19 @@ it. If you have received this file from a source other than Adobe,
 then your use, modification, or distribution of it requires the prior
 written permission of Adobe. 
 */
-import LrSession from '../../common/lr/LrSession.mjs'
+import FileUtils from './FileUtils'
 
-async function mainP(assetId) {
-	let lr = await LrSession.currentContextP()
-	let result = await lr.waitForRenditionP(assetId, '2560')
-	console.log('result:', result)
+class FileDeferred {
+	constructor(file) {
+		this._file = file
+	}
+
+	get promise() {
+		if (!this._promise) {
+			this._promise = FileUtils.readP(this._file)
+		}
+		return this._promise
+	}
 }
 
-mainP(process.argv[2]).then(() => console.log('done')).catch(e => console.error('error:', e))
+export default FileDeferred
