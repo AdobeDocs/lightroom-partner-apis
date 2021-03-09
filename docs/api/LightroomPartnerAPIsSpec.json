@@ -439,12 +439,6 @@
                     "name"
                   ]
                 },
-                "revision_ids": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/uuid"
-                  }
-                },
                 "links": {
                   "type": "object"
                 }
@@ -496,10 +490,6 @@
                     }
                   }
                 },
-                "revision_ids": [
-                  "9a91927e",
-                  "d61b7077"
-                ],
                 "links": {
                   "self": {
                     "href": "catalogs/bf7337d9355c41b7875c9392f918362a"
@@ -569,7 +559,7 @@
           {
             "name": "catalog_id",
             "in": "path",
-            "description": "Identifier of the catalog in which the asset and revision will be created.",
+            "description": "Identifier of the catalog in which the asset will be created.",
             "required": true,
             "type": "string"
           },
@@ -680,7 +670,7 @@
           "assets"
         ],
         "summary": "Get a catalog asset",
-        "description": "Retrieves information about a single asset in a catalog that the caller owns. Successful response may also return invalid flag in the rendition link for the asset. A rendition becomes invalid when an asset is edited after rendition has been generated. New renditions (only 2560 and fullsize) can be generated via Generate Renditions API. The read xmp/develop link in the response will have the invalid flag as true if revision with SHA256 has been created but external xmp/develop has not been uploaded yet.",
+        "description": "Retrieves information about a single asset in a catalog that the caller owns. Successful response may also return invalid flag in the rendition link for the asset. A rendition becomes invalid when an asset is edited after rendition has been generated. New renditions (only 2560 and fullsize) can be generated via Generate Renditions API. The read xmp/develop link in the response will have the invalid flag as true if asset with SHA256 has been created but external xmp/develop has not been uploaded yet.",
         "operationId": "getAsset",
         "produces": [
           "application/json"
@@ -741,12 +731,6 @@
                 "updated": {
                   "$ref": "#/definitions/utcDateTime"
                 },
-                "revision_ids": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
                 "links": {
                   "type": "object"
                 },
@@ -761,11 +745,6 @@
                 "subtype": "image",
                 "created": "<created_date>",
                 "updated": "<updated_date>",
-                "revision_ids": [
-                  "<revision_id1>",
-                  "<revision_id2>",
-                  "<revision_id3>"
-                ],
                 "links": {
                   "self": {
                     "href": "assets/<asset_id>"
@@ -824,12 +803,6 @@
                 "updated": {
                   "$ref": "#/definitions/utcDateTime"
                 },
-                "revision_ids": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
                 "links": {
                   "type": "object"
                 },
@@ -858,10 +831,6 @@
                   },
                   "/rels/rendition_type/<rendition_type>": {
                     "href": "/v2/catalogs/<catalog_id>/assets/<asset_id>/renditions/<rendition_type>"
-                  },
-                  "/rels/latest_revision": {
-                    "href": "/v2/catalogs/<catalog_id>/assets/<asset_id>/revisions/<revision_id>",
-                    "created_by": "urn:carousel:account:<account_id>"
                   }
                 },
                 "created": "<created_date>",
@@ -903,14 +872,6 @@
                 },
                 "favorites": {
                   "<account_id>": "<created_date>"
-                },
-                "fingerprint": {
-                  "pass": <pass>,
-                  "file_href": "/v2/catalogs/<catalog_id>/assets/<asset_id>/revisions/<revision_id>/renditions/<rendition_id>",
-                  "copyright": {
-                    "title": "<copyrighted_title>",
-                    "owner": "<copyrighted_owner>"
-                  }
                 }
               }
             }
@@ -960,7 +921,7 @@
           "assets"
         ],
         "summary": "Retrieve assets",
-        "description": "Retrieve a list of existing assets that caller owns. Successful response may also return invalid flag in the rendition link for the asset. A rendition becomes invalid when an asset is edited after rendition has been generated. New renditions (only 2560 and fullsize) can be generated via Generate Renditions API. The read xmp/develop link in the response will have the invalid flag as true if revision with SHA256 has been created but external xmp/develop has not been uploaded yet.",
+        "description": "Retrieve a list of existing assets that caller owns. Successful response may also return invalid flag in the rendition link for the asset. A rendition becomes invalid when an asset is edited after rendition has been generated. New renditions (only 2560 and fullsize) can be generated via Generate Renditions API. The read xmp/develop link in the response will have the invalid flag as true if asset with SHA256 has been created but external xmp/develop has not been uploaded yet.",
         "operationId": "getAssets",
         "produces": [
           "application/json"
@@ -1193,14 +1154,6 @@
                       "develop": {
                         "<dev_key>": "<dev_value>"
                       }
-                    },
-                    "fingerprint": {
-                      "pass": "<pass>",
-                      "file_href": "assets/<asset_id>/revisions/<revision_id>/renditions/<rendition_id>",
-                      "copyright": {
-                        "title": "<copyrighted_title>",
-                        "owner": "<copyrighted_owner>"
-                      }
                     }
                   }
                 ],
@@ -1249,12 +1202,6 @@
                       "updated": {
                         "$ref": "#/definitions/utcDateTime"
                       },
-                      "revision_ids": {
-                        "type": "array",
-                        "items": {
-                          "type": "string"
-                        }
-                      },
                       "links": {
                         "type": "object"
                       },
@@ -1294,11 +1241,6 @@
                     "subtype": "image",
                     "created": "<created_date>",
                     "updated": "<updated_date>",
-                    "revision_ids": [
-                      "<revision_id1>",
-                      "<revision_id2>",
-                      "<revision_id3>"
-                    ],
                     "links": {
                       "self": {
                         "href": "assets/<asset_id>"
@@ -1331,11 +1273,6 @@
                     "subtype": "video",
                     "created": "<created_date>",
                     "updated": "<updated_date>",
-                    "revision_ids": [
-                      "<revision_id1>",
-                      "<revision_id2>",
-                      "<revision_id3>"
-                    ],
                     "links": {
                       "self": {
                         "href": "assets/<asset_id>"
@@ -1376,14 +1313,6 @@
                       "<key>": "<value>",
                       "develop": {
                         "<dev_key>": "<dev_value>"
-                      }
-                    },
-                    "fingerprint": {
-                      "pass": "<pass>",
-                      "file_href": "assets/<asset_id>/revisions/<revision_id>/renditions/<rendition_id>",
-                      "copyright": {
-                        "title": "<copyrighted_title>",
-                        "owner": "<copyrighted_owner>"
                       }
                     }
                   }
@@ -1570,7 +1499,7 @@
           {
             "name": "catalog_id",
             "in": "path",
-            "description": "Identifier of the catalog in which the asset and revision was created.",
+            "description": "Identifier of the catalog in which the asset was created.",
             "required": true,
             "type": "string"
           },
@@ -1664,7 +1593,7 @@
           "assets"
         ],
         "summary": "Get latest asset rendition",
-        "description": "Get latest asset rendition of specified type. It returns 404 if rendition does not exist or for rendition type 2560 and fullsize it is invalid.",
+        "description": "Get latest asset rendition of specified type. It returns 404 if rendition does not exist. It returns 404 in another case when rendition is invalid (only for rendition type 2560 and fullsize)",
         "operationId": "getAssetRendition",
         "produces": [
           "image/jpeg"
@@ -1782,7 +1711,7 @@
           {
             "name": "catalog_id",
             "in": "path",
-            "description": "Identifier of the catalog in which the asset and revision will be created.",
+            "description": "Identifier of the catalog in which the asset will be created.",
             "required": true,
             "type": "string"
           },
@@ -2083,12 +2012,6 @@
                 "subtype":{
                   "type":"string"
                 },
-                "revision_ids":{
-                  "type":"array",
-                  "items":{
-                    "$ref":"#/definitions/uuid"
-                  }
-                },
                 "created":{
                   "$ref":"#/definitions/utcDateTime"
                 },
@@ -2109,11 +2032,6 @@
                 "subtype": "<album_subtype>",
                 "created": "<created_date>",
                 "updated": "<updated_date>",
-                "revision_ids": [
-                  "<album_revision_id1>",
-                  "<album_revision_id2>",
-                  "<album_revision_id3>"
-                ],
                 "payload": {
                   "name": "<album_name>",
                   "cover": {
@@ -2626,7 +2544,7 @@
           "albums"
         ],
         "summary":"List assets of an album",
-        "description":"Lists assets in an album. The assets in an album are returned sorted on either order if order* parameters are used. The assets in an album are returned sorted on captured date if order* parameters are not used and captured* parameters are used. Please note that the created and updated dates for Album asset documents will be returned as \"0000-00-00T00:00:00\". Successful response may also return invalid flag in the rendition link for the asset. A rendition becomes invalid when an asset is edited after rendition has been generated. New renditions (only 2560 and fullsize) can be generated via Generate Renditions API. The read xmp/develop link in the response will have the invalid flag as true if revision with SHA256 has been created but external xmp/develop has not been uploaded yet.",
+        "description":"Lists assets in an album. The assets in an album are returned sorted on either order if order* parameters are used. The assets in an album are returned sorted on captured date if order* parameters are not used and captured* parameters are used. Please note that the created and updated dates for Album asset documents will be returned as \"0000-00-00T00:00:00\". Successful response may also return invalid flag in the rendition link for the asset. A rendition becomes invalid when an asset is edited after rendition has been generated. New renditions (only 2560 and fullsize) can be generated via Generate Renditions API. The read xmp/develop link in the response will have the invalid flag as true if asset with SHA256 has been created but external xmp/develop has not been uploaded yet.",
         "operationId":"listAssetsOfAlbum",
         "produces":[
           "application/json"
@@ -2773,12 +2691,6 @@
                       "updated": {
                         "$ref": "#/definitions/utcDateTime"
                       },
-                      "revision_ids": {
-                        "type": "array",
-                        "items": {
-                          "type": "string"
-                        }
-                      },
                       "links" : {
                         "type": "object"
                       },
@@ -2819,11 +2731,6 @@
                     "type": "album_asset",
                     "created": "<created_date>",
                     "updated": "<updated_date>",
-                    "revision_ids": [
-                      "<album_asset_revision_id1>",
-                      "<album_asset_revision_id2>",
-                      "<album_asset_revision_id3>"
-                    ],
                     "links": {
                       "self": {
                         "href": "albums/<album_id>/assets/<asset_id>"
@@ -2835,11 +2742,6 @@
                       "subtype": "image",
                       "created": "<created_date>",
                       "updated": "<updated_date>",
-                      "revision_ids": [
-                        "<asset_revision_id1>",
-                        "<asset_revision_id2>",
-                        "<asset_revision_id3>"
-                      ],
                       "links": {
                         "self": {
                           "href": "assets/<asset_id>"
@@ -2882,11 +2784,6 @@
                     "type": "album_asset",
                     "created": "<created_date>",
                     "updated": "<updated_date>",
-                    "revision_ids": [
-                      "<album_asset_revision_id1>",
-                      "<album_asset_revision_id2>",
-                      "<album_asset_revision_id3>"
-                    ],
                     "links": {
                       "self": {
                         "href": "albums/<album_id>/assets/<asset_id>"
@@ -2898,11 +2795,6 @@
                       "subtype": "video",
                       "created": "<created_date>",
                       "updated": "<updated_date>",
-                      "revision_ids": [
-                        "<asset_revision_id1>",
-                        "<asset_revision_id2>",
-                        "<asset_revision_id3>"
-                      ],
                       "links": {
                         "self": {
                           "href": "assets/<asset_id>"
