@@ -52,6 +52,16 @@ The `npx` command can be used to have Parcel package and host the given sample: 
     
     Clicking on any asset in the grid will fetch the 2048 rendition and display it in a scrollable overlay. Clicking the overlay will dispatch the overlay and release the associated rendition.
 
+* Columnal Asset Browser
+
+    npx parcel browsecolumn/index.html
+
+    This example demonstrates browsing assets contained in the catalog of an authenticated Adobe Lightroom customer.
+
+    The application header is from `common/info/InfoView.js`. The application first attempts to load the account and catalog information of the Lightroom user associated with the provided user access token. Then the album hierarchy (of subtype "collection") is generated. On success, the user status is displayed in the header.
+
+    The album hierarchy is shown in a single column. When an album is selected, a grid of the album asset thumbnails is displayed in the column.
+
 * Image Uploader
 
     npx parcel upload/index.html
