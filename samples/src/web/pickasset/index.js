@@ -30,7 +30,7 @@ function InsertFolderView(container, folderRoot, coverThumbnailP, onClickAlbum) 
 	const _breadcrumbTemplate = (node, onClick) => html`
 		<div class='spectrum-SideNav-item' @click=${ (event) => { if (node.parent) onClick(node) }}>
 			<div class='spectrum-SideNav-itemLink'>
-				${ (node.parent ? '\u25C3 ' : '') + node.data.payload.name }
+				${ (node.parent ? '\u25C3 ' : '') + node.name }
 			</div>
 		</div>
 	`
@@ -41,7 +41,7 @@ function InsertFolderView(container, folderRoot, coverThumbnailP, onClickAlbum) 
 				<svg class='spectrum-Icon spectrum-Icon--sizeM spectrum-SideNav-itemIcon' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'>
 					<path fill='#777777' d='M58,12H36.7c-0.3,0-0.5-0.1-0.7-0.3l-6.2-6.2c-1-1-2.2-1.5-3.5-1.5H6c-3.3,0-6,2.7-6,6v44c0,3.3,2.7,6,6,6h52 c3.3,0,6-2.7,6-6V18C64,14.7,61.3,12,58,12z M62,54c0,2.2-1.8,4-4,4H6c-2.2,0-4-1.8-4-4V14h56c2.2,0,4,1.8,4,4V54z'></path>
 				</svg>
-				${ node.data.payload.name }
+				${ node.name }
 			</div>
 		</div>
 	`

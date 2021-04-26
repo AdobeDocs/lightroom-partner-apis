@@ -46,7 +46,12 @@ let LrUtils = {
 	},
 
 	logAlbumHierarchyP: async (lr, node, offset = '') => {
-		await LrUtils.logAlbumP(lr, node.data, offset)
+		if (node.data) {
+			await LrUtils.logAlbumP(lr, node.data, offset)
+		}
+		else {
+			console.log('root')
+		}
 		if (node.folders || node.albums) {
 			for (const inode of node.folders) {
 				await LrUtils.logAlbumHierarchyP(lr, inode, offset + '  ')
@@ -59,14 +64,9 @@ let LrUtils = {
 
 	createAlbumHierarchy: (subtype, name, albums) => {
 		let root = {
+			name,
 			folders: [],
-			albums: [],
-			data: {
-				id: subtype,
-				subtype,
-				payload: { name },
-				links: {}
-			}
+			albums: []
 		}
 
 		albums.sort((a, b) => { // alphabetical sort, with sets first
@@ -78,8 +78,9 @@ let LrUtils = {
 
 		let inodeHash = {}
 		albums.forEach((album) => {
-			if (album.subtype == 'collection_set' || album.subtype == 'project_set') {
+			if (album.subtype == subtype) {
 				inodeHash[album.id] = {
+					name: album.payload.name,
 					folders: [],
 					albums: [],
 					data: album
@@ -89,13 +90,19 @@ let LrUtils = {
 
 		albums.forEach((album) => {
 			let parent = (album.payload.parent && inodeHash[album.payload.parent.id]) || root
-			let child = inodeHash[album.id] || { data: album }
-			child.parent = parent
-			if (album.subtype == 'collection_set' || album.subtype == 'project_set') {
-				parent.folders.push(child)
+			let inode = inodeHash[album.id]
+			if (inode) {
+				inode.parent = parent
+				parent.folders.push(inode)
 			}
 			else {
-				parent.albums.push(child)
+				parent.albums.push({
+					parent,
+					name: album.payload.name,
+					folders: [],
+					albums: [],
+					data: album
+				})
 			}
 		})
 
