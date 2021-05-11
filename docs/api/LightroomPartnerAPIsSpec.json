@@ -745,6 +745,12 @@
                   "self": {
                     "href": "assets/<asset_id>"
                   },
+                  "/rels/master_create": {
+                    "href": "assets/<asset_id>/master"
+                  },
+                  "/rels/xmp_develop_create": {
+                    "href": "assets/<asset_id>/xmp/develop"
+                  },
                   "/rels/rendition_type/<rendition_type>": {
                     "href": "assets/<asset_id>/renditions/<rendition_type>"
                   },
@@ -823,10 +829,21 @@
                 "id": "<asset_id>",
                 "links": {
                   "self": {
-                    "href": "/v2/catalogs/<catalog_id>/assets/<asset_id>"
+                    "href": "assets/<asset_id>"
+                  },
+                  "/rels/master_create": {
+                    "href": "assets/<asset_id>/master"
+                  },
+                  "/rels/xmp_develop_create": {
+                    "href": "assets/<asset_id>/xmp/develop"
                   },
                   "/rels/rendition_type/<rendition_type>": {
-                    "href": "/v2/catalogs/<catalog_id>/assets/<asset_id>/renditions/<rendition_type>"
+                    "href": "assets/<asset_id>/renditions/<rendition_type>"
+                  },
+                  "/rels/xmp/develop": {
+                    "href": "assets/<asset_id>/xmp/develop",
+                    "invalid": "true",
+                    "fileSize": "<external_xmp_develop_setting_file_size>"
                   }
                 },
                 "created": "<created_date>",
@@ -2289,6 +2306,12 @@
                         "self": {
                           "href": "assets/<asset_id>"
                         },
+                        "/rels/master_create": {
+                          "href": "assets/<asset_id>/master"
+                        },
+                        "/rels/xmp_develop_create": {
+                          "href": "assets/<asset_id>/xmp/develop"
+                        },
                         "/rels/rendition_type/<rendition_type>": {
                           "href": "assets/<asset_id>/renditions/<rendition_type>"
                         },
@@ -2341,6 +2364,12 @@
                       "links": {
                         "self": {
                           "href": "assets/<asset_id>"
+                        },
+                        "/rels/master_create": {
+                          "href": "assets/<asset_id>/master"
+                        },
+                        "/rels/xmp_develop_create": {
+                          "href": "assets/<asset_id>/xmp/develop"
                         },
                         "/rels/rendition_type/<rendition_type>": {
                           "href": "assets/<asset_id>/renditions/<rendition_type>"
@@ -2582,8 +2611,19 @@
                       "self": {
                         "href": "assets/<asset_id>"
                       },
+                      "/rels/master_create": {
+                        "href": "assets/<asset_id>/master"
+                      },
+                      "/rels/xmp_develop_create": {
+                        "href": "assets/<asset_id>/xmp/develop"
+                      },
                       "/rels/rendition_type/<rendition_type>": {
                         "href": "assets/<asset_id>/renditions/<rendition_type>"
+                      },
+                      "/rels/xmp/develop": {
+                        "href": "assets/<asset_id>/xmp/develop",
+                        "invalid": "true",
+                        "fileSize": "<external_xmp_develop_setting_file_size>"
                       }
                     },
                     "payload": {
@@ -2614,8 +2654,19 @@
                       "self": {
                         "href": "assets/<asset_id>"
                       },
+                      "/rels/master_create": {
+                        "href": "assets/<asset_id>/master"
+                      },
+                      "/rels/xmp_develop_create": {
+                        "href": "assets/<asset_id>/xmp/develop"
+                      },
                       "/rels/rendition_type/<rendition_type>": {
                         "href": "assets/<asset_id>/renditions/<rendition_type>"
+                      },
+                      "/rels/xmp/develop": {
+                        "href": "assets/<asset_id>/xmp/develop",
+                        "invalid": "true",
+                        "fileSize": "<external_xmp_develop_setting_file_size>"
                       }
                     },
                     "unshareable": "<unshareable>",
@@ -2664,11 +2715,6 @@
                   "/rels/asset": {
                     "href": "assets/{asset_id}",
                     "templated": true
-                  },
-                  "/rels/xmp/develop": {
-                    "href": "assets/<asset_id>/xmp/develop",
-                    "invalid": "true",
-                    "fileSize": "<external_xmp_develop_setting_file_size>"
                   }
                 }
               }
@@ -2747,6 +2793,12 @@
                       "self": {
                         "href": "assets/<asset_id>"
                       },
+                      "/rels/master_create": {
+                        "href": "assets/<asset_id>/master"
+                      },
+                      "/rels/xmp_develop_create": {
+                        "href": "assets/<asset_id>/xmp/develop"
+                      },
                       "/rels/rendition_type/<rendition_type>": {
                        "href": "assets/<asset_id>/renditions/<rendition_type>"
                       },
@@ -2783,6 +2835,12 @@
                     "links": {
                       "self": {
                         "href": "assets/<asset_id>"
+                      },
+                      "/rels/master_create": {
+                        "href": "assets/<asset_id>/master"
+                      },
+                      "/rels/xmp_develop_create": {
+                        "href": "assets/<asset_id>/xmp/develop"
                       },
                       "/rels/rendition_type/<rendition_type>": {
                         "href": "assets/<asset_id>/renditions/<rendition_type>"
