@@ -181,10 +181,10 @@ Content-Length: {xsd:nonNegativeInteger}
 
 At this point, a client application should have a catalog identifier (`catalog_id`), which is required for the remainder of the workflow. 
 
-_STEP 1_: Create an asset revision providing newly generated globally unique identifiers (GUIDs) for `asset_id` and `revision_id`. Refer to RFC-4122 for a description of GUIDs. The Lightroom services accept only GUIDs without hyphens. Most languages provide libraries to generate GUID (For examples refer https://docs.oracle.com/javase/7/docs/api/java/util/UUID.html and https://docs.python.org/3/library/uuid.html)
+_STEP 1_: Create an asset by providing newly generated globally unique identifiers (GUID) for `asset_id`. Refer to RFC-4122 for a description of GUIDs. The Lightroom services accept only GUIDs without hyphens. Most languages provide libraries to generate GUID (For examples refer https://docs.oracle.com/javase/7/docs/api/java/util/UUID.html and https://docs.python.org/3/library/uuid.html)
 
 ```
-PUT /v2/catalogs/{catalog_id}/assets/{asset_id}/revisions/{revision_id} HTTP/1.1 
+PUT /v2/catalogs/{catalog_id}/assets/{asset_id} HTTP/1.1 
 Authorization: {auth_token}
 Content-Type: application/json
 Content-Length: {xsd:nonNegativeInteger}
@@ -214,7 +214,7 @@ Location: {xsd:anyURI}
 _STEP 2_: Upload the image or video file binary data. This API allows a maximum of 200MB to be uploaded per invocation. Larger files must be uploaded in chunks with this API by including `Content-Range` headers for each part. Clients may make multiple requests with `Content-Range` headers in parallel. For better fault tolerance, it may be preferable for clients to upload chunks smaller than 200MB.
 
 ```
-PUT /v2/catalogs/{catalog_id}/assets/{asset_id}/revisions/{revision_id}/master HTTP/1.1
+PUT /v2/catalogs/{catalog_id}/assets/{asset_id}/master HTTP/1.1
 Authorization: {auth_token}
 Content-Length: {xsd:nonNegativeInteger}
 Content-Range: {xsd:string}
@@ -298,7 +298,7 @@ The Lightroom APIs may return these errors that are specific to the upload APIs:
   ```
   Partner applications should check that the content type matches the upload data type and try again.
 
-- _JSON Validation failed_: Attempting to create a new asset revision results in an `HTTP 400` error of the form:
+- _JSON Validation failed_: Attempting to create a new asset results in an `HTTP 400` error of the form:
   ```
   {
       "error_code": "1005",
@@ -307,9 +307,9 @@ The Lightroom APIs may return these errors that are specific to the upload APIs:
   ```
   This means the JSON content provided in the body is not legal JSON, has fields that are not supported, or has illegal properties for supported fields. Partner applications should fix the JSON content and retry.
 
-- _Duplicate detected_: Attempting to create a new asset revision results in an `HTTP 412` precondition failed error. This indicates that the provided SHA-256 matches an existing asset in the catalog. Partner applications should skip the upload of the asset.
+- _Duplicate detected_: Attempting to create a new asset results in an `HTTP 412` precondition failed error. This indicates that the provided SHA-256 matches an existing asset in the catalog. Partner applications should skip the upload of the asset.
 
-- _Catalog_id change_: In general it is recommended that the catalog_id once obtained by calling the "Retrieve the user catalog metadata" API call, is cached and used for all successive calls for the user. However sometimes due to user's activities on certain Lightroom clients, the catalog_id of the user may change. In this case when an API call is made to "create asset revision", it will return a 404 (not found) response indicating that the catalog id is not found. In this case, call the "Retrieve the user catalog metadata" API again and get the latest catalog_id for the user and cache it for use in successive API calls. Below is a sample 404 response that may indicate a change of catalog id.
+- _Catalog_id change_: In general it is recommended that the catalog_id once obtained by calling the "Retrieve the user catalog metadata" API call, is cached and used for all successive calls for the user. However sometimes due to user's activities on certain Lightroom clients, the catalog_id of the user may change. In this case when an API call is made to "create asset", it will return a 404 (not found) response indicating that the catalog id is not found. In this case, call the "Retrieve the user catalog metadata" API again and get the latest catalog_id for the user and cache it for use in successive API calls. Below is a sample 404 response that may indicate a change of catalog id.
   ```
   {
       "code":1000,
