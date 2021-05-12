@@ -8,7 +8,7 @@ Assets can be grouped together in a catalog through a special album of subtype _
 
 ### Creating a Project Album
 
-As with the `asset_id` and `revision_id` of new assets, partner applications should generate a globally unique identifier for a new project album (`album_id`), conforming to RFC-4122 without hypens. They can then create a new project album with this and the `catalog_id`:
+As with the `asset_id` of new assets, partner applications should generate a globally unique identifier for a new project album (`album_id`), conforming to RFC-4122 without hypens. They can then create a new project album with this and the `catalog_id`:
 
 ```
 PUT /v2/catalogs/{catalog_id}/albums/{album_id}
