@@ -64,8 +64,8 @@
 			"pages": [
 				{
 					"pages": [],
-					"path": "samples/upload.md",
-					"title": "Upload Image"
+					"path": "samples/doc.md",
+					"title": "Samples on GitHub"
 				}
 			],
 			"title": "Sample Code"
