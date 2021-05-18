@@ -94,6 +94,6 @@ HTTP/1.1 200
 ```
 
 ### Generate Renditions diagrams
-![Generate Renditions for Lightroom Assets](../docs/images/GenerateRenditions.png)
+![Generate Renditions for Lightroom Assets](../docs/images/PrintWorkflow.png)
 
 NOTE: Refer to the API documentation for further information about above listed APIs.
