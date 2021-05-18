@@ -157,3 +157,6 @@ This charset and sort order shall be called _lex64_. The following should be tak
 - The tertiary sort field will be the created date of the object (for identical or absent captureDate values).
 - The empty string is not a valid order field value.
 - In order to preserve the ability to insert at the beginning of the list, the order string cannot end with the “-” character.
+
+### Connect Workflow diagrams
+![Connect Albums Workflow](../docs/images/ConnectWorkflowDiagrams.png)
