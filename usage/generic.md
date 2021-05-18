@@ -15,7 +15,6 @@ The data models for all JSON content share many common elements. Long strings, u
         "userUpdated": "2012-01-03T04:54:15Z",
         // custom for each type
     },
-    "revision_ids": ["9a91927e",...],
     "links": {
         "self": {
             "href": "custom/for/each/type/a3c679e3"
@@ -38,7 +37,6 @@ Unless otherwise noted, all entries at the top level are constructed and provide
     * If the payload is completely empty, which is allowed for some types, then it will be omitted.
     * `userCreated` (ISO 8601 date): Date and time when the user created this document on the client side.
     * `userUpdated` (ISO 8601 date): Date and time when the user last updated this document's payload (or other user modifiable data). This should be set at initial creation and updated by a client each time a user makes a change to data within the payload hash. The userUpdated time should not be updated by automated processes (e.g. reverse geocode, etc.).
-* `revision_ids` (array): List of unique identifiers for each revision to this resource, in order from oldest to newest. When new objects are created, they will have an initial revision and a new revision is created for every update.
 * `links` (table): Links to related data.
     * Each entry is a table containing an `href` entry with the actual link.
     * All types include the `self` link.

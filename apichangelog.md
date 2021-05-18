@@ -1,6 +1,19 @@
 ## API Change Logs
 This document provides information about new features and bug fixes with the Lightroom APIs.
 
+### Version 1.2.1 (12 May, 2021)
+- Revision IDs have been removed from the response of below APIs.
+   - Get a Catalog Asset (GET) - `/v2/catalogs/{catalog_id}/assets/{asset_id}`
+   - Retrieve Assets (GET) - `/v2/catalogs/{catalog_id}/assets`
+   - List assets of an album (GET)- `/v2/catalogs/{catalog_id}/albums/{album_id}/assets`
+   - Read a album (GET) - `/v2/catalogs/{catalog_id}/albums/{album_id}`
+   - Retrieve albums (GET) - `/v2/catalogs/{catalog_id}/albums`
+
+- Added Create Master Links and Create xmp Develop Links to response of below APIs
+   - Get a Catalog Asset (GET) - `/v2/catalogs/{catalog_id}/assets/{asset_id}`
+   - Retrieve Assets (GET) - `/v2/catalogs/{catalog_id}/assets`
+   - List assets of an album (GET)- `/v2/catalogs/{catalog_id}/albums/{album_id}/assets`
+
 ### Version 1.2.0 (24 Feb, 2021)
 - Added new Create Master API (PUT)- `/v2/catalogs/{catalog_id}/assets/{asset_id}/master` . It can be used to upload master for a new asset.
 
