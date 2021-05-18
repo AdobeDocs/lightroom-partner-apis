@@ -46,6 +46,11 @@
 					"pages": [],
 					"path": "quickstart/project.md",
 					"title": "Manage Uploaded Content"
+				},
+				{
+					"pages": [],
+					"path": "quickstart/renditions.md",
+					"title": "Print Workflow"
 				}
 			],
 			"title": "Getting Started"
