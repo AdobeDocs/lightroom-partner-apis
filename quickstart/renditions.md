@@ -22,7 +22,7 @@ For best performance, use the smallest size possible for all application scrolli
 
 ##Workflow to generate renditions for print workflow
 
-Generate renditions for an original file asynchronously. Allowed rendition types are fullsize and 2560. Generated rendition will be deleted after 1 day automatically. Both these renditions must always be requested on demand.  First check to see if one is available, and if not create it. These renditions are not available with basic API access. Should your application require this capability, you must contact Adobe (lightroomcontact@adobe.com) and describe your needs. Here are the details of fullsize and 2560
+Generate renditions for an original file asynchronously. Allowed rendition types are fullsize and 2560. Generated rendition will be deleted after 1 day automatically. Both these renditions must always be requested on demand.  First check to see if one is available, and if not create it. These renditions are not available with basic API access. Should your application require this capability, you must contact Adobe and describe your needs. Here are the details of fullsize and 2560
 - Fullsize - size of original with edits, constrained by any applied crops.
 - 2560 - 2560 pixels on long edge 
 
