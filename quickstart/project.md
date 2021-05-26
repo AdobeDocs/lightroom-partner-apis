@@ -1,3 +1,14 @@
+## Manage Content
+
+There are two workflows with which a partner application can manage content:
+* Affiliating Content
+* Uploading to Lightroom and Managing Content
+
+## Affiliating Content
+A partner application can affiliate content in Lightroom with content in its own asset management system, and publish content from Lightroom.
+
+## Uploading to Lightroom and Managing Content
+
 ## Manage Uploaded Assets
 
 _Note: When a [new asset is created and uploaded](./upload.md) to a Lightroom catalog, partner applications should always set the `importedOnDevice` field to their API key. This will ensure that the asset is properly tagged in Lightroom as having originated from the partner application. They should also retain the unique identifier of the asset (`asset_id`) and catalog (`catalog_id`) for use in the workflows detailed below._
