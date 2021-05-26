@@ -5,13 +5,13 @@ Each photo asset has a set of JPEGs intended for application display of the late
 
 ##Details of Renditions
 
-* Creation - Upon uploading a photo, the following resources will be created (JPEG format)
+* Creation - Upon uploading a photo, the following renditions will be created (JPEG format)
     * thumbnail2x (320 pixels constraint on either edge) 
     * 640 (640 pixels on long edge)
     * 1280 (1280 pixels on long edge) 
     * 2048 (2048 pixels on long edge) 
     
-* Edit - Upon editing a photo, the following resources will be newly created with all edits applied
+* Edit - Upon editing a photo, the following renditions will be newly created with all edits applied
     * thumbnail2x (320 pixels constraint on either edge) 
     * 640 (640 pixels on long edge) 
     * 1280 (1280 pixels on long edge) 
@@ -41,12 +41,13 @@ Sample success response:
 HTTP/1.1 202
 ```
 
-_STEP 2_: Read asset. Check for rendition links (/links/rels/rendition/<rendition_type>) in the asset response. As creation is asynchronous, please poll every 30 seconds until the rendition is available with a timeout of 10 min. If renditions are not genearted within 10 min then probably the operations has failed. You need to retry from Step 1 in that case. Contact us if the problem persists. Read the Usage Guidelines at the end of this page to know the details of the backoff.
+_STEP 2_: HEAD call for Rendition API. As creation is asynchronous, please poll with exponential back with a timeout of 10 min until the rendition is available. If renditions are not genearted within 10 min then probably the operations has failed. You need to retry from Step 1 in that case. Contact us if the problem persists. 
 
 ```
-GET /v2/catalogs/{catalog_id}/assets/{asset_id} HTTP/1.1
+HEAD /v2/catalogs/{catalog_id}/assets/{asset_id}/renditions/<rendition_type> HTTP/1.1
 Authorization: {auth_token}
 ```
+
 
 Sample success response:
 
@@ -54,7 +55,7 @@ Sample success response:
 HTTP/1.1 200
 ```
 
-_STEP _3: Once the rendition links (/links/rels/rendition/<rendition_type>) are populated in the asset response, then that means that rendition has been generated correctly. Now call the read rendition api to get the rendition. 
+_STEP 3_: If the HEAD call returns 200 successfully then that means rendition has been generated correctly. Now call the read rendition api to get the rendition. 
 
 ```
 GET /v2/catalogs/{catalog_id}/assets/{asset_id}/renditions/<rendition_type> HTTP/1.1
@@ -66,6 +67,8 @@ Sample success response:
 ```
 HTTP/1.1 200
 ```
+
+It will return the bits of the rendition
 
 NOTE: Refer to the API documentation for further information about above listed APIs.
 
