@@ -50,7 +50,17 @@
 				{
 					"pages": [],
 					"path": "quickstart/renditions.md",
-					"title": "Print Workflow"
+					"title": "Read and Generate Renditions"
+				},
+				{
+					"pages": [],
+					"path": "quickstart/developer.md",
+					"title": "Developer Guildelines"
+				},
+				{
+					"pages": [],
+					"path": "quickstart/branding.md",
+					"title": "Branding Guidelines"
 				}
 			],
 			"title": "Getting Started"
