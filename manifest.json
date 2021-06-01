@@ -36,6 +36,11 @@
 					"pages": [],
 					"path": "quickstart/upload.md",
 					"title": "Uploading Content"
+				},
+				{
+					"pages": [],
+					"path": "quickstart/project.md",
+					"title": "Manage Content"
 				}
 			],
 			"title": "Getting Started"
