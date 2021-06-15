@@ -8,6 +8,8 @@ The OAuth workflow is described in detail in the [Adobe IMS Authentication and A
 
 Partner applications must include the `lr_partner_apis` scope (along with the standard `openid` and `AdobeID` scopes) to access the Lightroom Services.
 
+To allow renew of refresh token, additional setup is needed on the API key. Should your application require this capability, you must contact Adobe and describe your needs. 
+
 ### Authentication Sample Code
 
 Adobe I/O provides two [OAuth samples](https://github.com/AdobeDocs/adobeio-auth/blob/master/OAuth/samples/samples.md) on GitHub for the authentication workflow, one in Node.js and one in Python.
