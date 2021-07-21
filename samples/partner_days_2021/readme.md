@@ -1,6 +1,6 @@
 # Lightroom Partner App Example: Node.js
 
-This sample app will show you how to implement Lightroom Partner Ap and Adobe OAuth 2.0 using Node.js.
+This sample app will show you how to implement Lightroom Partner App and Adobe OAuth 2.0 using Node.js.
 
 After setting up the sample, you will have a Node.js app that:
 
@@ -9,7 +9,7 @@ After setting up the sample, you will have a Node.js app that:
 1. Prompts the user to authorize the app with requested scopes
 1. Lets the user view their account information
 1. Lets the user view their catalog information
-1. Lets the user upload and image to their catalog
+1. Lets the user upload an image to their catalog
 1. Lets the user download different renditions of their uploaded image
 
 
